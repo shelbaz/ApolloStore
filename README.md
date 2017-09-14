@@ -80,6 +80,12 @@ Open a Command Prompt and run the following commands:
 
 Check out `http://localhost/`
 
+### Toolbox
+
+`Same steps as above except`
+
+Check out `http://192.168.99.100`
+
 ### Restarting the App
 
 Press CTRL-C to kill the app
