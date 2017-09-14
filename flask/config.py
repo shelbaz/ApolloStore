@@ -1,3 +1,11 @@
+# -----------------------------------------------------------------
+# This stores all the possible configurations for the flask app.
+#
+# For variable configurations like the secret key or the database
+# url, they should be stored as environment variables and imported
+# using the 'os' library in Python.
+# -----------------------------------------------------------------
+
 
 import os
 
