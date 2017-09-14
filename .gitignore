@@ -4,3 +4,5 @@
 .idea/
 *.pyc
 flask/htmlcov/
+.coverage
+flask/htmlcov/
