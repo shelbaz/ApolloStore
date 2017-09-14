@@ -1,3 +1,9 @@
+# --------------------------------------------------------------------
+# This file tests the various configurations of the Flask app.
+#
+# It's pretty standard and shouldn't really be modified.
+# --------------------------------------------------------------------
+
 
 import os
 import unittest

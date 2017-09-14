@@ -1,3 +1,11 @@
+# -----------------------------------------------------------------------
+# This is the file that Travis CI looks for to test builds. It tells
+# Travis what to do before and after running tests, as well as how to
+# run the tests.
+#
+# Typically, this file should not be modified.
+# -----------------------------------------------------------------------
+
 sudo: required
 
 services:
