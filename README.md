@@ -3,6 +3,43 @@ Your home to purchasing electronics online!
 
 [![Build Status](https://travis-ci.com/Radu-Raicea/ApolloStore.svg?token=2ExxDcXbwqGBvJ5igREZ&branch=master)](https://travis-ci.com/Radu-Raicea/ApolloStore)
 
+
+    .
+    ├── docker-compose.yml
+    ├── flask
+    │   ├── config.py
+    │   ├── Dockerfile
+    │   ├── manage.py
+    │   ├── requirements.txt
+    │   ├── project
+    │   │   ├── __init__.py
+    │   │   ├── services
+    │   │   │   └── __init__.py
+    │   │   ├── static
+    │   │   │   ├── css
+    │   │   │   ├── img
+    │   │   │   └── js
+    │   │   ├── templates
+    │   │   │   └── index.html
+    │   │   └── website
+    │   │       ├── __init__.py
+    │   │       └── views.py
+    │   └── tests
+    │       ├── base_website.py
+    │       ├── __init__.py
+    │       ├── test_configs.py
+    │       └── test_website.py
+    ├── nginx
+    │   ├── app.conf
+    │   ├── Dockerfile
+    │   └── nginx.conf
+    ├── postgres
+    │   ├── create.sql
+    │   └── Dockerfile
+    └── README.md
+
+
+
 ## Windows 10 Instructions (64-bit)
 
 ### Download Docker
