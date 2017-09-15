@@ -48,7 +48,7 @@ Your home to purchasing electronics online!
 
 ### Meet the requirements for installing Docker on Windows
 
-- You must have Windows 10 Pro, Enterprise or Education with the 64-bit version installed. If you don't, installing Docker will be slightly more complicated because you need to install the Docker Toolbox. If you're in that scenario, you can try installing it using the instructions here: `https://docs.docker.com/toolbox/overview/`
+- You must have Windows 10 Pro, Enterprise or Education with the 64-bit version installed. If you don't, installing Docker will be slightly more complicated because you need to install the Docker Toolbox. If you're in that scenario, scroll down below to the *Install Docker Toolbox* section.
 
 - You must have virtualization enabled on your computer. Sometimes it is enabled by default, but many times you need to go in the BIOS of your computer to enable it. Instructions for this vary from computer to computer, so I recommend searching instructions yourself.
 
@@ -88,7 +88,41 @@ Press CTRL-C to kill the app
 
 `docker-compose up --build`
 
+## Toolbox Instructions
 
+### Download Docker Toolbox
+
+`https://www.docker.com/products/docker-toolbox`
+
+### Install Docker Toolbox
+
+Follow steps 1 to 2 in the following link : `https://docs.docker.com/toolbox/toolbox_install_windows/`
+
+### Clone App
+
+Make sure you have Git installed on your computer before cloning the repository.
+
+Open a Terminal and run the following commands:
+
+`cd [path/where/you/want/to/clone]`
+
+`git clone https://github.com/Radu-Raicea/ApolloStore.git`
+
+### Build App
+
+`cd ApolloStore`
+
+`docker-compose up --build`
+
+Check out `http://192.168.99.100`
+
+### Restarting the App
+
+Press CTRL-C to kill the app
+
+`docker-compose down`
+
+`docker-compose up --build`
 
 ## macOS Instructions
 
