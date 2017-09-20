@@ -39,6 +39,7 @@ services:
       container_name: flask
       volumes:
         - ./flask:/usr/src/app
+      restart: always
       networks:
         - net
       environment:
