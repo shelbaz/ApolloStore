@@ -1,14 +1,17 @@
 
 from project.models import connect_to_db
 import psycopg2
-import uuid
+from passlib.apps import custom_app_context as pwd_context
+from itsdangerous import (TimedJSONWebSignatureSerializer
+                          as Serializer, BadSignature, SignatureExpired)
 
 
 class User():
 
-    # Class function that creates this table
+    # Class function that creates the 'users' table
     @staticmethod
     def create_table():
+        # Using the 'with' statement automatically commits and closes database connections
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
 
@@ -24,7 +27,8 @@ class User():
                           first_name varchar(64),
                           last_name varchar(64),
                           address varchar(256),
-                          email varchar(128),
+                          email varchar(128) UNIQUE,
+                          password_hash varchar(256),
                           phone varchar(64),
                           admin boolean
                         );
@@ -32,19 +36,52 @@ class User():
                     )
 
     # Constructor that creates a new user
-    def __init__(self, first_name, last_name, address, email, phone, admin):
+    def __init__(self, id, first_name, last_name, address, email, phone, admin):
+
+        # Initializes object attributes
+        self.id = id
+        self.first_name = first_name
+        self.last_name = last_name
+        self.address = address
+        self.email = email
+        self.phone = phone
+        self.admin = admin
+
+    # Adds the user to the database
+    def insert_into_db(self):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    """
-                    INSERT INTO users (id, first_name, last_name, address, email, phone, admin) VALUES (
-                      """ + uuid.uuid4() + """,
-                      """ + first_name + """,
-                      """ + last_name + """,
-                      """ + address + """,
-                      """ + email + """,
-                      """ + phone + """,
-                      """ + admin + """
-                    );
-                    """
-                )
+                    """INSERT INTO users (id, first_name, last_name, address, email, password_hash, phone, admin) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);"""
+                    % (self.id, self.first_name, self.last_name, self.address, self.email, self.password_hash, self.phone, str(self.admin)))
+
+    # Queries the users table with the filters given as parameters (only equality filters)
+    @staticmethod
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        query = """SELECT * FROM users WHERE %s;""" % (filters,)
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        users = []
+
+        for row in rows:
+            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
+            user.password_hash = row[5]
+            users.append(user)
+
+        return users
+
+    # Hashes the password and initializes the user's password_hash attribute
+    def hash_password(self, password):
+        self.password_hash = pwd_context.encrypt(password)

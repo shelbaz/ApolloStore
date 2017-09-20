@@ -5,3 +5,5 @@ eventlet==0.21.0
 coverage==4.4.1
 flask_testing==0.6.2
 flask-script==2.0.5
+passlib==1.7.1
+flask_httpauth==3.2.3
