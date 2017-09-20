@@ -59,6 +59,10 @@ class User():
     # Queries the users table with the filters given as parameters (only equality filters)
     @staticmethod
     def query_filtered_by(**kwargs):
+        """
+        Example usage: User.query_filtered_by(first_name='Elon', last_name='Bean')
+        will return a list of User object with the conditions given as parameters
+        """
 
         filters = []
 
@@ -81,7 +85,10 @@ class User():
             user.password_hash = row[5]
             users.append(user)
 
-        return users
+        if users:
+            return users
+        else:
+            return None
 
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):

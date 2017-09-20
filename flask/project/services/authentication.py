@@ -1,9 +1,57 @@
 
 from flask import g
 from flask_httpauth import HTTPBasicAuth
+from project import logger
 from project.models.auth_model import User
+from re import match
+from uuid import uuid4
+import traceback
 
 auth = HTTPBasicAuth()
+
+
+# Creates a user that is valid
+def create_user(first_name, last_name, address, email, password, phone, admin):
+    try:
+        if validate_email(email):
+            if validate_name(first_name) and validate_name(last_name):
+                if validate_password(password):
+                    if User.query_filtered_by(email=email) is None:
+
+                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
+                        user.hash_password(password)
+                        user.insert_into_db()
+
+                        logger.info('User with email %s successfully created' % (email,))
+
+                        return user
+
+    except Exception as e:
+        logger.error(traceback.format_exc())
+
+
+def validate_email(email):
+    regex = '^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'
+    if match(regex, email) is not None:
+        return True
+    else:
+        return False
+
+
+def validate_name(name):
+    regex = '^[A-Za-z-]{1,64}$'
+    if match(regex, name) is not None:
+        return True
+    else:
+        return False
+
+
+def validate_password(password):
+    regex = '^(?=.*\d).{8,20}$'
+    if match(regex, password) is not None:
+        return True
+    else:
+        return False
 
 
 # Verifies credentials
