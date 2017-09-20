@@ -1,6 +1,7 @@
 
 from project.models import connect_to_db
 import psycopg2
+import os
 from passlib.apps import custom_app_context as pwd_context
 from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
@@ -85,3 +86,25 @@ class User():
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
+
+    # Verifies that the given password matches the user's password
+    def verify_password(self, password):
+        return pwd_context.verify(password, self.password_hash)
+
+    # Generate an authentication token
+    def generate_auth_token(self, expiration=2592000):
+        s = Serializer(os.getenv('SECRET_KEY'), expires_in=expiration)
+        return s.dumps({'id': self.id})
+
+    # Verifies the authentication token and returns the user object associated with the token
+    @staticmethod
+    def verify_auth_token(token):
+        s = Serializer(os.getenv('SECRET_KEY'))
+        try:
+            data = s.loads(token)
+        except SignatureExpired:
+            return None
+        except BadSignature:
+            return None
+        user = User.query_filtered_by(id=data['id'])[0]
+        return user
