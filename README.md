@@ -13,6 +13,9 @@ Your home to purchasing electronics online!
     │   ├── requirements.txt
     │   ├── project
     │   │   ├── __init__.py
+    │   │   ├── models
+    │   │   │   ├── __init__.py
+    │   │   │   └── auth_model.py
     │   │   ├── services
     │   │   │   └── __init__.py
     │   │   ├── static

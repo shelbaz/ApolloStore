@@ -17,7 +17,10 @@ from project.models import create_tables
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
+# Creates all the tables from the models package
 create_tables()
+
 
 # Defines the application factory. Every time this function is called, a new application
 # instance is created. The reason why an application factory is needed is because we
