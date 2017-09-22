@@ -29,12 +29,31 @@ class Tablet():
                           harddrive_size integer,
                           battery varchar(64),
                           brand varchar(64),
-                          OS varchar(64),
+                          os_name varchar(64),
                           camera_info varchar(64),
                           model varchar(64),
                           price decimal
                         );
                         """
                     )
+
+    # Constructor that creates a new tablet
+    def __init__(self, id, display_size, dimensions, weight, processor, ram_size, cpu_cores, harddrive_size, battery, brand, os_name, camera_info, model, price):
+
+        # Initialize object attributes
+        self.id = id
+        self.display_size = display_size
+        self.dimensions = dimensions
+        self.weight = weight
+        self.processor = processor
+        self.ram_size = ram_size
+        self.cpu_cores = cpu_cores
+        self.harddrive_size = harddrive_size
+        self.battery = battery
+        self.brand = brand
+        self.os_name = os_name
+        self.camera_info = camera_info
+        self.price = price
+        self.model = model
 
  

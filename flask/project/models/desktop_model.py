@@ -32,4 +32,19 @@ class Desktop():
                         """
                     )
 
+    # Constructor that creates a new desktop
+    def __init__(self, id, processor, ram_size, weight, cpu_cores, harddrive_size, brand, price, model):
+
+        # Initialize object attributes
+        self.id = id
+        self.processor = processor
+        self.ram_size = ram_size
+        self.weight = weight
+        self.cpu_cores = cpu_cores
+        self.harddrive_size = harddrive_size
+        self.brand = brand
+        self.price = price
+        self.model = model
+
+
  

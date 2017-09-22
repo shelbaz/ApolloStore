@@ -29,4 +29,15 @@ class Monitor():
                         """
                     )
 
+    # Constructor that creates a new monitor
+    def __init__(self, id, dimensions,weight, brand, model, price):
+
+        # Initialize object attributes
+        self.id = id
+        self.dimensions = dimensions
+        self.weight = weight
+        self.brand = brand
+        self.model = model
+        self.price = price
+
  

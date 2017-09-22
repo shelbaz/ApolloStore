@@ -26,4 +26,14 @@ class Cart():
                         """
                     )
 
+    # Constructor that creates a new cart
+    def __init__(self,id, inventory_id, timestamp):
+
+        # Initialize the object's attributes
+        self.id = id
+        self.inventory_id = inventory_id
+        self.timestamp = timestamp
+
+
+
  

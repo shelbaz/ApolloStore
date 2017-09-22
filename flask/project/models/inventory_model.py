@@ -23,4 +23,9 @@ import psycopg2
                         """
                     )
 
- 
+    # Constructor that creates inventory
+    def __init__(self, id, model_id):
+        # Initialize object attributes
+        self.id = id
+        self.model_id = model_id
+

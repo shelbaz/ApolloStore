@@ -31,4 +31,16 @@ class Television():
                         """
                     )
 
+    # Constructor that creates a new television
+    def __init__(self, id, type, price, dimension, brand, weight, model):
+
+        # Initialize object attributes
+        self.id = id
+        self.type = type
+        self.price = price
+        self.dimension = dimension
+        self.weight = weight
+        self.brand = brand
+        self.model = model
+
  
