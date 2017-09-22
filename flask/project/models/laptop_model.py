@@ -1,25 +1,20 @@
 
 from project.models import connect_to_db
 import psycopg2
-import os
-from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
-
 
 class Laptop():
 
-    # Class function that creates the 'users' table
+    # Class function that creates the 'laptops' table
     @staticmethod
     def create_table():
         # Using the 'with' statement automatically commits and closes database connections
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
 
-                # Searches if there is already a table named 'users'
+                # Searches if there is already a table named 'laptops'
                 cursor.execute("select * from information_schema.tables where table_name=%s", ('laptops',))
 
-                # Creates table 'users' if it doesn't exist
+                # Creates table 'laptops' if it doesn't exist
                 if not bool(cursor.rowcount):
                     cursor.execute(
                         """
