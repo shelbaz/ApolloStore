@@ -19,21 +19,23 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 # location by default: flask/project/templates/
 @website_blueprint.route('/')
 def index():
+    logger.error('sup1')
     return render_template('index.html')
 
-
 # Registers a new user
-@website_blueprint.route('/register-user', methods=['POST'])
+@website_blueprint.route('/register', methods=['POST'])
 def register():
-
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
-    address = request.json.get('address')
-    email = request.json.get('email')
-    password = request.json.get('password')
-    phone = request.json.get('phone')
-    admin = request.json.get('admin')
-
+    logger.error(request.form)
+    logger.error(request.form['firstNameInput'])
+    abort(410)
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    address = request.form.get('address')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    phone = request.form.get('phone') 
+    # admin = request.form.get('admin')
+    admin = True
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
         user = create_user(first_name, last_name, address, email, password, phone, admin)
