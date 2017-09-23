@@ -2,7 +2,8 @@
 from project.models import connect_to_db
 import psycopg2
 
-class Cart():
+
+class Cart(object):
 
     # Class function that creates the 'carts' table
     @staticmethod
@@ -20,20 +21,20 @@ class Cart():
                         """
                         CREATE TABLE carts (
                           id UUID PRIMARY KEY,
-                          inventory_id varchar(64),
-                          timestamp date
+                          inventory_id UUID UNIQUE,
+                          user_id UUID,
+                          added_time timestamp,
+                          FOREIGN KEY (inventory_id) REFERENCES inventories (id),
+                          FOREIGN KEY (user_id) REFERENCES users (id)
                         );
                         """
                     )
 
     # Constructor that creates a new cart
-    def __init__(self,id, inventory_id, timestamp):
+    def __init__(self, id, inventory_id, user_id, added_time):
 
         # Initialize the object's attributes
         self.id = id
         self.inventory_id = inventory_id
-        self.timestamp = timestamp
-
-
-
- 
+        self.user_id = user_id
+        self.added_time = added_time

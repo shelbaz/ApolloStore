@@ -1,8 +1,10 @@
 
+from project.models.item_model import Item
 from project.models import connect_to_db
 import psycopg2
 
-class Laptop():
+
+class Laptop(Item):
 
     # Class function that creates the 'laptops' table
     @staticmethod
@@ -19,41 +21,36 @@ class Laptop():
                     cursor.execute(
                         """
                         CREATE TABLE laptops (
-                          id UUID PRIMARY KEY,
+                          model UUID PRIMARY KEY,
                           display_size varchar(64),
                           processor varchar(64),
                           ram_size integer,
-                          weight decimal,
                           cpu_cores integer,
-                          harddrive_size integer,
+                          hd_size integer,
                           battery_info varchar(64),
-                          os_name varchar(64),
+                          os varchar(64),
                           touchscreen boolean,
                           camera boolean,
-                          brand varchar(64),
-                          price decimal,
-                          model varchar(64)
+                          FOREIGN KEY (model) REFERENCES items (model)
                         );
                         """
                     )
 
     # Constructor that creates a new laptop
-    def __init__(self, id, display_size, processor, ram_size, weight, cpu_cores, harddrive_size, battery_info, os_name, touchscreen, camera, brand, price, model):
+    def __init__(self, model, price, weight, brand, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
+
+        # Creates the Item object
+        super().__init__(model, price, weight, brand)
 
         # Initialize object attributes
-        self.id = id
+        self.model = model
         self.display_size = display_size
         self.processor = processor
         self.ram_size = ram_size
-        self.weight = weight
         self.cpu_cores = cpu_cores
-        self.harddrive_size = harddrive_size
+        self.hd_size = hd_size
         self.battery_info = battery_info
-        self.os_name = os_name
+        self.os = os
         self.touchscreen = touchscreen
         self.camera = camera
-        self.brand = brand
-        self.price = price
-        self.model = model
 
- 

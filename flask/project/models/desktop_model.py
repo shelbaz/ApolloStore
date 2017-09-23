@@ -1,8 +1,10 @@
 
+from project.models.item_model import Item
 from project.models import connect_to_db
 import psycopg2
 
-class Desktop():
+
+class Desktop(Item):
 
     # Class function that creates the 'desktops' table
     @staticmethod
@@ -19,32 +21,29 @@ class Desktop():
                     cursor.execute(
                         """
                         CREATE TABLE desktops (
-                          id UUID PRIMARY KEY,
+                          model UUID PRIMARY KEY,
                           processor varchar(64),
                           ram_size integer,
-                          weight decimal,
                           cpu_cores integer,
-                          harddrive_size integer,
-                          brand varchar(64),
-                          price decimal,
-                          model varchar(64)
+                          hd_size integer,
+                          dimensions varchar(64),
+                          FOREIGN KEY (model) REFERENCES items (model)
                         );
                         """
                     )
 
     # Constructor that creates a new desktop
-    def __init__(self, id, processor, ram_size, weight, cpu_cores, harddrive_size, brand, price, model):
+    def __init__(self, model, price, weight, brand, processor, ram_size, cpu_cores, hd_size, dimensions):
+
+        # Creates the Item object
+        super().__init__(model, price, weight, brand)
 
         # Initialize object attributes
-        self.id = id
+        self.model = model
         self.processor = processor
         self.ram_size = ram_size
-        self.weight = weight
         self.cpu_cores = cpu_cores
-        self.harddrive_size = harddrive_size
-        self.brand = brand
-        self.price = price
-        self.model = model
+        self.hd_size = hd_size
+        self.dimensions = dimensions
 
 
- 

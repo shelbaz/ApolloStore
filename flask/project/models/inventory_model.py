@@ -2,6 +2,9 @@
 from project.models import connect_to_db
 import psycopg2
 
+
+class Inventory(object):
+
     # Class function that creates the 'inventories' table
     @staticmethod
     def create_table():
@@ -18,14 +21,15 @@ import psycopg2
                         """
                         CREATE TABLE inventories (
                           id UUID PRIMARY KEY,
-                          model_id varchar(64)
+                          model UUID,
+                          FOREIGN KEY (model) REFERENCES items (model)
                         );
                         """
                     )
 
     # Constructor that creates inventory
-    def __init__(self, id, model_id):
+    def __init__(self, id, model):
+
         # Initialize object attributes
         self.id = id
-        self.model_id = model_id
-
+        self.model = model
