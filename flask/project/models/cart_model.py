@@ -45,4 +45,4 @@ class Cart(object):
             with connection.cursor() as cursor:
                 cursor.execute(
                     """INSERT INTO carts (id, inventory_id, user_id, added_time) VALUES ('%s', '%s', '%s', '%s');"""
-                    % (self.id, self.inventory_id, self.user_id, self.added_time)))
+                    % (self.id, self.inventory_id, self.user_id, self.added_time))

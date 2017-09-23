@@ -40,4 +40,4 @@ class Inventory(object):
             with connection.cursor() as cursor:
                 cursor.execute(
                     """INSERT INTO inventories (id, model) VALUES ('%s', '%s');"""
-                    % (self.id, self.id, self.model)))
+                    % (self.id, self.model))
