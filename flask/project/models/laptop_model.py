@@ -54,3 +54,11 @@ class Laptop(Item):
         self.touchscreen = touchscreen
         self.camera = camera
 
+    # Adds the laptop to the database
+    def insert_into_db(self):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                super().insert_into_db()
+                cursor.execute(
+                    """INSERT INTO laptops (model, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera) VALUES ('%s', '%s', '%s', %s, %s, %s, '%s', '%s', %s, %s);"""
+                    % (self.model, self.display_size, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery_info, self.os, str(self.touchscreen), str(self.camera)))

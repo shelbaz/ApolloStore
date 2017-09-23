@@ -53,3 +53,12 @@ class Tablet(Item):
         self.battery = battery
         self.os = os
         self.camera_info = camera_info
+
+    # Adds the tablet to the database
+    def insert_into_db(self):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                super().insert_into_db()
+                cursor.execute(
+                    """INSERT INTO tablets (model, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info) VALUES ('%s', '%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s');"""
+                    % (self.model, self.display_size, self.dimensions, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery, self.os, self.camera_info))

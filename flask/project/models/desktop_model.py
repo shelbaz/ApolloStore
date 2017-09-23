@@ -46,4 +46,11 @@ class Desktop(Item):
         self.hd_size = hd_size
         self.dimensions = dimensions
 
-
+    # Adds the desktop to the database
+    def insert_into_db(self):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                super().insert_into_db()
+                cursor.execute(
+                    """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
+                    % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))

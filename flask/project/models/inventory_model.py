@@ -33,3 +33,11 @@ class Inventory(object):
         # Initialize object attributes
         self.id = id
         self.model = model
+
+    # Insert inventory into database
+    def insert_into_db(self):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """INSERT INTO inventories (id, model) VALUES ('%s', '%s');"""
+                    % (self.id, self.id, self.model)))

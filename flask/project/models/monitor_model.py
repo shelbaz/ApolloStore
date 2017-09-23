@@ -37,3 +37,12 @@ class Monitor(Item):
         # Initialize object attributes
         self.model = model
         self.dimensions = dimensions
+
+    # Adds the monitor to the database
+    def insert_into_db(self):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                super().insert_into_db()
+                cursor.execute(
+                    """INSERT INTO monitors (model, dimensions) VALUES ('%s', '%s');"""
+                    % (self.model, self.dimensions))
