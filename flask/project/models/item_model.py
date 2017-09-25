@@ -44,3 +44,32 @@ class Item(object):
                 cursor.execute(
                     """INSERT INTO items (model, price, weight, brand) VALUES ('%s', %s, %s, '%s');"""
                     % (self.model, str(self.price), str(self.weight), self.brand))
+
+
+    # Queries the items table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        query = """SELECT * FROM items WHERE %s;""" % (filters,)
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        items = []
+
+        for row in rows:
+            items = Item(row[0], row[1], row[2], row[3])
+            items.append(items)
+
+        if items:
+            return items
+        else:
+            return None

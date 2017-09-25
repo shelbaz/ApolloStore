@@ -41,3 +41,32 @@ class Inventory(object):
                 cursor.execute(
                     """INSERT INTO inventories (id, model) VALUES ('%s', '%s');"""
                     % (self.id, self.model))
+
+    # Queries the inventory table with the filters given as parameters (only equality filters)
+
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        query = """SELECT * FROM inventories WHERE %s;""" % (filters,)
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        inventory = []
+
+        for row in rows:
+            inventory = Inventory(row[0], row[1])
+            inventory.append(inventory)
+
+        if inventory:
+            return inventory
+        else:
+            return None

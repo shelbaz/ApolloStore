@@ -54,3 +54,31 @@ class Desktop(Item):
                 cursor.execute(
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
                     % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
+
+    # Queries the desktops table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        query = """SELECT * FROM desktops WHERE %s;""" % (filters,)
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        desktops = []
+
+        for row in rows:
+            desktops = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+            desktops.append(desktops)
+
+        if desktops:
+            return desktops
+        else:
+            return None
