@@ -28,6 +28,20 @@ class Item(object):
                         """
                     )
 
+    # Class function that deletes the 'items' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'items'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('items',))
+
+                # Creates table 'items' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE items;')
+
+
     # Constructor that creates a new item
     def __init__(self, model, price, weight, brand):
 
