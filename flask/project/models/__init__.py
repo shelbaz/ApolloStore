@@ -14,6 +14,31 @@ def create_tables():
     try:
         from project.models.auth_model import User
         User.create_table()
+
+        from project.models.item_model import Item
+        Item.create_table()
+
+        from project.models.inventory_model import Inventory
+        Inventory.create_table()
+
+        from project.models.cart_model import Cart
+        Cart.create_table()
+
+        from project.models.desktop_model import Desktop
+        Desktop.create_table()
+
+        from project.models.laptop_model import Laptop
+        Laptop.create_table()
+
+        from project.models.monitor_model import Monitor
+        Monitor.create_table()
+
+        from project.models.tablet_model import Tablet
+        Tablet.create_table()
+
+        from project.models.television_model import Television
+        Television.create_table()
+
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
         time.sleep(5)
