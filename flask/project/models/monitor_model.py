@@ -60,3 +60,34 @@ class Monitor(Item):
                 cursor.execute(
                     """INSERT INTO monitors (model, dimensions) VALUES ('%s', '%s');"""
                     % (self.model, self.dimensions))
+
+    # Queries the monitors table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        if filters:
+            query = 'SELECT * FROM monitors WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM monitors;'
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        monitors = []
+
+        for row in rows:
+            monitors = Monitor(row[0], row[1], row[2], row[3], row[4])
+            monitors.append(monitors)
+
+        if monitors:
+            return monitors
+        else:
+            return None

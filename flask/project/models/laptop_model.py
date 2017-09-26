@@ -75,3 +75,35 @@ class Laptop(Item):
                 cursor.execute(
                     """INSERT INTO laptops (model, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera) VALUES ('%s', '%s', '%s', %s, %s, %s, '%s', '%s', %s, %s);"""
                     % (self.model, self.display_size, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery_info, self.os, str(self.touchscreen), str(self.camera)))
+
+
+    # Queries the laptops table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        if filters:
+            query = 'SELECT * FROM laptops WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM laptops;'
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        laptops = []
+
+        for row in rows:
+            laptops = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
+            laptops.append(laptops)
+
+        if laptops:
+            return laptops
+        else:
+            return None
