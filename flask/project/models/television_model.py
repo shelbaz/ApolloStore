@@ -8,9 +8,9 @@ class Television(Item):
 
     # Class function that creates the 'televisions' table
     @staticmethod
-    def create_table():
+    def create_table(*args):
         # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
+        with connect_to_db(args) as connection:
             with connection.cursor() as cursor:
 
                 # Searches if there is already a table named 'televisions'
@@ -20,7 +20,12 @@ class Television(Item):
                 if not bool(cursor.rowcount):
                     cursor.execute(
                         """
-                        CREATE TYPE types AS ENUM ('HD', 'LED', '3D', 'Smart');
+                        DO $$
+                        BEGIN
+                            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'types') THEN
+                                CREATE TYPE types AS ENUM ('HD', 'LED', '3D', 'Smart');
+                            END IF;
+                        END$$;
                         CREATE TABLE televisions (
                           model UUID PRIMARY KEY,
                           type types,
@@ -32,9 +37,9 @@ class Television(Item):
 
     # Class function that deletes the 'televisions' table
     @staticmethod
-    def drop_table():
+    def drop_table(*args):
         # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
+        with connect_to_db(args) as connection:
             with connection.cursor() as cursor:
                 # Searches if there is already a table named 'televisions'
                 cursor.execute("select * from information_schema.tables where table_name=%s", ('televisions',))
