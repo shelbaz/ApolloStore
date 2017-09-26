@@ -11,6 +11,7 @@ from flask_testing import TestCase
 from project import create_app, logger
 import os
 import logging
+from project.models import create_tables, drop_tables
 
 
 # Creates a new instance of the Flask application. The reason for this
@@ -37,8 +38,8 @@ class BaseTestCase(TestCase):
 
     # Defines what should be done before every single test in this test group.
     def setUp(self):
-        pass
+        create_tables(True)
 
     # Defines what should be done after every single test in this test group.
     def tearDown(self):
-        pass
+        drop_tables(True)
