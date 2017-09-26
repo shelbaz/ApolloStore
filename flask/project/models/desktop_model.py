@@ -32,6 +32,19 @@ class Desktop(Item):
                         """
                     )
 
+    # Class function that deletes the 'desktops' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'desktops'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
+
+                # Deletes table 'desktops' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE desktops;')
+
     # Constructor that creates a new desktop
     def __init__(self, model, price, weight, brand, processor, ram_size, cpu_cores, hd_size, dimensions):
 

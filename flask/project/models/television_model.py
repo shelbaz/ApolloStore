@@ -30,6 +30,19 @@ class Television(Item):
                         """
                     )
 
+    # Class function that deletes the 'televisions' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'televisions'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('televisions',))
+
+                # Deletes table 'televisions' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE televisions;')
+
     # Constructor that creates a new television
     def __init__(self, model, price, weight, brand, type, dimensions):
 

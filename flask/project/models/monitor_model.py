@@ -28,6 +28,20 @@ class Monitor(Item):
                         """
                     )
 
+    # Class function that deletes the 'monitors' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'monitors'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('monitors',))
+
+                # Deletes table 'monitors' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE monitors;')
+
+
     # Constructor that creates a new monitor
     def __init__(self, model, price, weight, brand, dimensions):
 

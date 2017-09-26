@@ -36,6 +36,19 @@ class Tablet(Item):
                         """
                     )
 
+    # Class function that deletes the 'tablets' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'tablets'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('tablets',))
+
+                # Deletes table 'tablets' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE tablets;')
+
     # Constructor that creates a new tablet
     def __init__(self, model, price, weight, brand, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
 

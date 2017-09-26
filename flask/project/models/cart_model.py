@@ -30,6 +30,19 @@ class Cart(object):
                         """
                     )
 
+    # Class function that deletes the 'carts' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'carts'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('carts',))
+
+                # Deletes table 'carts' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE carts;')
+
     # Constructor that creates a new cart
     def __init__(self, id, inventory_id, user_id, added_time):
 
