@@ -68,7 +68,8 @@ class Television(Item):
                     """INSERT INTO televisions (model, type, dimensions) VALUES ('%s', '%s', '%s');"""
                     % (self.model, self.type, self.dimensions))
 
-# Queries the televisions table with the filters given as parameters (only equality filters)
+    @staticmethod
+    # Queries the televisions table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
         filters = []

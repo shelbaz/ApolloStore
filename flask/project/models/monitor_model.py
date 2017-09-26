@@ -61,6 +61,7 @@ class Monitor(Item):
                     """INSERT INTO monitors (model, dimensions) VALUES ('%s', '%s');"""
                     % (self.model, self.dimensions))
 
+    @staticmethod
     # Queries the monitors table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 

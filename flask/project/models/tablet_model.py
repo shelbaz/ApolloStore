@@ -76,6 +76,7 @@ class Tablet(Item):
                     """INSERT INTO tablets (model, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info) VALUES ('%s', '%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s');"""
                     % (self.model, self.display_size, self.dimensions, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery, self.os, self.camera_info))
 
+    @staticmethod
     # Queries the tablets table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 

@@ -51,7 +51,7 @@ def create_tables():
         create_tables()
 
 
-# Calls the class functions that create the tables of the corresponding models
+# Calls the class functions that drop the tables of the corresponding models
 def drop_tables():
     try:
         from project.models.television_model import Television
@@ -82,6 +82,6 @@ def drop_tables():
         User.drop_table()
 
     except Exception:
-        # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
+        # Tries dropping the tables again if an exception is raised
         time.sleep(5)
         drop_tables()
