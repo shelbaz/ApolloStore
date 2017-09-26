@@ -51,3 +51,10 @@ Your home to purchasing electronics online!
 ## Flask
 * [Using Flask Script to run commands while application is running](https://github.com/Radu-Raicea/ApolloStore/wiki/%5BFlask%5D-Using-Flask-Script-to-run-commands-while-the-application-is-running)
 * [Running unit tests with Flask Testing and coverage](https://github.com/Radu-Raicea/ApolloStore/wiki/%5BFlask%5D-Running-unit-tests-with-Flask-Testing-and-coverage)
+
+## Docker
+* [Remove all Docker volumes to delete the database](https://github.com/Radu-Raicea/ApolloStore/wiki/%5BDocker%5D-Remove-all-Docker-volumes-to-delete-the-database)
+* [Access the PostgreSQL command line terminal through Docker](https://github.com/Radu-Raicea/ApolloStore/wiki/%5BDocker%5D-Access-the-PostgreSQL-command-line-terminal-through-Docker)
+
+## Other
+* [Access the PostgreSQL database using a 3rd party software](https://github.com/Radu-Raicea/ApolloStore/wiki/%5BOther%5D-Access-the-PostgreSQL-database-using-a-3rd-party-software)
