@@ -57,7 +57,10 @@ class Cart(object):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM carts WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM carts WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM carts;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

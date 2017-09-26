@@ -57,7 +57,10 @@ class Monitor(Item):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM monitors WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM monitors WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM monitors;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

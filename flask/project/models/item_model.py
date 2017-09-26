@@ -56,7 +56,10 @@ class Item(object):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM items WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM items WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM items;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

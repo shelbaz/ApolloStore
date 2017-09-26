@@ -74,7 +74,10 @@ class Laptop(Item):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM laptops WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM laptops WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM laptops;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

@@ -73,7 +73,10 @@ class Tablet(Item):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM tablets WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM tablets WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM tablets;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

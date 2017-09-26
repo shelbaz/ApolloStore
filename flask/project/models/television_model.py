@@ -60,7 +60,10 @@ class Television(Item):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM televisions WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM televisions WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM televisions;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

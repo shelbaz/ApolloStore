@@ -65,7 +65,10 @@ class Desktop(Item):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM desktops WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM desktops WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM desktops;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

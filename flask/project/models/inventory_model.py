@@ -53,7 +53,10 @@ class Inventory(object):
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM inventories WHERE %s;""" % (filters,)
+        if filters:
+            query = 'SELECT * FROM inventories WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM inventories;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
