@@ -59,3 +59,34 @@ class Cart(object):
                 cursor.execute(
                     """INSERT INTO carts (id, inventory_id, user_id, added_time) VALUES ('%s', '%s', '%s', '%s');"""
                     % (self.id, self.inventory_id, self.user_id, self.added_time))
+
+    # Queries the carts table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        if filters:
+            query = 'SELECT * FROM carts WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM carts;'
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        carts = []
+
+        for row in rows:
+            carts = Cart(row[0], row[1], row[2], row[3])
+            carts.append(carts)
+
+        if carts:
+            return carts
+        else:
+            return None

@@ -67,3 +67,34 @@ class Television(Item):
                 cursor.execute(
                     """INSERT INTO televisions (model, type, dimensions) VALUES ('%s', '%s', '%s');"""
                     % (self.model, self.type, self.dimensions))
+
+# Queries the televisions table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        if filters:
+            query = 'SELECT * FROM televisions WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM televisions;'
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        televisions = []
+
+        for row in rows:
+            televisions = Television(row[0], row[1], row[2], row[3], row[4], row[5])
+            televisions.append(televisions)
+
+        if televisions:
+            return televisions
+        else:
+            return None
