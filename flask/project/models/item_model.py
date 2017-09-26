@@ -7,9 +7,9 @@ class Item(object):
 
     # Class function that creates the 'items' table
     @staticmethod
-    def create_table(*args):
+    def create_table():
         # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db(args) as connection:
+        with connect_to_db() as connection:
             with connection.cursor() as cursor:
 
                 # Searches if there is already a table named 'items'
@@ -30,9 +30,9 @@ class Item(object):
 
     # Class function that deletes the 'items' table
     @staticmethod
-    def drop_table(*args):
+    def drop_table():
         # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db(args) as connection:
+        with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 # Searches if there is already a table named 'items'
                 cursor.execute("select * from information_schema.tables where table_name=%s", ('items',))
