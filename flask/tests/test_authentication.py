@@ -15,12 +15,13 @@ import unittest
 import json
 from tests.base_authentication import BaseTestCase
 from project.services.authentication import validate_email, validate_name, validate_password, create_user
+from tests.helpers import make_auth_header
+from flask import g
 
 
 # This class inherits from the base class in 'base_website.py', in order to
 # get the create_app, setUp and tearDown methods.
 class TestAuthentication(BaseTestCase):
-
     def test_validate_email(self):
         with self.client:
             self.assertTrue(validate_email('soen343@gmail.com'))
@@ -31,7 +32,8 @@ class TestAuthentication(BaseTestCase):
     def test_validate_name(self):
         with self.client:
             self.assertFalse(validate_name(''))
-            self.assertFalse(validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
+            self.assertFalse(
+                validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
             self.assertFalse(validate_name('23232'))
             self.assertFalse(validate_name('muku1234'))
             self.assertTrue(validate_name('corey'))
@@ -55,7 +57,7 @@ class TestAuthentication(BaseTestCase):
             self.assertEqual('5141234567', user.phone)
             self.assertFalse(user.admin)
 
-    def test_endpoints(self):
+    def test_register_user_endpoint(self):
         with self.client:
             request_data = dict(password='testpasswO1!rd',
                                 email='test@example.com',
@@ -64,8 +66,32 @@ class TestAuthentication(BaseTestCase):
                                 address='123213432g',
                                 phone='34543534',
                                 admin=True)
-            response = self.client.post('/register-user', data=json.dumps(request_data), content_type='application/json')
+            response = self.client.post('/register-user', data=json.dumps(request_data),
+                                        content_type='application/json')
+
             self.assertEqual(response.status_code, 201)
+
+    def test_login_endpoint(self):
+        with self.client:
+            request_data = dict(password='testpasswO1!rd',
+                                email='test@example.com',
+                                first_name='radu',
+                                last_name='raicea',
+                                address='123213432g',
+                                phone='34543534',
+                                admin=True)
+            self.client.post('/register-user', data=json.dumps(request_data), content_type='application/json')
+            request_header = dict(Authorization=make_auth_header('test@example.com', 'testpasswO1!rd'))
+            response = self.client.get('/login', headers=request_header)
+            response_data = json.loads(response.data.decode())
+
+            self.assertEqual(response.status_code, 201)
+            self.assertIn('token', response_data.keys())
+            self.assertEqual(g.user.email, 'test@example.com')
+            self.assertEqual(g.user.first_name, 'radu')
+            self.assertEqual(g.user.last_name, 'raicea')
+            self.assertEqual(g.user.address, '123213432g')
+            self.assertEqual(g.user.phone, '34543534')
 
 
 # Runs the tests.
