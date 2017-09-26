@@ -39,9 +39,11 @@ class BaseTestCase(TestCase):
 
     # Defines what should be done before every single test in this test group.
     def setUp(self):
-        drop_tables(True)
-        create_tables(True)
+        with self.create_app().app_context():
+            drop_tables()
+            create_tables()
 
     # Defines what should be done after every single test in this test group.
     def tearDown(self):
-        drop_tables(True)
+        with self.create_app().app_context():
+            drop_tables()

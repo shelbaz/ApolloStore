@@ -38,8 +38,8 @@ class BaseTestCase(TestCase):
 
     # Defines what should be done before every single test in this test group.
     def setUp(self):
-        create_tables(True)
+        pass
 
     # Defines what should be done after every single test in this test group.
     def tearDown(self):
-        drop_tables(True)
+        pass

@@ -31,8 +31,7 @@ class TestAuthentication(BaseTestCase):
     def test_validate_name(self):
         with self.client:
             self.assertFalse(validate_name(''))
-            self.assertFalse(
-                validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
+            self.assertFalse(validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
             self.assertFalse(validate_name('23232'))
             self.assertFalse(validate_name('muku1234'))
             self.assertTrue(validate_name('corey'))
@@ -48,13 +47,13 @@ class TestAuthentication(BaseTestCase):
 
     def test_validate_create_user(self):
         with self.client:
-            user = create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing', '5141234567', False)
+            user = create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111', '5141234567', False)
+
             self.assertEqual('Test', user.first_name)
-            self.asserEqual('Tester', user.last_name)
+            self.assertEqual('Tester', user.last_name)
             self.assertEqual('testing@gmail.com', user.email)
-            self.assertEqual('testing', user.password_hash)
             self.assertEqual('5141234567', user.phone)
-            self.asserFalse(user.admin)
+            self.assertFalse(user.admin)
 
     def test_endpoints(self):
         with self.client:
@@ -65,10 +64,8 @@ class TestAuthentication(BaseTestCase):
                                 address='123213432g',
                                 phone='34543534',
                                 admin=True)
-            response = self.client.post('/register', data=json.dumps(request_data), content_type='application/json')
-            response_data = json.loads(response.data.decode())
+            response = self.client.post('/register-user', data=json.dumps(request_data), content_type='application/json')
             self.assertEqual(response.status_code, 201)
-
 
 
 # Runs the tests.

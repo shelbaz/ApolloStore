@@ -7,6 +7,7 @@ from project import create_app, logger
 from flask_script import Manager
 import coverage
 import unittest
+from project.models import create_tables
 
 
 # The logger should always be used instead of a print(). You need to import it from
@@ -34,6 +35,11 @@ app = create_app()
 # Initializes the Manager object, which allows us to run terminal commands on the
 # Flask application while it's running.
 manager = Manager(app)
+
+
+# Creates all the tables from the models package
+with app.app_context():
+    create_tables()
 
 
 # While the application is running, you can run the following command in a new terminal:
