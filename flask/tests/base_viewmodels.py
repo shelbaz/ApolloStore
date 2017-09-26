@@ -13,7 +13,6 @@ import os
 import logging
 from project.models import create_tables, drop_tables
 
-
 # Creates a new instance of the Flask application. The reason for this
 # is that we can't interrupt the application instance that is currently
 # running and serving requests.
@@ -22,7 +21,6 @@ app = create_app()
 
 # Class defining our setup for this test group.
 class BaseTestCase(TestCase):
-
     # Instructs Flask to run these commands when we request this group of tests
     # to be run.
     def create_app(self):
@@ -38,8 +36,11 @@ class BaseTestCase(TestCase):
 
     # Defines what should be done before every single test in this test group.
     def setUp(self):
-        create_tables(True)
+         with self.create_app().app_context():
+            drop_tables()
+            create_tables()
 
     # Defines what should be done after every single test in this test group.
     def tearDown(self):
-        drop_tables(True)
+         with self.create_app().app_context():
+            drop_tables()

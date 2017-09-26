@@ -111,7 +111,7 @@ def validate_price(price):
 def validate_weight(weight):
     return (weight > 0)
 
-
+# validates that ram_size is a power of 2
 def validate_ram_size(ram_size):
     return (ram_size != 0 and ((ram_size & (ram_size - 1)) == 0))
 
