@@ -59,8 +59,8 @@ def validate_password(password):
 def verify_password(email_or_token, password):
     user = User.verify_auth_token(email_or_token)
     if not user:
-        user = User.query_filtered_by(email=email_or_token)[0]
+        user = User.query_filtered_by(email=email_or_token)
         if not user or not user.verify_password(password):
             return False
-    g.user = user
+    g.user = user[0]
     return True

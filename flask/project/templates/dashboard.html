@@ -1,0 +1,217 @@
+{% extends "header.html" %}
+
+{% block body %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#projTable').DataTable();
+    } );
+</script>
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="section">
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
+            Add Item
+        </button>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
+            Change Item
+        </button>
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#delete">
+            Delete Item
+        </button>
+        <div class="col-md-12 text-left">
+            <h1>List of Items</h1>
+            <table id="projTable" class="table table-responsive table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Model</th>
+                        <th>Price</th>
+                        <th>Weight</th>
+                        <th>Brand</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users: %}
+                    <tr>
+                        <td>{{user.first_name}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>    
+            
+        </div>
+
+        <div class="col-md-8" >
+            <p> </p>
+
+
+            <div class="modal fade" id="delete" tabindex="-1" role="dialog" 
+            aria-labelledby="delete" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                        data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="delete">
+                        Please enter the ID of the item to delete:
+                    </h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <form role="form" method="post">
+                        <div class="form-group">
+                        <label for="delete">Item ID: </label>
+                            <input type="text" class="form-control"
+                            id="delete" name="delete" placeholder="Item/ ID"/>
+                        </div>
+                        <br>
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                    data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="done" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <button type="button" class="close" 
+            data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="done">
+            Please say which item ID you want to change:
+        </h4>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+        <form role="form" method="post">
+            <div class="form-group">
+                <label for="pid">Item ID: </label>
+                <input type="text" class="form-control"
+                id="pid" name="pid" placeholder="Type/ ID"/>
+            </div>
+            <div class="form-group">
+                <label for="pid">Model: </label>
+                <input type="text" class="form-control"
+                id="pid" name="pid" placeholder="Type/ Model"/>
+                <label for="pid">Price: </label>
+                <input type="text" class="form-control"
+                id="pid" name="pid" placeholder="Type/ Price"/>
+                <label for="pid">Weight: </label>
+                <input type="text" class="form-control"
+                id="pid" name="pid" placeholder="Type/ Weight"/>
+                <label for="pid">Brand: </label>
+                <input type="text" class="form-control"
+                id="pid" name="pid" placeholder="Type/ Brand"/>            
+            </div>
+            <br>
+
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+
+
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+        data-dismiss="modal">
+        Close
+    </button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+    <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+            <button type="button" class="close" 
+            data-dismiss="modal">
+            <span aria-hidden="true">&times;</span>
+            <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">
+            Modal title
+        </h4>
+    </div>
+
+    <!-- Modal Body -->
+    <div class="modal-body">
+
+        <form role="form" class="add-project" method="post">
+          <div class="form-group">
+            <label for="projectName">Enter Project Name</label>
+            <input type="text" name = "projectName" class="form-control"
+            id="projectName" placeholder="Enter Project Name"/>
+        </div>
+        <div class="form-group">
+            <label for="estimatedCost">Estimated Cost</label>
+            <input type="text" class="form-control"
+            id="estimatedCost" name="estimatedCost" placeholder="Cost"/>
+        </div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+
+
+
+</div>
+
+<!-- Modal Footer -->
+<div class="modal-footer">
+    <button type="button" class="btn btn-default"
+    data-dismiss="modal">
+    Close
+</button>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+</div>
+</div>
+<!-- /.row --> 
+
+
+</div>
+<!-- /.container -->
+{% endblock %}
