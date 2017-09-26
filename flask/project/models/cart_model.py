@@ -60,6 +60,7 @@ class Cart(object):
                     """INSERT INTO carts (id, inventory_id, user_id, added_time) VALUES ('%s', '%s', '%s', '%s');"""
                     % (self.id, self.inventory_id, self.user_id, self.added_time))
 
+    @staticmethod
     # Queries the carts table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 

@@ -55,8 +55,8 @@ class Inventory(object):
                     """INSERT INTO inventories (id, model) VALUES ('%s', '%s');"""
                     % (self.id, self.model))
 
+    @staticmethod
     # Queries the inventory table with the filters given as parameters (only equality filters)
-
     def query_filtered_by(**kwargs):
 
         filters = []

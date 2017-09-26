@@ -11,7 +11,6 @@ from flask_testing import TestCase
 from project import create_app, logger
 import os
 import logging
-from project.models import create_tables, drop_tables
 
 
 # Creates a new instance of the Flask application. The reason for this

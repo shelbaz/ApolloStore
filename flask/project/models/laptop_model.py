@@ -77,6 +77,7 @@ class Laptop(Item):
                     % (self.model, self.display_size, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery_info, self.os, str(self.touchscreen), str(self.camera)))
 
 
+    @staticmethod
     # Queries the laptops table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 

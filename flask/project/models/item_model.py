@@ -60,6 +60,7 @@ class Item(object):
                     % (self.model, str(self.price), str(self.weight), self.brand))
 
 
+    @staticmethod
     # Queries the items table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 

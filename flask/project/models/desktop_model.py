@@ -68,6 +68,7 @@ class Desktop(Item):
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
                     % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
 
+    @staticmethod
     # Queries the desktops table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
