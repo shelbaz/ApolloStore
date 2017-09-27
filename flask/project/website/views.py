@@ -2,10 +2,12 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-
-from flask import jsonify, render_template, Blueprint, g, request, abort
-from project.services.authentication import create_user, auth
+from flask import jsonify, render_template, Blueprint, g, request, abort, Flask
+from project.services.authentication import create_user, basic_auth, token_auth
 from project import logger
+app = Flask(__name__)
+
+
 
 
 website_blueprint = Blueprint('website_blueprint', __name__)
@@ -21,18 +23,29 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 def index():
     return render_template('index.html')
 
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
+
 
 # Registers a new user
-@website_blueprint.route('/register-user', methods=['POST'])
+@website_blueprint.route('/register', methods=['POST'])
 def register():
+    logger.error(request.form)
+    first_name = request.form.get('firstName')
+    last_name = request.form.get('lastName')
+    address = request.form.get('address')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    phone = request.form.get('phone') 
+    # admin = request.form.get('admin')
+    admin = True
 
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
-    address = request.json.get('address')
-    email = request.json.get('email')
-    password = request.json.get('password')
-    phone = request.json.get('phone')
-    admin = request.json.get('admin')
+    # logger.error(first_name)
+    # logger.error(last_name)
+    # logger.error(address)
+    # logger.error(email)
+    # logger.error(password)
+    # logger.error(phone)
 
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
@@ -40,17 +53,29 @@ def register():
 
         if user:
             return render_template('index.html'), 201
-        else:
+        else:   
+            logger.error("couldnt create user")
             abort(403)
 
 
 # Generates auth token if credentials are valid
 @website_blueprint.route('/login')
-@auth.login_required
+@basic_auth.login_required
 def get_auth_token():
-
     token = g.user.generate_auth_token()
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
     return jsonify({'token': token.decode('ascii')}), 201
+
+
+# Runs this function when email/password credentials are invalid
+@basic_auth.error_handler
+def auth_error():
+    return 'Not Allowed'
+
+
+# Runs this function when authentication token credentials are invalid
+@token_auth.error_handler
+def auth_error():
+    return 'Not Allowed'

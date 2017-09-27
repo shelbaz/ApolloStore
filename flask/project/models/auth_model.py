@@ -36,6 +36,19 @@ class User():
                         """
                     )
 
+    # Class function that deletes the 'users' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'users'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('users',))
+
+                # Deletes table 'users' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE users;')
+
     # Constructor that creates a new user
     def __init__(self, id, first_name, last_name, address, email, phone, admin):
 
@@ -115,3 +128,4 @@ class User():
             return None
         user = User.query_filtered_by(id=data['id'])[0]
         return user
+
