@@ -32,20 +32,20 @@
 		        </button>
 		      </div>
 		      <div class="modal-body">
-			      <form>
-						  <div class="form-group">
-						    <label for="loginEmailInput">Email address</label>
-						    <input type="email" class="form-control" id="loginEmailInput" placeholder="Enter email">
-						  </div>
-						  <div class="form-group">
-						    <label for="loginPasswordInput">Password</label>
-						    <input type="password" class="form-control" id="loginPasswordInput" placeholder="Password">
-						  </div>
-						</form>
-		      </div>
-		      <div class="modal-footer">
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		        <button type="submit" class="btn btn-primary">Login</button>
+			     <form>
+				  <div class="form-group">
+				    <label for="loginEmailInput">Email address</label>
+				    <input name="email" type="email" class="form-control" id="loginEmailInput" placeholder="Enter email">
+				  </div>
+				  <div class="form-group">
+				    <label for="loginPasswordInput">Password</label>
+				    <input name="password" type="password" class="form-control" id="loginPasswordInput" placeholder="Password">
+				  </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button name="action" onclick="login()" class="btn btn-primary">Login</button>
+			      </div>
+				</form>
 		      </div>
 		    </div>
 		  </div>
@@ -67,45 +67,109 @@
 		        		<div class="col">
 				        	<div class="form-group">
 								    <label for="firstNameInput">First Name</label>
-								    <input type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+								    <input name="firstName" type="text" class="form-control" id="firstNameInput" placeholder="First Name">
 								  </div>
 								</div>
 								<div class="col">
 								  <div class="form-group">
 								    <label for="lastNameInput">Last Name</label>
-								    <input type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+								    <input name="lastName" type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
 								  </div>
 								</div>
 							</div>
 						  <div class="form-group">
 						    <label for="addressInput">Address</label>
-						    <input type="text" class="form-control" id="addressInput" placeholder="Address">
+						    <input name="address" type="text" class="form-control" id="addressInput" placeholder="Address">
 						  </div>
 						  <div class="form-group">
 						    <label for="emailInput">Email address</label>
-						    <input type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
+						    <input name="email" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
 						  </div>
 						  <div class="form-group">
 						    <label for="phoneInput">Phone</label>
-						    <input type="number" class="form-control" id="phoneInput" placeholder="Phone">
+						    <input name="phone" type="number" class="form-control" id="phoneInput" placeholder="Phone">
 						  </div>
 						  <div class="form-group">
 						    <label for="passwordInput">Password</label>
-						    <input type="password" class="form-control" id="passwordInput" placeholder="Password">
+						    <input name="password" type="password" class="form-control" id="passwordInput" placeholder="Password">
 						  </div>
 				      </div>
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				        <button type="submit" class="btn btn-primary">Create</button>
+				        <button name="action" type="submit" class="btn btn-primary">Create</button>
 				      </div>
 		      	</form>
 		    </div>
 		  </div>
 		</div>
 
-	    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+	    <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+		<script>
+			//attach auth header for every request.
+			$.ajaxSetup({
+			    beforeSend: function (xhr)
+			    {
+			    	var token = getCookie("token");
+			    	if (token) {
+			    		xhr.setRequestHeader("Authorization","Token token=" + token);
+			    	}
+			    }
+			});
+
+			//function that is called when trying to login
+			function login() {
+				var username = $("#loginEmailInput").val(); 
+				var password = $("#loginPasswordInput").val();
+				var loginUrl = "http://192.168.99.100/login";
+				var auth = make_base_auth(username, password);
+
+				$.ajax({
+				    url : '/login',
+				    type : 'GET',
+				    beforeSend : function(xhr) {
+				        xhr.setRequestHeader('Authorization', auth);
+				    },
+				    error: function(xhr, textStatus, error) {
+					    console.log(xhr.statusText);
+					    console.log(textStatus);
+					    console.log(error);
+					},
+					success: function(data, textStatus, xhr) {
+						var token = data.token;
+						document.cookie("token=" + token);
+						console.log("token cookie created");
+					}
+				});
+			}
+
+			function make_base_auth(user, password) {
+				var tok = user + ':' + password;
+				var hash = btoa(tok);
+				return "Basic " + hash;
+			}
+
+			function getCookie(cname) {
+			    var name = cname + "=";
+			    var decodedCookie = decodeURIComponent(document.cookie);
+			    var ca = decodedCookie.split(';');
+			    for(var i = 0; i <ca.length; i++) {
+			        var c = ca[i];
+			        while (c.charAt(0) == ' ') {
+			            c = c.substring(1);
+			        }
+			        if (c.indexOf(name) == 0) {
+			            return c.substring(name.length, c.length);
+			        }
+			    }
+			    return "";
+			}
+
+
+		</script>
+	<!-- <script src="/static/js/script.js"></script> -->
     </body>
 
 </html>

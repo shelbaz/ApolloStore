@@ -3,9 +3,12 @@
 # -----------------------------------------------
 
 
-from flask import jsonify, render_template, Blueprint, g, request, abort
+from flask import jsonify, render_template, Blueprint, g, request, abort, Flask
 from project.services.authentication import create_user, auth
 from project import logger
+app = Flask(__name__)
+
+
 
 
 website_blueprint = Blueprint('website_blueprint', __name__)
@@ -19,38 +22,47 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 # location by default: flask/project/templates/
 @website_blueprint.route('/')
 def index():
-    logger.error('sup1')
     return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
+
 
 # Registers a new user
 @website_blueprint.route('/register', methods=['POST'])
 def register():
     logger.error(request.form)
-    logger.error(request.form['firstNameInput'])
-    abort(410)
-    first_name = request.form.get('first_name')
-    last_name = request.form.get('last_name')
+    first_name = request.form.get('firstName')
+    last_name = request.form.get('lastName')
     address = request.form.get('address')
     email = request.form.get('email')
     password = request.form.get('password')
     phone = request.form.get('phone') 
     # admin = request.form.get('admin')
     admin = True
+
+    # logger.error(first_name)
+    # logger.error(last_name)
+    # logger.error(address)
+    # logger.error(email)
+    # logger.error(password)
+    # logger.error(phone)
+
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
         user = create_user(first_name, last_name, address, email, password, phone, admin)
 
         if user:
             return render_template('index.html'), 201
-        else:
+        else:   
+            logger.error("couldnt create user")
             abort(403)
 
 
 # Generates auth token if credentials are valid
-@website_blueprint.route('/login')
+@website_blueprint.route('/login', methods=['get'])
 @auth.login_required
 def get_auth_token():
-
     token = g.user.generate_auth_token()
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
