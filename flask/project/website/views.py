@@ -2,13 +2,9 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-from flask import jsonify, render_template, Blueprint, g, request, abort, Flask
+from flask import jsonify, render_template, Blueprint, g, request, abort
 from project.services.authentication import create_user, basic_auth, token_auth
 from project import logger
-app = Flask(__name__)
-
-
-
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -23,29 +19,25 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 def index():
     return render_template('index.html')
 
-if __name__ == '__main__':
-    app.run(debug=True,host='0.0.0.0')
+
+# Temporary route to test if token authentication works
+@website_blueprint.route('/test')
+@token_auth.login_required
+def test():
+    return render_template('test.html')
 
 
 # Registers a new user
 @website_blueprint.route('/register', methods=['POST'])
 def register():
-    logger.error(request.form)
     first_name = request.form.get('firstName')
     last_name = request.form.get('lastName')
     address = request.form.get('address')
     email = request.form.get('email')
     password = request.form.get('password')
-    phone = request.form.get('phone') 
+    phone = request.form.get('phone')
     # admin = request.form.get('admin')
     admin = True
-
-    # logger.error(first_name)
-    # logger.error(last_name)
-    # logger.error(address)
-    # logger.error(email)
-    # logger.error(password)
-    # logger.error(phone)
 
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
@@ -53,7 +45,7 @@ def register():
 
         if user:
             return render_template('index.html'), 201
-        else:   
+        else:
             logger.error("couldnt create user")
             abort(403)
 
