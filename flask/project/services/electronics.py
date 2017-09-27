@@ -19,7 +19,7 @@ def create_desktop(price, weight, brand, processor, ram_size, cpu_cores, hd_size
     try:
         if validate_price(price) and validate_weight(weight) and validate_ram_size(ram_size) and validate_cpu_cores(cpu_cores) and validate_hd_size(hd_size):
 
-            desktop = Desktop(model=str(uuid4()), price=price, weight=weight, brand=brand, processor=processor,
+            desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                               ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
             desktop.insert_into_db()
 
@@ -53,8 +53,9 @@ def create_tablet(price, weight, brand, display_size, dimensions, processor, ram
     try:
         if validate_price(price) and validate_weight(weight) and validate_ram_size(ram_size) and validate_cpu_cores(cpu_cores) and validate_hd_size(hd_size):
 
-            tablet = Tablet(model=str(uuid4()), price=price, weight=weight, brand=brand, display_size=display_size, processor=processor,
+            tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight,display_size=display_size, dimensions=dimensions, processor=processor,
                             ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
+
             tablet.insert_into_db()
 
             logger.info('Tablet created successfully!')
@@ -70,7 +71,7 @@ def create_monitor(price, weight, brand, dimensions):
     try:
         if validate_price(price) and validate_weight(weight):
 
-            monitor = Monitor(model=str(uuid4()), price=price, weight=weight, brand=brand, dimensions=dimensions)
+            monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
             monitor.insert_into_db()
 
             logger.info('Monitor created successfully!')
@@ -86,7 +87,7 @@ def create_television(price, weight, brand, type, dimensions):
     try:
         if validate_price(price) and validate_weight(weight):
 
-            television = Television(model=str(uuid4()), price=price, weight=weight, brand=brand, type=type, dimensions=dimensions)
+            television = Television(model=str(uuid4()), brand=brand, price=price, weight=weight, type=type, dimensions=dimensions)
             television.insert_into_db()
 
             logger.info('Television created successfully!')
