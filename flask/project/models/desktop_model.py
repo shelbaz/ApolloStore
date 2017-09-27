@@ -46,10 +46,10 @@ class Desktop(Item):
                     cursor.execute('DROP TABLE desktops;')
 
     # Constructor that creates a new desktop
-    def __init__(self, model, price, weight, brand, processor, ram_size, cpu_cores, hd_size, dimensions):
+    def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -68,6 +68,7 @@ class Desktop(Item):
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
                     % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
 
+    @staticmethod
     # Queries the desktops table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
@@ -79,9 +80,9 @@ class Desktop(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM desktops WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN desktops WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM desktops;'
+            query = 'SELECT * FROM items NATURAL JOIN desktops;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
@@ -91,8 +92,8 @@ class Desktop(Item):
         desktops = []
 
         for row in rows:
-            desktops = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
-            desktops.append(desktops)
+            desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+            desktops.append(desktop)
 
         if desktops:
             return desktops

@@ -50,10 +50,10 @@ class Tablet(Item):
                     cursor.execute('DROP TABLE tablets;')
 
     # Constructor that creates a new tablet
-    def __init__(self, model, price, weight, brand, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
+    def __init__(self, model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -76,6 +76,7 @@ class Tablet(Item):
                     """INSERT INTO tablets (model, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info) VALUES ('%s', '%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s');"""
                     % (self.model, self.display_size, self.dimensions, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery, self.os, self.camera_info))
 
+    @staticmethod
     # Queries the tablets table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
@@ -87,9 +88,9 @@ class Tablet(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM tablets WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN tablets WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM tablets;'
+            query = 'SELECT * FROM items NATURAL JOIN tablets;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
@@ -99,8 +100,8 @@ class Tablet(Item):
         tablets = []
 
         for row in rows:
-            tablets = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
-            tablets.append(tablets)
+            tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
+            tablets.append(tablet)
 
         if tablets:
             return tablets

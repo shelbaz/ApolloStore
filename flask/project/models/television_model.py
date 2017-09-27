@@ -49,10 +49,10 @@ class Television(Item):
                     cursor.execute('DROP TABLE televisions;')
 
     # Constructor that creates a new television
-    def __init__(self, model, price, weight, brand, type, dimensions):
+    def __init__(self, model, brand, price, weight, type, dimensions):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -68,7 +68,8 @@ class Television(Item):
                     """INSERT INTO televisions (model, type, dimensions) VALUES ('%s', '%s', '%s');"""
                     % (self.model, self.type, self.dimensions))
 
-# Queries the televisions table with the filters given as parameters (only equality filters)
+    @staticmethod
+    # Queries the televisions table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
         filters = []
@@ -79,9 +80,9 @@ class Television(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM televisions WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN televisions WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM televisions;'
+            query = 'SELECT * FROM items NATURAL JOIN televisions;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
@@ -91,8 +92,8 @@ class Television(Item):
         televisions = []
 
         for row in rows:
-            televisions = Television(row[0], row[1], row[2], row[3], row[4], row[5])
-            televisions.append(televisions)
+            television = Television(row[0], row[1], row[2], row[3], row[4], row[5])
+            televisions.append(television)
 
         if televisions:
             return televisions
