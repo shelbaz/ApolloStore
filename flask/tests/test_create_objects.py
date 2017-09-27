@@ -53,33 +53,69 @@ class TestAuthentication(BaseTestCase):
 
     def test_create_desktop_object(self):
         with self.client:
-            desktop = create_desktop(500, 100, "LG", "intel", 32, 4, 20, "20x20")
+            desktop = create_desktop(500, 100, 'LG', 'intel', 32, 4, 20, '20x20')
 
             self.assertEqual(desktop.price, 500)
             self.assertEqual(desktop.weight, 100)
-            self.assertEqual(desktop.brand, "LG")
-            self.assertEqual(desktop.processor, "intel")
+            self.assertEqual(desktop.brand, 'LG')
+            self.assertEqual(desktop.processor, 'intel')
             self.assertEqual(desktop.ram_size, 32)
             self.assertEqual(desktop.cpu_cores, 4)
             self.assertEqual(desktop.hd_size, 20)
-            self.assertEqual(desktop.dimensions, "20x20")
+            self.assertEqual(desktop.dimensions, '20x20')
 
     def test_create_laptop_object(self):
         with self.client:
-            laptop = create_laptop(600, 200, "LG", "32x32", "intel", 64, 2, 40, "Long lasting battery", "Windows 10", False, True)
+            laptop = create_laptop(600, 200, 'LG', '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
 
             self.assertEqual(laptop.price, 600)
             self.assertEqual(laptop.weight, 200)
-            self.assertEqual(laptop.brand, "LG")
-            self.assertEqual(laptop.display_size, "32x32")
-            self.assertEqual(laptop.processor, "intel")
+            self.assertEqual(laptop.brand, 'LG')
+            self.assertEqual(laptop.display_size, '32x32')
+            self.assertEqual(laptop.processor, 'intel')
             self.assertEqual(laptop.ram_size, 64)
             self.assertEqual(laptop.cpu_cores, 2)
             self.assertEqual(laptop.hd_size, 40)
-            self.assertEqual(laptop.battery_info, "Long lasting battery")
-            self.assertEqual(laptop.os, "Windows 10")
+            self.assertEqual(laptop.battery_info, 'Long lasting battery')
+            self.assertEqual(laptop.os, 'Windows 10')
             self.assertEqual(laptop.touchscreen, False)
             self.assertEqual(laptop.camera, True)
+
+    def test_create_tablet_object(self):
+        with self.client:
+            tablet = create_tablet(1200, 1.2, 'Microsoft', '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
+
+            self.assertEqual(tablet.price, 1200)
+            self.assertEqual(tablet.weight, 1.2)
+            self.assertEqual(tablet.brand, 'Microsoft')
+            self.assertEqual(tablet.display_size, '10x12')
+            self.assertEqual(tablet.dimensions, '10x12')
+            self.assertEqual(tablet.processor, 'intel')
+            self.assertEqual(tablet.ram_size, 8)
+            self.assertEqual(tablet.cpu_cores, 2)
+            self.assertEqual(tablet.hd_size, 250)
+            self.assertEqual(tablet.battery, 'Long lasting battery')
+            self.assertEqual(tablet.os, 'Windows 10')
+            self.assertEqual(tablet.camera_info, 'Good camera')
+
+    def test_create_monitor_object(self):
+        with self.client:
+            monitor = create_monitor(300, 5, 'Asus', '25x30')
+
+            self.assertEqual(monitor.price, 300)
+            self.assertEqual(monitor.weight, 5)
+            self.assertEqual(monitor.brand, 'Asus')
+            self.assertEqual(monitor.dimensions, '25x30')
+
+    def test_create_television_object(self):
+        with self.client:
+            television = create_television(3000, 15, 'Panasonic', 'Smart', '40x50')
+
+            self.assertEqual(television.price, 3000)
+            self.assertEqual(television.weight, 15)
+            self.assertEqual(television.brand, 'Panasonic')
+            self.assertEqual(television.type, 'Smart')
+            self.assertEqual(television.dimensions, '40x50')
 
 # Runs the tests.
 if __name__ == '__main__':

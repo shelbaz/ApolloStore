@@ -53,7 +53,7 @@ def create_tablet(price, weight, brand, display_size, dimensions, processor, ram
     try:
         if validate_price(price) and validate_weight(weight) and validate_ram_size(ram_size) and validate_cpu_cores(cpu_cores) and validate_hd_size(hd_size):
 
-            tablet = Tablet(model=str(uuid4()), price=price, weight=weight, brand=brand, display_size=display_size, processor=processor,
+            tablet = Tablet(model=str(uuid4()), price=price, weight=weight, brand=brand, display_size=display_size, dimensions=dimensions, processor=processor,
                             ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
             tablet.insert_into_db()
 
