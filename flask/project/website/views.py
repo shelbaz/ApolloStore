@@ -3,8 +3,13 @@
 # -----------------------------------------------
 
 
+<<<<<<< HEAD
 from flask import jsonify, render_template, Blueprint, g, request, abort, Flask
 from project.services.authentication import create_user, auth
+=======
+from flask import jsonify, render_template, Blueprint, g, request, abort
+from project.services.authentication import create_user, basic_auth, token_auth
+>>>>>>> dev
 from project import logger
 app = Flask(__name__)
 
@@ -60,11 +65,23 @@ def register():
 
 
 # Generates auth token if credentials are valid
-@website_blueprint.route('/login', methods=['get'])
-@auth.login_required
+@website_blueprint.route('/login')
+@basic_auth.login_required
 def get_auth_token():
     token = g.user.generate_auth_token()
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
     return jsonify({'token': token.decode('ascii')}), 201
+
+
+# Runs this function when email/password credentials are invalid
+@basic_auth.error_handler
+def auth_error():
+    return 'Not Allowed'
+
+
+# Runs this function when authentication token credentials are invalid
+@token_auth.error_handler
+def auth_error():
+    return 'Not Allowed'
