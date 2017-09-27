@@ -2,14 +2,8 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-
-<<<<<<< HEAD
 from flask import jsonify, render_template, Blueprint, g, request, abort, Flask
-from project.services.authentication import create_user, auth
-=======
-from flask import jsonify, render_template, Blueprint, g, request, abort
 from project.services.authentication import create_user, basic_auth, token_auth
->>>>>>> dev
 from project import logger
 app = Flask(__name__)
 

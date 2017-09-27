@@ -109,15 +109,15 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 		<script>
 			//attach auth header for every request.
-			$.ajaxSetup({
-			    beforeSend: function (xhr)
-			    {
-			    	var token = getCookie("token");
-			    	if (token) {
-			    		xhr.setRequestHeader("Authorization","Token token=" + token);
-			    	}
-			    }
-			});
+			// $.ajaxSetup({
+			//     beforeSend: function (xhr)
+			//     {
+			//     	var token = getCookie("token");
+			//     	if (token) {
+			//     		xhr.setRequestHeader("Authorization","Token token=" + token);
+			//     	}
+			//     }
+			// });
 
 			//function that is called when trying to login
 			function login() {
@@ -129,6 +129,8 @@
 				$.ajax({
 				    url : '/login',
 				    type : 'GET',
+				    dataType: 'text json',
+				    contentType: 'application/json',
 				    beforeSend : function(xhr) {
 				        xhr.setRequestHeader('Authorization', auth);
 				    },
@@ -139,7 +141,7 @@
 					},
 					success: function(data, textStatus, xhr) {
 						var token = data.token;
-						document.cookie("token=" + token);
+						document.cookie = "token=" + token;
 						console.log("token cookie created");
 					}
 				});
