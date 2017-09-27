@@ -43,10 +43,10 @@ class Monitor(Item):
 
 
     # Constructor that creates a new monitor
-    def __init__(self, model, price, weight, brand, dimensions):
+    def __init__(self, model, brand, price, weight, dimensions):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -73,9 +73,9 @@ class Monitor(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM monitors WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN monitors WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM monitors;'
+            query = 'SELECT * FROM items NATURAL JOIN monitors;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
@@ -85,8 +85,8 @@ class Monitor(Item):
         monitors = []
 
         for row in rows:
-            monitors = Monitor(row[0], row[1], row[2], row[3], row[4])
-            monitors.append(monitors)
+            monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
+            monitors.append(monitor)
 
         if monitors:
             return monitors

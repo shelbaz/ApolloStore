@@ -50,10 +50,10 @@ class Laptop(Item):
                     cursor.execute('DROP TABLE laptops;')
 
     # Constructor that creates a new laptop
-    def __init__(self, model, price, weight, brand, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
+    def __init__(self, model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -89,9 +89,9 @@ class Laptop(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM laptops WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN laptops WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM laptops;'
+            query = 'SELECT * FROM items NATURAL JOIN laptops;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
@@ -101,8 +101,8 @@ class Laptop(Item):
         laptops = []
 
         for row in rows:
-            laptops = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
-            laptops.append(laptops)
+            laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
+            laptops.append(laptop)
 
         if laptops:
             return laptops

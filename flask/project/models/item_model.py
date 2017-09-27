@@ -21,9 +21,9 @@ class Item(object):
                         """
                         CREATE TABLE items (
                           model UUID PRIMARY KEY,
+                          brand varchar(64),
                           price decimal,
-                          weight decimal,
-                          brand varchar(64)
+                          weight decimal
                         );
                         """
                     )
@@ -43,21 +43,21 @@ class Item(object):
 
 
     # Constructor that creates a new item
-    def __init__(self, model, price, weight, brand):
+    def __init__(self, model, brand, price, weight):
 
         # Initializes object attributes
         self.model = model
+        self.brand = brand
         self.price = price
         self.weight = weight
-        self.brand = brand
 
     # Adds the item to the database
     def insert_into_db(self):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    """INSERT INTO items (model, price, weight, brand) VALUES ('%s', %s, %s, '%s');"""
-                    % (self.model, str(self.price), str(self.weight), self.brand))
+                    """INSERT INTO items (model, brand, price, weight) VALUES ('%s', '%s', %s, %s);"""
+                    % (self.model, self.brand, str(self.price), str(self.weight)))
 
 
     @staticmethod
@@ -84,7 +84,7 @@ class Item(object):
         items = []
 
         for row in rows:
-            items = Item(row[0], row[1], row[2], row[3])
+            item = Item(row[0], row[1], row[2], row[3])
             items.append(items)
 
         if items:
