@@ -261,7 +261,7 @@ def validate_ram_size(ram_size):
 
 
 def validate_cpu_cores(cpu_cores):
-    return (cpu_cores == 2 or cpu_cores == 4)
+    return (cpu_cores % 2 == 0 and cpu_cores > 0)
 
 
 # Validates that a positive hard drive disk size is entered

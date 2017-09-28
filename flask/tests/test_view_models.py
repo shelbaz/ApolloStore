@@ -13,12 +13,13 @@
 
 import unittest
 from tests.base_viewmodels import BaseTestCase
-from project.services.electronics import create_laptop, create_desktop, create_monitor, create_television, create_tablet, get_all_desktops, get_all_laptops, get_all_tablets, get_all_monitors, get_all_televisions
+from project.services.electronics import create_laptop, create_desktop, create_monitor, create_television, create_tablet, get_all_desktops, get_all_laptops, get_all_tablets, get_all_monitors, get_all_televisions, get_count, add_item_to_inventory
 from project.models.desktop_model import Desktop
 from project.models.laptop_model import Laptop
 from project.models.monitor_model import Monitor
 from project.models.tablet_model import Tablet
 from project.models.television_model import Television
+from project.models.inventory_model import Inventory
 
 
 # This class inherits from the base class in 'base_viewmodels.py', in order to
@@ -85,6 +86,25 @@ class TestViewModels(BaseTestCase):
             self.assertEqual(result1[0].brand, 'Samsung')
             self.assertEqual(result2, None)
 
+    # Test to see if get_count function works for Electronics
+    def test_should_count_for_searched_model(self):
+        with self.client:
+            tv1 = create_television('Asus', 600, 10, 'HD', '125x100')
+            result = get_count('televisions', tv1.model)
+            self.assertEqual(result, 0)
+            add_item_to_inventory(tv1.model)
+            result = get_count('televisions', tv1.model)
+            self.assertEqual(result, 1)
+
+    # Test to see if add item to inventory works for Electronics
+    def test_should_add_item_to_inventory(self):
+        with self.client:
+            tv1 = create_television('Asus', 600, 10, 'HD', '125x100')
+            add_item_to_inventory(tv1.model)
+            add_item_to_inventory(tv1.model)
+            result=Inventory.query_filtered_by(model=tv1.model)
+            self.assertEqual(len (result), 2)
+
     # Tests to see if all desktops will be returned
     def test_should_return_all_desktops(self):
         with self.client:
@@ -150,8 +170,6 @@ class TestViewModels(BaseTestCase):
 
             result = get_all_televisions()
             self.assertEqual(len(result), 4)
-
-
 
 # Runs the tests.
 if __name__ == '__main__':

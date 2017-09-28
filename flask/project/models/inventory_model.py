@@ -76,13 +76,13 @@ class Inventory(object):
                 cursor.execute(query)
                 rows = cursor.fetchall()
 
-        inventory = []
+        inventories = []
 
         for row in rows:
             inventory = Inventory(row[0], row[1])
-            inventory.append(inventory)
+            inventories.append(inventory)
 
-        if inventory:
-            return inventory
+        if inventories:
+            return inventories
         else:
             return None
