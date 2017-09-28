@@ -1,14 +1,12 @@
 
 from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
-from project import logger
+from project import logger, login_manager
 from project.models.auth_model import User
 from re import match
 from uuid import uuid4
 import traceback
 
-basic_auth = HTTPBasicAuth()
-token_auth = HTTPTokenAuth(scheme='Token')
 
 # Creates a user that is valid
 def create_user(first_name, last_name, address, email, password, phone, admin):
@@ -54,21 +52,10 @@ def validate_password(password):
         return False
 
 
-# Verifies email and password credentials
-@basic_auth.verify_password
-def verify_password(email, password):
-    user = User.query_filtered_by(email=email)
-    if not user or not user[0].verify_password(password):
-        return False
-    g.user = user[0]
-    return True
-
-
-# Verifies authentication token credentials
-@token_auth.verify_token
-def verify_token(token):
-    user = User.verify_auth_token(token)
-    if not user:
-        return False
-    g.user = user
-    return True
+@login_manager.user_loader
+def load_user(user_id):
+    user = User.query_filtered_by(id=user_id)
+    if user:
+        return user[0]
+    else:
+        return None
