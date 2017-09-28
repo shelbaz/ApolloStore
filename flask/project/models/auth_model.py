@@ -36,6 +36,19 @@ class User():
                         """
                     )
 
+    # Class function that deletes the 'users' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'users'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('users',))
+
+                # Deletes table 'users' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE users;')
+
     # Constructor that creates a new user
     def __init__(self, id, first_name, last_name, address, email, phone, admin):
 
@@ -101,20 +114,17 @@ class User():
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    # Generate an authentication token
-    def generate_auth_token(self, expiration=2592000):
-        s = Serializer(os.getenv('SECRET_KEY'), expires_in=expiration)
-        return s.dumps({'id': self.id})
+    @property
+    def is_authenticated(self):
+        return True
 
-    # Verifies the authentication token and returns the user object associated with the token
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(os.getenv('SECRET_KEY'))
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return None
-        except BadSignature:
-            return None
-        user = User.query_filtered_by(id=data['id'])[0]
-        return user
+    @property
+    def is_active(self):
+        return True
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)

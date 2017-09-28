@@ -2,12 +2,16 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-
-from flask import jsonify, render_template, Blueprint, g, request, abort
-from project.services.authentication import create_user, auth
+from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
+from project.services.authentication import create_user
 from project import logger
+<<<<<<< HEAD
 from project.services.database_queries import get_all_users
 
+=======
+from project.models.auth_model import User
+from flask_login import login_required, current_user, login_user, logout_user
+>>>>>>> dev
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -23,27 +27,37 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 
 @website_blueprint.route('/')
 def index():
+    if g.user is not None and g.user.is_authenticated:
+        return redirect('/test')
     return render_template('index.html')
 
 
+<<<<<<< HEAD
 
 @website_blueprint.route('/dashboard')
 #@auth.login_required
 def dashboard():
     return render_template('dashboard.html', users= get_all_users())
+=======
+# Temporary route to test if token authentication works
+@website_blueprint.route('/test')
+@login_required
+def test():
+    return render_template('test.html')
+>>>>>>> dev
 
 
 # Registers a new user
-@website_blueprint.route('/register-user', methods=['POST'])
+@website_blueprint.route('/register', methods=['POST'])
 def register():
-
-    first_name = request.json.get('first_name')
-    last_name = request.json.get('last_name')
-    address = request.json.get('address')
-    email = request.json.get('email')
-    password = request.json.get('password')
-    phone = request.json.get('phone')
-    admin = request.json.get('admin')
+    first_name = request.form.get('firstName')
+    last_name = request.form.get('lastName')
+    address = request.form.get('address')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    phone = request.form.get('phone')
+    # admin = request.form.get('admin')
+    admin = True
 
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
@@ -52,16 +66,38 @@ def register():
         if user:
             return render_template('index.html'), 201
         else:
+            logger.error("couldnt create user")
             abort(403)
 
 
-# Generates auth token if credentials are valid
-@website_blueprint.route('/login')
-@auth.login_required
-def get_auth_token():
+# Logs the user in
+@website_blueprint.route('/login', methods=['POST'])
+def login():
+    if g.user is not None and g.user.is_authenticated:
+        return redirect('/test')
 
-    token = g.user.generate_auth_token()
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    user = User.query_filtered_by(email=email)
+    if not user or not user[0].verify_password(password):
+        return 'Wrong credentials.'
+    g.user = user[0]
+
+    login_user(g.user)
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
-    return jsonify({'token': token.decode('ascii')}), 201
+    return redirect('/test')
+
+
+# Logs the user out
+@website_blueprint.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+
+@website_blueprint.before_request
+def before_request():
+    g.user = current_user

@@ -32,11 +32,24 @@ class Desktop(Item):
                         """
                     )
 
+    # Class function that deletes the 'desktops' table
+    @staticmethod
+    def drop_table():
+        # Using the 'with' statement automatically commits and closes database connections
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                # Searches if there is already a table named 'desktops'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
+
+                # Deletes table 'desktops' if it exists
+                if bool(cursor.rowcount):
+                    cursor.execute('DROP TABLE desktops;')
+
     # Constructor that creates a new desktop
-    def __init__(self, model, price, weight, brand, processor, ram_size, cpu_cores, hd_size, dimensions):
+    def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
 
         # Creates the Item object
-        super().__init__(model, price, weight, brand)
+        super().__init__(model, brand, price, weight)
 
         # Initialize object attributes
         self.model = model
@@ -54,3 +67,35 @@ class Desktop(Item):
                 cursor.execute(
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
                     % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
+
+    @staticmethod
+    # Queries the desktops table with the filters given as parameters (only equality filters)
+    def query_filtered_by(**kwargs):
+
+        filters = []
+
+        for key, value in kwargs.items():
+            filters.append(str(key) + '=\'' + str(value) + '\'')
+
+        filters = ' AND '.join(filters)
+
+        if filters:
+            query = 'SELECT * FROM items NATURAL JOIN desktops WHERE %s;' % (filters,)
+        else:
+            query = 'SELECT * FROM items NATURAL JOIN desktops;'
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                rows = cursor.fetchall()
+
+        desktops = []
+
+        for row in rows:
+            desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+            desktops.append(desktop)
+
+        if desktops:
+            return desktops
+        else:
+            return None

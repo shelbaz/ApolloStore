@@ -10,7 +10,7 @@ from flask import Flask, g, request, current_app
 import os
 import logging
 import psycopg2
-from project.models import create_tables
+from flask_login import LoginManager
 
 
 # Defines the format of the logging to include the time and to use the INFO logging level or worse.
@@ -18,8 +18,7 @@ logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y
 logger = logging.getLogger(__name__)
 
 
-# Creates all the tables from the models package
-create_tables()
+login_manager = LoginManager()
 
 
 # Defines the application factory. Every time this function is called, a new application
@@ -29,6 +28,8 @@ def create_app():
     app = Flask(__name__)
     app_settings = os.getenv('APP_SETTINGS')
     app.config.from_object(app_settings)
+
+    login_manager.init_app(app)
 
     # Imports the 'website_blueprint' to apply it to the application instance.
     # In order to define routes/endpoints in Flask, you need to write something
