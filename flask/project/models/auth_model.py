@@ -111,21 +111,17 @@ class User():
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    # Generate an authentication token
-    def generate_auth_token(self, expiration=2592000):
-        s = Serializer(os.getenv('SECRET_KEY'), expires_in=expiration)
-        return s.dumps({'id': self.id})
+    @property
+    def is_authenticated(self):
+        return True
 
-    # Verifies the authentication token and returns the user object associated with the token
-    @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(os.getenv('SECRET_KEY'))
-        try:
-            data = s.loads(token)
-        except SignatureExpired:
-            return None
-        except BadSignature:
-            return None
-        user = User.query_filtered_by(id=data['id'])[0]
-        return user
+    @property
+    def is_active(self):
+        return True
 
+    @property
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)

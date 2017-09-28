@@ -61,37 +61,14 @@ class TestAuthentication(BaseTestCase):
         with self.client:
             request_data = dict(password='testpasswO1!rd',
                                 email='test@example.com',
-                                first_name='radu',
-                                last_name='raicea',
+                                firstName='radu',
+                                lastName='raicea',
                                 address='123213432g',
                                 phone='34543534',
                                 admin=True)
-            response = self.client.post('/register-user', data=json.dumps(request_data),
-                                        content_type='application/json')
+            response = self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
             self.assertEqual(response.status_code, 201)
-
-    def test_login_endpoint(self):
-        with self.client:
-            request_data = dict(password='testpasswO1!rd',
-                                email='test@example.com',
-                                first_name='radu',
-                                last_name='raicea',
-                                address='123213432g',
-                                phone='34543534',
-                                admin=True)
-            self.client.post('/register-user', data=json.dumps(request_data), content_type='application/json')
-            request_header = dict(Authorization=make_auth_header('test@example.com', 'testpasswO1!rd'))
-            response = self.client.get('/login', headers=request_header)
-            response_data = json.loads(response.data.decode())
-
-            self.assertEqual(response.status_code, 201)
-            self.assertIn('token', response_data.keys())
-            self.assertEqual(g.user.email, 'test@example.com')
-            self.assertEqual(g.user.first_name, 'radu')
-            self.assertEqual(g.user.last_name, 'raicea')
-            self.assertEqual(g.user.address, '123213432g')
-            self.assertEqual(g.user.phone, '34543534')
 
 
 # Runs the tests.
