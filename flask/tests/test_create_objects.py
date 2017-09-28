@@ -53,7 +53,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_desktop_object(self):
         with self.client:
-            desktop = create_desktop(500, 100, 'LG', 'intel', 32, 4, 20, '20x20')
+            desktop = create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
 
             self.assertEqual(desktop.price, 500)
             self.assertEqual(desktop.weight, 100)
@@ -66,7 +66,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_laptop_object(self):
         with self.client:
-            laptop = create_laptop(600, 200, 'LG', '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
+            laptop = create_laptop('LG', 600, 200, '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
 
             self.assertEqual(laptop.price, 600)
             self.assertEqual(laptop.weight, 200)
@@ -83,7 +83,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_tablet_object(self):
         with self.client:
-            tablet = create_tablet(1200, 1.2, 'Microsoft', '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
+            tablet = create_tablet('Microsoft', 1200, 1.2, '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
 
             self.assertEqual(tablet.price, 1200)
             self.assertEqual(tablet.weight, 1.2)
@@ -100,7 +100,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_monitor_object(self):
         with self.client:
-            monitor = create_monitor(300, 5, 'Asus', '25x30')
+            monitor = create_monitor('Asus', 300, 5, '25x30')
 
             self.assertEqual(monitor.price, 300)
             self.assertEqual(monitor.weight, 5)
@@ -109,7 +109,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_television_object(self):
         with self.client:
-            television = create_television(3000, 15, 'Panasonic', 'Smart', '40x50')
+            television = create_television('Panasonic', 3000, 15, 'Smart', '40x50')
 
             self.assertEqual(television.price, 3000)
             self.assertEqual(television.weight, 15)

@@ -19,7 +19,7 @@ from tests.helpers import make_auth_header
 from flask import g
 
 
-# This class inherits from the base class in 'base_website.py', in order to
+# This class inherits from the base class in 'base_authentication.py', in order to
 # get the create_app, setUp and tearDown methods.
 class TestAuthentication(BaseTestCase):
     def test_validate_email(self):
