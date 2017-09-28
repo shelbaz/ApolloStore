@@ -5,13 +5,8 @@
 from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
 from project.services.authentication import create_user
 from project import logger
-<<<<<<< HEAD
-from project.services.database_queries import get_all_users
-
-=======
 from project.models.auth_model import User
 from flask_login import login_required, current_user, login_user, logout_user
->>>>>>> dev
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -22,9 +17,6 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 # an HTTP request is made at this endpoint. In this case, Flask renders
 # the template called 'index.html', which is located in the following
 # location by default: flask/project/templates/
-
-
-
 @website_blueprint.route('/')
 def index():
     if g.user is not None and g.user.is_authenticated:
@@ -32,19 +24,11 @@ def index():
     return render_template('index.html')
 
 
-<<<<<<< HEAD
-
-@website_blueprint.route('/dashboard')
-#@auth.login_required
-def dashboard():
-    return render_template('dashboard.html', users= get_all_users())
-=======
 # Temporary route to test if token authentication works
 @website_blueprint.route('/test')
 @login_required
 def test():
     return render_template('test.html')
->>>>>>> dev
 
 
 # Registers a new user

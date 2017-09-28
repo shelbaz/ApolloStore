@@ -1,4 +1,3 @@
-
 from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from project import logger, login_manager
@@ -52,18 +51,6 @@ def validate_password(password):
         return False
 
 
-<<<<<<< HEAD
-# Verifies credentials
-@auth.verify_password
-def verify_password(email_or_token, password):
-    user = User.verify_auth_token(email_or_token)
-    if not user:
-        user = User.query_filtered_by(email=email_or_token)
-        if not user or not user.verify_password(password):
-            return False
-    g.user = user[0]
-    return True
-=======
 @login_manager.user_loader
 def load_user(user_id):
     user = User.query_filtered_by(id=user_id)
@@ -71,4 +58,3 @@ def load_user(user_id):
         return user[0]
     else:
         return None
->>>>>>> dev
