@@ -61,7 +61,6 @@ function getSelected() {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>ID</th>
                         <th>Model</th>
                         <th>Price</th>
                         <th>Weight</th>
@@ -69,14 +68,13 @@ function getSelected() {
                     </tr>
                 </thead>
                 <tbody>
-                    {% for user in users: %}
+                    {% for item in items: %}
                     <tr>
                         <td></td>
-                        <td>{{user.first_name}}</td>
-                        <td></td>                        
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{item.model}}</td>
+                        <td>{{item.price}}</td>
+                        <td>{{item.weight}}</td>
+                        <td>{{item.brand}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -227,8 +225,9 @@ function getSelected() {
         </div>
     </form>
 
-<form name="Desktop" id="Desktop" style="display:none">
+<form name="Desktop" id="Desktop" style="display:none" method="post">
 <!-- THIS IS FORM 1-->
+
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
             id="price" placeholder="Enter Price"/>
@@ -264,7 +263,7 @@ function getSelected() {
             id="hd_size" placeholder="Enter HD Size"/> 
         </div>        
             <div class="form-group">
-            <label for="dimensions">Enter Dimensions</label>
+            <label for="desktopdimensions">Enter Dimensions</label>
             <input type="text" name = "dimensions" class="form-control"
             id="dimensions" placeholder="Enter Dimensions"/> 
         </div>
@@ -272,7 +271,7 @@ function getSelected() {
 </form>
 
 
-<form name="Laptop" id="Laptop" style="display:none">
+<form name="Laptop" id="Laptop" style="display:none" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
@@ -290,8 +289,8 @@ function getSelected() {
         </div>
         <div class="form-group">
             <label for="display_size">Enter Display Size</label>
-            <input type="text" name = "display_size" class="form-control"
-            id="display_size" placeholder="Enter Display Size"/>
+            <input type="text" name = "laptop_display_size" class="form-control"
+            id="laptop_display_size" placeholder="Enter Display Size"/>
         </div>
         <div class="form-group">
             <label for="processor">Enter Processor</label>
@@ -315,13 +314,13 @@ function getSelected() {
         </div>        
             <div class="form-group">
             <label for="dimensions">Enter Battery Info</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/> 
+            <input type="text" name = "battery" class="form-control"
+            id="battery" placeholder="Enter Battery"/> 
         </div>
                     <div class="form-group">
             <label for="dimensions">Enter OS</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/> 
+            <input type="text" name = "operating_system" class="form-control"
+            id="operating_system" placeholder="Enter OS"/> 
         </div>
             <div class="form-group">
             <label for="touchscreen">Touchscreen</label>
@@ -337,7 +336,7 @@ function getSelected() {
 </form>
 
 
-<form name="Monitor" id="Monitor" style="display:none">
+<form name="Monitor" id="Monitor" style="display:none" method="post">
 <!-- THIS IS FORM 3-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
@@ -355,8 +354,8 @@ function getSelected() {
         </div>
         <div class="form-group">
             <label for="display_size">Enter Dimensions</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/>
+            <input type="text" name = "monitor_dimensions" class="form-control"
+            id="monitor_dimensions" placeholder="Enter Dimensions"/>
         </div>
 
 
@@ -364,7 +363,7 @@ function getSelected() {
 </form>
 
 
-<form name="Tablet" id="Tablet" style="display:none">
+<form name="Tablet" id="Tablet" style="display:none" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
@@ -382,8 +381,8 @@ function getSelected() {
         </div>
         <div class="form-group">
             <label for="display_size">Enter Display Size</label>
-            <input type="text" name = "display_size" class="form-control"
-            id="display_size" placeholder="Enter Display Size"/>
+            <input type="text" name = "tablet_display_size" class="form-control"
+            id="tablet_display_size" placeholder="Enter Display Size"/>
         </div>
         <div class="form-group">
             <label for="processor">Enter Processor</label>
@@ -416,6 +415,11 @@ function getSelected() {
             id="operating_system" placeholder="Enter OS"/> 
         </div>
         <div class="form-group">
+            <label for="dimensions">Enter Dimensions</label>
+            <input type="text" name = "dimensions" class="form-control"
+            id="dimensions" placeholder="Enter Dimensions"/> 
+        </div>
+        <div class="form-group">
             <label for="touchscreen">Camera</label>
             <input type="checkbox" name = "camera" class="form-control"
             id="camera" value="camera" /> 
@@ -423,7 +427,7 @@ function getSelected() {
 <button type="submit" class="btn btn-default">Submit</button>
 </form>
 
-<form name="Television" id="Television" style="display:none">
+<form name="Television" id="Television" style="display:none" method="post">
 <!-- THIS IS FORM 3-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
@@ -441,8 +445,8 @@ function getSelected() {
         </div>
         <div class="form-group">
             <label for="display_size">Enter Dimensions</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/>
+            <input type="text" name = "tv_dimensions" class="form-control"
+            id="tv_dimensions" placeholder="Enter Dimensions"/>
         </div>
         <div class="form-group">
             <label for="display_size">Enter Type</label>
