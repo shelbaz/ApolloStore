@@ -7,6 +7,7 @@ from project.services.authentication import create_user
 from project import logger
 from project.models.auth_model import User
 from flask_login import login_required, current_user, login_user, logout_user
+from project.services.database_queries import get_all_users
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -29,6 +30,13 @@ def index():
 @login_required
 def test():
     return render_template('test.html')
+
+
+@website_blueprint.route('/dashboard')
+#@auth.login_required
+def dashboard():
+    return render_template('dashboard.html', users= get_all_users())
+
 
 
 # Registers a new user
