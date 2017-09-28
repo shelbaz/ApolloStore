@@ -10,13 +10,22 @@ Your home to purchasing electronics online!
     │   ├── config.py
     │   ├── Dockerfile
     │   ├── manage.py
-    │   ├── requirements.txt
     │   ├── project
     │   │   ├── __init__.py
     │   │   ├── models
+    │   │   │   ├── auth_model.py
+    │   │   │   ├── cart_model.py
+    │   │   │   ├── desktop_model.py
     │   │   │   ├── __init__.py
-    │   │   │   └── auth_model.py
+    │   │   │   ├── inventory_model.py
+    │   │   │   ├── item_model.py
+    │   │   │   ├── laptop_model.py
+    │   │   │   ├── monitor_model.py
+    │   │   │   ├── tablet_model.py
+    │   │   │   └── television_model.py
     │   │   ├── services
+    │   │   │   ├── authentication.py
+    │   │   │   ├── electronics.py
     │   │   │   └── __init__.py
     │   │   ├── static
     │   │   │   ├── css
@@ -27,10 +36,18 @@ Your home to purchasing electronics online!
     │   │   └── website
     │   │       ├── __init__.py
     │   │       └── views.py
+    │   ├── requirements.txt
     │   └── tests
+    │       ├── base_authentication.py
+    │       ├── base_create_objects.py
+    │       ├── base_viewmodels.py
     │       ├── base_website.py
+    │       ├── helpers.py
     │       ├── __init__.py
+    │       ├── test_authentication.py
     │       ├── test_configs.py
+    │       ├── test_create_objects.py
+    │       ├── test_view_models.py
     │       └── test_website.py
     ├── nginx
     │   ├── app.conf
