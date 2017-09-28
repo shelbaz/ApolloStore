@@ -1,26 +1,102 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Apollo Store</title>
-        <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    </head>
+  <head>
+    <meta charset="UTF-8">
+    <title>Apollo Store</title>
+    <!-- <link rel="stylesheet" type="text/css" href="/static/css/style.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 
-    <body>
-    	<ul class="nav justify-content-end">
+    <style>
+
+     	/*use these color palettes:*/
+     	/*#caebf2 sky blue*/
+     	/*#a9a9a9 carbon grey*/
+     	/*#ff3b3f watermelon red*/
+     	/*#efefef neutral grey*/
+    	html {
+    		font-size: 16px;
+    	}
+
+    	body {
+    		background-color: #efefef;
+    		color: black;
+    	}
+
+    	h1 {
+    		font-weight: bold;
+    		font-size: 6rem;
+    	}
+
+    	a {
+    		color: black;
+    		border: none !important;
+    	}
+
+    	a:hover {
+    		color: #ff3b3f;
+    	}
+
+    	#searchInput {
+    		max-width: 300px;
+    		float: left;
+    	}
+
+    	.nav {
+    		background-color: white;
+    		padding: 10px;
+    	}
+
+    	.title {
+    		color: #a9a9a9;
+    		text-transform: uppercase;
+    	}
+
+    	.section {
+    		padding: 30px 0;
+    	}
+
+    	.sub-title {
+    		background-color: #caebf2;
+    		padding: 10px;
+    	}
+    </style>
+  </head>
+
+   <body>
+  	<ul class="nav justify-content-end">
+  		<input type="text" class="form-control" id="searchInput" placeholder="Search">
+  		{% if is_authenticated == false %}	
+			<li class="nav-item">
+				<a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
+				  login
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#" data-toggle="modal" data-target="#signupModal">
+				  signup
+				</a>
+			</li>
+		  {% endif %}
+		  {% if is_authenticated == true %}	
 		  <li class="nav-item">
-		    <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
-			  Login
-			</a>
+		    <a class="nav-link" href="/test">
+			  	dashboard
+				</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="#" data-toggle="modal" data-target="#signupModal">
-			  Signup
-			</a>
-		  </li>
+		    <a class="nav-link" href="/logout">
+			  	logout
+				</a>
+			</li>
+	  	{% endif %}
 		</ul>
 
+		<div class="container text-center">
+			<div class="section">
+				<h1 class="title">Apollo Store</h1>
+				<h3 class="sub-title title">For all your electronic needs</h3>
+			</div>
+		</div>
 		<!-- Login Modal -->
 		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
@@ -109,6 +185,6 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
 		<script src="/static/js/script.js"></script>
 	<!-- <script src="/static/js/script.js"></script> -->
-    </body>
+  </body>
 
 </html>

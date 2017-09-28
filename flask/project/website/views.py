@@ -19,9 +19,12 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 # location by default: flask/project/templates/
 @website_blueprint.route('/')
 def index():
+
+    is_authenticated = False;
+
     if g.user is not None and g.user.is_authenticated:
-        return redirect('/test')
-    return render_template('index.html')
+        is_authenticated = True;
+    return render_template('index.html', is_authenticated = is_authenticated)
 
 
 # Temporary route to test if token authentication works
@@ -48,7 +51,8 @@ def register():
         user = create_user(first_name, last_name, address, email, password, phone, admin)
 
         if user:
-            return render_template('index.html'), 201
+            # logs user in after successful registration
+            return render_template('index.html', is_authenticated = False), 201
         else:
             logger.error("couldnt create user")
             abort(403)
@@ -72,7 +76,7 @@ def login():
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
-    return redirect('/test')
+    return redirect('/')
 
 
 # Logs the user out
