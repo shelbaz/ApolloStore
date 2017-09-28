@@ -21,15 +21,15 @@ from project.models.tablet_model import Tablet
 from project.models.television_model import Television
 
 
-# This class inherits from the base class in 'base_website.py', in order to
+# This class inherits from the base class in 'base_viewmodels.py', in order to
 # get the create_app, setUp and tearDown methods.
 class TestViewModels(BaseTestCase):
     # Test to see if the query_filtered_by function works for the Laptop class
     def test_should_return_query_results_for_laptop(self):
         with self.client:
-            laptop1 = create_laptop(500, 10, 'Asus', '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
-            laptop2 = create_laptop(500, 10, 'Lenovo', '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
-            laptop3 = create_laptop(500, 10, 'Dell', '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+            create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
+            create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+            create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
 
             result1 = Laptop.query_filtered_by(brand='Asus')
             result2 = Laptop.query_filtered_by(brand='Acer')
@@ -39,9 +39,9 @@ class TestViewModels(BaseTestCase):
     # Test to see if the query_filtered_by function works for the Tablet class
     def test_should_return_query_results_for_tablet(self):
         with self.client:
-            tablet1 = create_tablet(500, 10, 'Asus', '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
-            tablet2 = create_tablet(500, 10, 'Dell', '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
-            tablet3 = create_tablet(500, 10, 'Asus', '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+            create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+            create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+            create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
 
             result1 = Tablet.query_filtered_by(brand='Asus')
             result2 = Tablet.query_filtered_by(brand='Apple')
@@ -51,9 +51,9 @@ class TestViewModels(BaseTestCase):
     # Test to see if the query_filtered_by function works for the Desktop class
     def test_should_return_query_results_for_desktop(self):
         with self.client:
-            desktop1 = create_desktop(600, 10, 'Asus', 'intel', 256, 2, 1080, '100x100')
-            desktop2 = create_desktop(500, 10, 'Dell', 'intel', 256, 2, 1080, '100x100')
-            desktop3 = create_desktop(500, 10, 'Intel', 'intel', 256, 2, 1080, '100x100')
+            create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+            create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
+            create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
 
             result1 = Desktop.query_filtered_by(brand='Asus')
             result2 = Desktop.query_filtered_by(brand='Acer')
@@ -63,9 +63,9 @@ class TestViewModels(BaseTestCase):
     # Test to see if the query_filtered_by function works for the Monitor class
     def test_should_return_query_results_for_monitor(self):
         with self.client:
-            monitor1 = create_monitor(600, 10, 'Asus', '125x100')
-            monitor2 = create_monitor(600, 10, 'Dell', '150x100')
-            monitor3 = create_monitor(600, 10, 'Asus', '170x100')
+            create_monitor('Asus', 600, 10, '125x100')
+            create_monitor('Dell', 600, 10, '150x100')
+            create_monitor('Asus', 600, 10, '170x100')
 
             result1 = Monitor.query_filtered_by(dimensions='150x100')
             result2 = Monitor.query_filtered_by(brand='Acer')
@@ -75,10 +75,10 @@ class TestViewModels(BaseTestCase):
     # Test to see if the query_filtered_by function works for the Television class
     def test_should_return_query_results_for_television(self):
         with self.client:
-            tv1 = create_television(600, 10, 'Asus', 'HD', '125x100')
-            tv2 = create_television(600, 10, 'Asus', 'LED', '125x100')
-            tv3 = create_television(600, 10, 'Samsung', '3D', '125x100')
-            tv4 = create_television(600, 10, 'Asus', 'Smart', '125x100')
+            create_television('Asus', 600, 10, 'HD', '125x100')
+            create_television('Asus', 600, 10, 'LED', '125x100')
+            create_television('Samsung', 600, 10, '3D', '125x100')
+            create_television('Asus', 600, 10, 'Smart', '125x100')
 
             result1 = Television.query_filtered_by(type='3D')
             result2 = Television.query_filtered_by(brand='Toshiba')
