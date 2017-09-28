@@ -13,7 +13,7 @@
 
 import unittest
 from tests.base_viewmodels import BaseTestCase
-from project.services.electronics import create_laptop, create_desktop, create_monitor, create_television, create_tablet
+from project.services.electronics import create_laptop, create_desktop, create_monitor, create_television, create_tablet, get_all_desktops, get_all_laptops, get_all_tablets, get_all_monitors, get_all_televisions
 from project.models.desktop_model import Desktop
 from project.models.laptop_model import Laptop
 from project.models.monitor_model import Monitor
@@ -84,6 +84,73 @@ class TestViewModels(BaseTestCase):
             result2 = Television.query_filtered_by(brand='Toshiba')
             self.assertEqual(result1[0].brand, 'Samsung')
             self.assertEqual(result2, None)
+
+    # Tests to see if all desktops will be returned
+    def test_should_return_all_desktops(self):
+        with self.client:
+
+            result = get_all_desktops()
+            self.assertEqual(result, None)
+
+            create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+            create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
+            create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
+
+            result = get_all_desktops()
+            self.assertEqual(len(result), 3)
+
+    # Tests to see if all laptops will be returned
+    def test_should_return_all_laptops(self):
+        with self.client:
+            result = get_all_laptops()
+            self.assertEqual(result, None)
+
+            create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
+            create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+            create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+
+            result = get_all_laptops()
+            self.assertEqual(len(result), 3)
+
+    # Tests to see if all tablets will be returned
+    def test_should_return_all_tablets(self):
+        with self.client:
+            result = get_all_tablets()
+            self.assertEqual(result, None)
+
+            create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+            create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+            create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+
+            result = get_all_tablets()
+            self.assertEqual(len(result), 3)
+
+    # Tests to see if all monitors will be returned
+    def test_should_return_all_monitors(self):
+        with self.client:
+            result = get_all_monitors()
+            self.assertEqual(result, None)
+
+            create_monitor('Asus', 600, 10, '125x100')
+            create_monitor('Dell', 600, 10, '150x100')
+
+            result = get_all_monitors()
+            self.assertEqual(len(result), 2)
+
+    # Tests to see if all televisions will be returned
+    def test_should_return_all_televisions(self):
+        with self.client:
+            result = get_all_televisions()
+            self.assertEqual(result, None)
+
+            create_television('Asus', 600, 10, 'HD', '125x100')
+            create_television('Asus', 600, 10, 'LED', '125x100')
+            create_television('Samsung', 600, 10, '3D', '125x100')
+            create_television('Asus', 600, 10, 'Smart', '125x100')
+
+            result = get_all_televisions()
+            self.assertEqual(len(result), 4)
+
 
 
 # Runs the tests.
