@@ -61,7 +61,7 @@ function getSelected() {
                 <thead>
                     <tr>
                         <th></th>
-                        <th>+</th>
+                        <th>Add</th>
                         <th>Count</th>
                         <th>Model</th>
                         <th>Price</th>
@@ -83,7 +83,7 @@ function getSelected() {
                     {% for tablet in tablets: %}
                     <tr>
                         <td></td>
-                        <td></td>
+                        <td><button type="button" class="btn btn-default" onclick="">+</button></td>
                         <td>{{tablet[1]}}</td>
                         <td>{{tablet[0].model}}</td>
                         <td>{{tablet[0].price}}</td>
@@ -103,7 +103,7 @@ function getSelected() {
                 {% else: %}
 	                	<tr>
 	                        <td></td>
-	                        <td></td>
+                            <td><button type="button" class="btn btn-default btn-sm" onclick="">+</button></td>
 	                        <td></td>
 	                        <td></td>
 	                        <td></td>
