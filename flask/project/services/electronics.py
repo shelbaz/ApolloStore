@@ -258,7 +258,7 @@ def validate_weight(weight):
 
 # Validates that the RAM size entered is a power of 2
 def validate_ram_size(ram_size):
-    return (int(ram_size) != 0 and ((int(ram_size))
+    return (int(ram_size) > 0)
 
 
 def validate_cpu_cores(cpu_cores):

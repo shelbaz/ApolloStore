@@ -80,7 +80,6 @@ def desktop():
         cpucores = request.form.get('cpu_cores')
         hdsize = request.form.get('hd_size')
         dimensions = request.form.get('desktopdimensions')
-        print('sick', flush=True)
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
             desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
@@ -90,7 +89,7 @@ def desktop():
             else:
                 logger.error('couldnt create desktop item')
 
-    return render_template('desktop.html', desktops=get_all_desktops())
+    return render_template('desktop.html', user=g.user, desktops=get_all_desktops())
 
 
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
@@ -127,7 +126,7 @@ def laptop():
             else:
                 logger.error('couldnt create laptop item')
 
-    return render_template('laptop.html', laptops=get_all_laptops())
+    return render_template('laptop.html', user=g.user, laptops=get_all_laptops())
 
 
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
@@ -156,7 +155,7 @@ def tablet():
             else:
                 logger.error('couldnt create tablet item')
 
-    return render_template('tablet.html', tablets=get_all_tablets())
+    return render_template('tablet.html', user=g.user, tablets=get_all_tablets())
 
 
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
@@ -177,7 +176,7 @@ def monitor():
             else:
                 logger.error('couldnt create monitor item')
 
-    return render_template('monitor.html', monitors=get_all_monitors())
+    return render_template('monitor.html', user=g.user, monitors=get_all_monitors())
 
 
 @website_blueprint.route('/television', methods=['GET', 'POST'])
@@ -199,7 +198,7 @@ def television():
             else:
                 logger.error('couldnt create tv item')
 
-    return render_template('television.html', televisions=get_all_televisions())
+    return render_template('television.html', user=g.user, televisions=get_all_televisions())
 
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
