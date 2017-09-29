@@ -62,10 +62,21 @@
     </style>
   </head>
 
-   <body>
-  	<ul class="nav justify-content-end">
+  <body>
+		<ul class="nav justify-content-end">
   		<input type="text" class="form-control" id="searchInput" placeholder="Search">
-  		{% if is_authenticated == false %}	
+			{% if user is defined %}	
+			<li class="nav-item">
+			<a class="nav-link" href="/test">
+			dashboard
+			</a>
+			</li>
+			<li class="nav-item">
+			<a class="nav-link" href="/logout">
+			logout
+			</a>
+			</li>
+			{% else %}	
 			<li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
 				  login
@@ -77,18 +88,6 @@
 				</a>
 			</li>
 		  {% endif %}
-		  {% if is_authenticated == true %}	
-		  <li class="nav-item">
-		    <a class="nav-link" href="/test">
-			  	dashboard
-				</a>
-		  </li>
-		  <li class="nav-item">
-		    <a class="nav-link" href="/logout">
-			  	logout
-				</a>
-			</li>
-	  	{% endif %}
 		</ul>
 
 		<div class="container text-center">
@@ -96,6 +95,9 @@
 				<h1 class="title">Apollo Store</h1>
 				<h3 class="sub-title title">For all your electronic needs</h3>
 			</div>
+			{% if user is defined %}
+				Welcome {{user.first_name}}
+			{% endif %}
 		</div>
 		<!-- Login Modal -->
 		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
