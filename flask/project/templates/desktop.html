@@ -79,7 +79,7 @@ function getSelected() {
                     {% for desktop in desktops: %}
                     <tr>
                         <td></td>
-                        <td><button type="button" class="btn btn-default" onclick="">+</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{desktop[0].model}}');">+</button></td>
                         <td>{{desktop[1]}}</td>
                         <td>{{desktop[0].model}}</td>
                         <td>{{desktop[0].price}}</td>
@@ -113,6 +113,18 @@ function getSelected() {
             
         </div>
 
+        <script>
+             function add_to_inventory(model) {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/add-inventory/desktop/' + model);
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form)
+                 form.submit();
+                 console.log('submitted');
+             }
+        </script>
+
         <div class="col-md-8" >
             <p> </p>
 
@@ -136,7 +148,7 @@ function getSelected() {
                 <!-- Modal Body -->
                 <div class="modal-body">
 
-                    <form role="form" method="post">
+                    <form role="form" action="/desktop" method="post">
                         <div class="form-group">
                         <label for="delete">Item ID: </label>
                             <input type="text" class="form-control"
@@ -181,7 +193,7 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" method="post">
+        <form role="form" action="/desktop" method="post">
             <div class="form-group">
                 <label for="pid">Item ID: </label>
                 <input type="text" class="form-control"
@@ -241,7 +253,7 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-<form name="Desktop" id="Desktop" method="post">
+<form name="Desktop" id="Desktop" action="/desktop" method="post">
 <!-- THIS IS FORM 1-->
 
     <div class="form-group"><label for="price">Enter Price</label>

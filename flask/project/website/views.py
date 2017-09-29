@@ -32,25 +32,30 @@ def index():
 def test():
     return render_template('test.html')
 
+@website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_desktop_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/desktop')
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
 #@auth.login_required
 def desktop():
-    if request.method == 'POST' and request.form['desktopdimensions']:
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        dimensions = request.form['desktopdimensions']
+    if request.method == 'POST':
+        price = request.form.get('price')
+        weight = request.form.get('weight')
+        brand = request.form.get('brand')
+        processor = request.form.get('processor')
+        ramsize = request.form.get('ram_size')
+        cpucores = request.form.get('cpu_cores')
+        hdsize = request.form.get('hd_size')
+        dimensions = request.form.get('desktopdimensions')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
             desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
 
             if desktop:
-                return render_template('desktop.html'), 201
+                return redirect('/desktop')
             else:
                 logger.error('couldnt create desktop item')
 
@@ -122,21 +127,27 @@ def tablet():
     return render_template('tablet.html', tablets=get_all_tablets())
 
 
+@website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_monitor_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/monitor')
+
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 #@auth.login_required
 def monitor():
-    if request.method == 'POST' and request.form['monitor_dimensions']:
+    if request.method == 'POST':
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        dimensions = request.form['monitor_dimensions']
+        price = request.form.get('price')
+        weight = request.form.get('weight')
+        brand = request.form.get('brand')
+        dimensions = request.form.get('monitor_dimensions')
 
         if price and weight and brand and dimensions:
             monitor = create_monitor(brand, price, weight, dimensions)
 
             if monitor:
-                return render_template('monitor.html'), 201
+                return redirect('/monitor')
             else:
                 logger.error('couldnt create monitor item')
 

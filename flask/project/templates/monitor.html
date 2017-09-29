@@ -75,7 +75,7 @@ function getSelected() {
                     {% for monitor in monitors: %}
                     <tr>
                         <td></td>
-                        <td><button type="button" class="btn btn-default" onclick="">+</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{monitor[0].model}}');">+</button></td>
                         <td>{{monitor[1]}}</td>
                         <td>{{monitor[0].model}}</td>
                         <td>{{monitor[0].price}}</td>
@@ -100,6 +100,18 @@ function getSelected() {
             </table>    
             
         </div>
+
+        <script>
+             function add_to_inventory(model) {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/add-inventory/monitor/' + model);
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form)
+                 form.submit();
+                 console.log('submitted');
+             }
+        </script>
 
         <div class="col-md-8" >
             <p> </p>
@@ -169,7 +181,7 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" method="post">
+        <form role="form" action="/monitor" method="post">
             <div class="form-group">
                 <label for="pid">Item ID: </label>
                 <input type="text" class="form-control"
@@ -229,7 +241,7 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-<form name="Monitor" id="Monitor" method="post">
+<form name="Monitor" id="Monitor" action="/monitor" method="post">
 <!-- THIS IS FORM 3-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
