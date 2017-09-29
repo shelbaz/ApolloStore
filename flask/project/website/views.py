@@ -20,9 +20,10 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 @website_blueprint.route('/')
 def index():
     if g.user is not None and g.user.is_authenticated:
-        return render_template('index.html', user = g.user)
+        return render_template('index.html', user=g.user)
 
     return render_template('index.html')
+
 
 # Temporary route to test if token authentication works
 @website_blueprint.route('/test')
@@ -49,7 +50,9 @@ def register():
 
         if user:
             # logs user in after successful registration
-            return render_template('index.html'), 201
+            g.user = user
+            login_user(g.user)
+            return redirect('/')
         else:
             logger.error("couldnt create user")
             abort(403)

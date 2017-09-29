@@ -65,7 +65,7 @@
   <body>
 		<ul class="nav justify-content-end">
   		<input type="text" class="form-control" id="searchInput" placeholder="Search">
-			{% if user is defined %}	
+			{% if user: %}
 			<li class="nav-item">
 			<a class="nav-link" href="/test">
 			dashboard
@@ -76,7 +76,7 @@
 			logout
 			</a>
 			</li>
-			{% else %}	
+			{% else: %}
 			<li class="nav-item">
 				<a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">
 				  login
@@ -95,7 +95,7 @@
 				<h1 class="title">Apollo Store</h1>
 				<h3 class="sub-title title">For all your electronic needs</h3>
 			</div>
-			{% if user is defined %}
+			{% if user: %}
 				Welcome {{user.first_name}}
 			{% endif %}
 		</div>
