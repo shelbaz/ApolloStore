@@ -248,23 +248,23 @@ def add_item_to_inventory(model):
 
 # Validates that a positive price is entered
 def validate_price(price):
-    return (price > 0)
+    return (float(price) > 0)
 
 
 # Validates that a positive weight is entered
 def validate_weight(weight):
-    return (weight > 0)
+    return (float(weight) > 0)
 
 
 # Validates that the RAM size entered is a power of 2
 def validate_ram_size(ram_size):
-    return (ram_size != 0 and ((ram_size & (ram_size - 1)) == 0))
+    return (int(ram_size) != 0 and ((int(ram_size) & (int(ram_size) - 1)) == 0))
 
 
 def validate_cpu_cores(cpu_cores):
-    return (cpu_cores % 2 == 0 and cpu_cores > 0)
+    return (int(cpu_cores) % 2 == 0 and int(cpu_cores) > 0)
 
 
 # Validates that a positive hard drive disk size is entered
 def validate_hd_size(hd_size):
-    return (hd_size > 0)
+    return (int(hd_size) > 0)

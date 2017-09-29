@@ -8,7 +8,7 @@ from project.services.electronics import create_desktop, create_television, crea
 from project import logger
 from project.models.auth_model import User
 from flask_login import login_required, current_user, login_user, logout_user
-from project.services.electronics import get_all_televisions, get_all_tablets, get_all_monitors, get_all_laptops, get_all_desktops
+from project.services.electronics import get_all_televisions, get_all_tablets, get_all_monitors, get_all_laptops, get_all_desktops, add_item_to_inventory
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -86,6 +86,13 @@ def laptop():
     return render_template('laptop.html', laptops=get_all_laptops())
 
 
+@website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_television_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/television')
+
+
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
 #@auth.login_required
 def tablet():
@@ -139,19 +146,19 @@ def monitor():
 @website_blueprint.route('/television', methods=['GET', 'POST'])
 #@auth.login_required
 def television():
-    if request.method == 'POST' and request.form['tv_dimensions']:
+    if request.method == 'POST':
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        dimensions = request.form['tv_dimensions']
-        tvtype = request.form['tv_type']
+        price = request.form.get('price')
+        weight = request.form.get('weight')
+        brand = request.form.get('brand')
+        dimensions = request.form.get('tv_dimensions')
+        tvtype = request.form.get('tv_type')
 
         if price and weight and brand and dimensions:
             television = create_television(brand, price, weight, tvtype, dimensions)
 
             if television:
-                return render_template('television.html'), 201
+                return render_template('television.html', televisions=get_all_televisions())
             else:
                 logger.error('couldnt create tv item')
 
