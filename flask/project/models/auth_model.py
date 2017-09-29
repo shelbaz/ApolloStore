@@ -84,7 +84,10 @@ class User():
 
         filters = ' AND '.join(filters)
 
-        query = """SELECT * FROM users WHERE %s;""" % (filters,)
+        if filters:
+            query = """SELECT * FROM users WHERE %s;""" % (filters,)
+        else:
+            query = """SELECT * FROM users;"""
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

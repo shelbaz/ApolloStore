@@ -42,7 +42,7 @@ class TestCreationObjects(BaseTestCase):
     def test_if_cpu_cores_is_valid(self):
         with self.client:
             self.assertTrue(validate_cpu_cores(4))
-            self.assertTrue(validate_cpu_cores(2))
+            self.assertTrue(validate_cpu_cores(16))
             self.assertFalse(validate_cpu_cores(7))
             self.assertFalse(validate_cpu_cores(-4))
 
