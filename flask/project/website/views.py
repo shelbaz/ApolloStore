@@ -20,7 +20,8 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 @website_blueprint.route('/')
 def index():
     if g.user is not None and g.user.is_authenticated:
-        return redirect('/test')
+        return render_template('index.html', user=g.user)
+
     return render_template('index.html')
 
 
@@ -48,7 +49,10 @@ def register():
         user = create_user(first_name, last_name, address, email, password, phone, admin)
 
         if user:
-            return render_template('index.html'), 201
+            # logs user in after successful registration
+            g.user = user
+            login_user(g.user)
+            return redirect('/')
         else:
             logger.error("couldnt create user")
             abort(403)
@@ -72,7 +76,7 @@ def login():
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
-    return redirect('/test')
+    return redirect('/')
 
 
 # Logs the user out
