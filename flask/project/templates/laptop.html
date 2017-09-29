@@ -61,22 +61,65 @@ function getSelected() {
                 <thead>
                     <tr>
                         <th></th>
+                        <th>+</th>
+                        <th>Count</th>
                         <th>Model</th>
                         <th>Price</th>
                         <th>Weight</th>
                         <th>Brand</th>
+                        <th>Display Size</th>
+                        <th>Processor </th>
+                        <th>RAM </th>
+                        <th># Cores </th>
+                        <th> HD Size </th>
+                        <th> Battery </th>
+                        <th> OS </th>
+                        <th> Touchscreen </th>
+                        <th> Camera </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in items: %}
+                {% if laptops: %}
+                    {% for laptop in laptops: %}
                     <tr>
                         <td></td>
-                        <td>{{item.model}}</td>
-                        <td>{{item.price}}</td>
-                        <td>{{item.weight}}</td>
-                        <td>{{item.brand}}</td>
+                        <td></td>
+                        <td>{{laptop[1]}}</td>
+                        <td>{{laptop[0].model}}</td>
+                        <td>{{laptop[0].price}}</td>
+                        <td>{{laptop[0].weight}}</td>
+                        <td>{{laptop[0].brand}}</td>
+                        <td>{{laptop[0].displaysize}}</td>
+                        <td>{{laptop[0].processor}}</td>
+                        <td>{{laptop[0].ram}}</td>
+                        <td>{{laptop[0].numberofcores}}</td>
+                        <td>{{laptop[0].hdsize}}</td>
+                        <td>{{laptop[0].battery}}</td>
+                        <td>{{laptop[0].operatingsystem}}</td>
+                        <td>{{laptop[0].touchscreen}}</td>
+                        <td>{{laptop[0].camera}}</td>
                     </tr>
                     {% endfor %}
+                {% else: %}
+	                	<tr>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                    </tr>
+                {% endif %}                
                 </tbody>
             </table>    
             
@@ -211,67 +254,11 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" class="add-item" method="post">
-          <div class="form-group">
-            <label for="itemType">Select Item Type</label>
-            <select name="itemOptions" id="itemOptions" class="toggle_div">
-            <option selected="selected"></option>
-            <option value="Desktop">Desktop</option>
-            <option value="Laptop">Laptop</option>
-            <option value="Monitor">Monitor</option>
-            <option value="Tablet">Tablet</option>
-            <option value="Television">Television</option>
-            </select>
-        </div>
-    </form>
-
-<form name="Desktop" id="Desktop" style="display:none" method="post">
-<!-- THIS IS FORM 1-->
-
-    <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
-            id="price" placeholder="Enter Price"/>
-        </div>
-        <div class="form-group">
-            <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
-            id="weight" placeholder="Enter Weight"/>
-        </div>
-        <div class="form-group">
-            <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
-            id="brand" placeholder="Enter Brand"/>
-        </div>
-        <div class="form-group">
-            <label for="processor">Enter Processor</label>
-            <input type="text" name = "processor" class="form-control"
-            id="processor" placeholder="Enter Processor"/>
-        </div>
-                <div class="form-group">
-            <label for="ram_size">Enter Ram Size (GB)</label>
-            <input type="text" name = "ram_size" class="form-control"
-            id="ram_size" placeholder="Enter Ram Size"/> 
-        </div>
-                <div class ="form-group">
-            <label for="cpu_cores">Enter # of Cores</label>
-            <input type="text" name = "cpu_cores" class="form-control"
-            id="cpu_cores" placeholder="Enter # Cores"/>
-        </div>
-                <div class="form-group">
-            <label for="hd_size">Enter HD Size (GB)</label>
-            <input type="text" name = "hd_size" class="form-control"
-            id="hd_size" placeholder="Enter HD Size"/> 
-        </div>        
-            <div class="form-group">
-            <label for="desktopdimensions">Enter Dimensions</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/> 
-        </div>
-<button type="submit" class="btn btn-default">Submit</button>
-</form>
 
 
-<form name="Laptop" id="Laptop" style="display:none" method="post">
+
+
+<form name="Laptop" id="Laptop" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
             <input type="text" name = "price" class="form-control"
@@ -336,184 +323,6 @@ function getSelected() {
 </form>
 
 
-<form name="Monitor" id="Monitor" style="display:none" method="post">
-<!-- THIS IS FORM 3-->
-    <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
-            id="price" placeholder="Enter Price"/>
-        </div>
-        <div class="form-group">
-            <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
-            id="weight" placeholder="Enter Weight"/>
-        </div>
-        <div class="form-group">
-            <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
-            id="brand" placeholder="Enter Brand"/>
-        </div>
-        <div class="form-group">
-            <label for="display_size">Enter Dimensions</label>
-            <input type="text" name = "monitor_dimensions" class="form-control"
-            id="monitor_dimensions" placeholder="Enter Dimensions"/>
-        </div>
-
-
-<button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-
-<form name="Tablet" id="Tablet" style="display:none" method="post">
-<!-- THIS IS FORM 2-->
-    <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
-            id="price" placeholder="Enter Price"/>
-        </div>
-        <div class="form-group">
-            <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
-            id="weight" placeholder="Enter Weight"/>
-        </div>
-        <div class="form-group">
-            <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
-            id="brand" placeholder="Enter Brand"/>
-        </div>
-        <div class="form-group">
-            <label for="display_size">Enter Display Size</label>
-            <input type="text" name = "tablet_display_size" class="form-control"
-            id="tablet_display_size" placeholder="Enter Display Size"/>
-        </div>
-        <div class="form-group">
-            <label for="processor">Enter Processor</label>
-            <input type="text" name = "processor" class="form-control"
-            id="processor" placeholder="Enter Processor"/>
-        </div>
-                <div class="form-group">
-            <label for="ram_size">Enter Ram Size (GB)</label>
-            <input type="text" name = "ram_size" class="form-control"
-            id="ram_size" placeholder="Enter Ram Size"/> 
-        </div>
-                <div class ="form-group">
-            <label for="cpu_cores">Enter # of Cores</label>
-            <input type="text" name = "cpu_cores" class="form-control"
-            id="cpu_cores" placeholder="Enter # Cores"/>
-        </div>
-                <div class="form-group">
-            <label for="hd_size">Enter HD Size (GB)</label>
-            <input type="text" name = "hd_size" class="form-control"
-            id="hd_size" placeholder="Enter HD Size"/> 
-        </div>        
-            <div class="form-group">
-            <label for="dimensions">Enter Battery Info</label>
-            <input type="text" name = "battery" class="form-control"
-            id="battery" placeholder="Enter Battery info"/> 
-        </div>
-            <div class="form-group">
-            <label for="dimensions">Enter OS</label>
-            <input type="text" name = "operating_system" class="form-control"
-            id="operating_system" placeholder="Enter OS"/> 
-        </div>
-        <div class="form-group">
-            <label for="dimensions">Enter Dimensions</label>
-            <input type="text" name = "dimensions" class="form-control"
-            id="dimensions" placeholder="Enter Dimensions"/> 
-        </div>
-        <div class="form-group">
-            <label for="touchscreen">Camera</label>
-            <input type="checkbox" name = "camera" class="form-control"
-            id="camera" value="camera" /> 
-        </div>
-<button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-<form name="Television" id="Television" style="display:none" method="post">
-<!-- THIS IS FORM 3-->
-    <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
-            id="price" placeholder="Enter Price"/>
-        </div>
-        <div class="form-group">
-            <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
-            id="weight" placeholder="Enter Weight"/>
-        </div>
-        <div class="form-group">
-            <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
-            id="brand" placeholder="Enter Brand"/>
-        </div>
-        <div class="form-group">
-            <label for="display_size">Enter Dimensions</label>
-            <input type="text" name = "tv_dimensions" class="form-control"
-            id="tv_dimensions" placeholder="Enter Dimensions"/>
-        </div>
-        <div class="form-group">
-            <label for="display_size">Enter Type</label>
-            <select name="tv_type" id="tv_type">
-            <option selected="selected"></option>
-            <option value="HD">HD</option>
-            <option value="LED">LED</option>
-            <option value="3D">3D</option>
-            <option value="Smart">Smart</option>
-            </select>
-        </div>
-
-<button type="submit" class="btn btn-default">Submit</button>
-</form>
-
-<script>
-$("#itemOptions").on("change", function() {
-    $("#" + $(this).val()).show().siblings();
-
-        if($(this).val() == "Desktop")
-        {
-                $('#Laptop').hide();
-                $('#Monitor').hide();
-                $('#Television').hide();
-                $('#Tablet').hide();
-
-        }
-
-         if($(this).val() == "Laptop")
-        {
-                $('#Desktop').hide();
-                $('#Monitor').hide();
-                $('#Television').hide();
-                $('#Tablet').hide();
-        }
-
-         if($(this).val() == "Monitor")
-        {
-                $('#Desktop').hide();
-                $('#Laptop').hide();
-                $('#Television').hide();
-                $('#Tablet').hide();
-        }
-
-        if($(this).val() == "Television")
-        {
-                $('#Desktop').hide();
-                $('#Laptop').hide();
-                $('#Monitor').hide();
-                $('#Tablet').hide();
-
-        }
-
-        if($(this).val() == "Tablet")
-        {
-                $('#Desktop').hide();
-                $('#Laptop').hide();
-                $('#Monitor').hide();
-                $('#Television').hide();
-
-        }
-
-});
-
-
-</script>
-
 
 </div>
 
@@ -541,3 +350,5 @@ $("#itemOptions").on("change", function() {
 </div>
 <!-- /.container -->
 {% endblock %}
+
+

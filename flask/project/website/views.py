@@ -8,7 +8,7 @@ from project.services.electronics import create_desktop, create_television, crea
 from project import logger
 from project.models.auth_model import User
 from flask_login import login_required, current_user, login_user, logout_user
-from project.services.database_queries import get_all_users, get_all_items
+from project.services.electronics import get_all_televisions, get_all_tablets, get_all_monitors, get_all_laptops, get_all_desktops
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -22,7 +22,7 @@ website_blueprint = Blueprint('website_blueprint', __name__)
 @website_blueprint.route('/')
 def index():
     if g.user is not None and g.user.is_authenticated:
-        return redirect('/test')
+        return redirect('/dashboard')
     return render_template('index.html')
 
 
@@ -33,10 +33,135 @@ def test():
     return render_template('test.html')
 
 
-@website_blueprint.route('/dashboard', methods=["GET", "POST"])
+@website_blueprint.route('/desktop', methods=['GET', 'POST'])
+#@auth.login_required
+def desktop():
+    if request.method == 'POST' and request.form['desktopdimensions']:
+        price = request.form['price']
+        weight = request.form['weight']
+        brand = request.form['brand']
+        processor = request.form['processor']
+        ramsize = request.form['ram_size']
+        cpucores = request.form['cpu_cores']
+        hdsize = request.form['hd_size']
+        dimensions = request.form['desktopdimensions']
+
+        if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
+            desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
+
+            if desktop:
+                return render_template('desktop.html'), 201
+            else:
+                logger.error('couldnt create desktop item')
+
+    return render_template('desktop.html', desktops=get_all_desktops())
+
+
+@website_blueprint.route('/laptop', methods=['GET', 'POST'])
+#@auth.login_required
+def laptop():
+    if request.method == 'POST' and request.form['laptop_display_size']:
+
+        price = request.form['price']
+        weight = request.form['weight']
+        brand = request.form['brand']
+        processor = request.form['processor']
+        ramsize = request.form['ram_size']
+        cpucores = request.form['cpu_cores']
+        hdsize = request.form['hd_size']
+        operatingsystem = request.form['operating_system']
+        displaysize = request.form['laptop_display_size']
+        touchscreen = request.form['touchscreen']
+        camera = request.form['camera']
+        battery = request.form['battery']
+
+        if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+            laptop = create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
+
+            if laptop:
+                return render_template('laptop.html'), 201
+            else:
+                logger.error('couldnt create laptop item')
+
+    return render_template('laptop.html', laptops=get_all_laptops())
+
+
+@website_blueprint.route('/tablet', methods=['GET', 'POST'])
+#@auth.login_required
+def tablet():
+    if request.method == 'POST' and request.form['tablet_display_size']:
+
+        price = request.form['price']
+        weight = request.form['weight']
+        brand = request.form['brand']
+        processor = request.form['processor']
+        ramsize = request.form['ram_size']
+        cpucores = request.form['cpu_cores']
+        hdsize = request.form['hd_size']
+        operatingsystem = request.form['operating_system']
+        displaysize = request.form['tablet_display_size']
+        camera = request.form['camera']
+        battery = request.form['battery']
+        dimensions = request.form['dimensions']
+
+        if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+            tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, os, camera)
+
+            if tablet:
+                return render_template('tablet.html'), 201
+            else:
+                logger.error('couldnt create tablet item')
+
+    return render_template('tablet.html', tablets=get_all_tablets())
+
+
+@website_blueprint.route('/monitor', methods=['GET', 'POST'])
+#@auth.login_required
+def monitor():
+    if request.method == 'POST' and request.form['monitor_dimensions']:
+
+        price = request.form['price']
+        weight = request.form['weight']
+        brand = request.form['brand']
+        dimensions = request.form['monitor_dimensions']
+
+        if price and weight and brand and dimensions:
+            monitor = create_monitor(brand, price, weight, dimensions)
+
+            if monitor:
+                return render_template('monitor.html'), 201
+            else:
+                logger.error('couldnt create monitor item')
+
+    return render_template('monitor.html', monitors=get_all_monitors())
+
+
+@website_blueprint.route('/television', methods=['GET', 'POST'])
+#@auth.login_required
+def television():
+    if request.method == 'POST' and request.form['tv_dimensions']:
+
+        price = request.form['price']
+        weight = request.form['weight']
+        brand = request.form['brand']
+        dimensions = request.form['tv_dimensions']
+        tvtype = request.form['tv_type']
+
+        if price and weight and brand and dimensions:
+            television = create_television(brand, price, weight, tvtype, dimensions)
+
+            if television:
+                return render_template('television.html'), 201
+            else:
+                logger.error('couldnt create tv item')
+
+    return render_template('television.html', televisions=get_all_televisions())
+
+
+@website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 #@auth.login_required
 def dashboard():
-    if request.method == "POST" and request.form['desktopdimensions']:
+    if request.method == 'POST' and request.form['desktopdimensions']:
         price = request.form['price']
         weight = request.form['weight']
         brand = request.form['brand']
@@ -54,7 +179,7 @@ def dashboard():
             else:
                 logger.error('couldnt create desktop item')
 
-    if request.method == "POST" and request.form['laptop_display_size']:
+    if request.method == 'POST' and request.form['laptop_display_size']:
 
         price = request.form['price']
         weight = request.form['weight']
@@ -77,7 +202,7 @@ def dashboard():
             else:
                 logger.error('couldnt create laptop item')
 
-    if request.method == "POST" and request.form['tablet_display_size']:
+    if request.method == 'POST' and request.form['tablet_display_size']:
 
         price = request.form['price']
         weight = request.form['weight']
@@ -100,7 +225,7 @@ def dashboard():
             else:
                 logger.error('couldnt create tablet item')
 
-    if request.method == "POST" and request.form['monitor_dimensions']:
+    if request.method == 'POST' and request.form['monitor_dimensions']:
 
         price = request.form['price']
         weight = request.form['weight']
@@ -115,7 +240,7 @@ def dashboard():
             else:
                 logger.error('couldnt create monitor item')
 
-    if request.method == "POST" and request.form['tv_dimensions']:
+    if request.method == 'POST' and request.form['tv_dimensions']:
 
         price = request.form['price']
         weight = request.form['weight']
@@ -131,7 +256,7 @@ def dashboard():
             else:
                 logger.error('couldnt create tv item')
 
-    return render_template('dashboard.html', users=get_all_users(), items=get_all_items())
+    return render_template('dashboard.html')
 
 
 # Registers a new user
@@ -153,7 +278,7 @@ def register():
         if user:
             return render_template('index.html'), 201
         else:
-            logger.error("couldnt create user")
+            logger.error('couldnt create user')
             abort(403)
 
 
@@ -161,7 +286,7 @@ def register():
 @website_blueprint.route('/login', methods=['POST'])
 def login():
     if g.user is not None and g.user.is_authenticated:
-        return redirect('/test')
+        return redirect('/dashboard')
 
     email = request.form.get('email')
     password = request.form.get('password')
@@ -175,7 +300,7 @@ def login():
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
-    return redirect('/test')
+    return redirect('/dashboard')
 
 
 # Logs the user out
