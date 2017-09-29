@@ -1,4 +1,3 @@
-
 from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from project import logger, login_manager
