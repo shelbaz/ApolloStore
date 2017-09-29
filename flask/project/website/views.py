@@ -158,7 +158,7 @@ def television():
             television = create_television(brand, price, weight, tvtype, dimensions)
 
             if television:
-                return render_template('television.html', televisions=get_all_televisions())
+                return redirect('/television')
             else:
                 logger.error('couldnt create tv item')
 
