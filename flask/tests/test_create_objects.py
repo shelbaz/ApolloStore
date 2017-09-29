@@ -36,14 +36,14 @@ class TestCreationObjects(BaseTestCase):
     def test_if_ram_size_is_valid(self):
         with self.client:
             self.assertTrue(validate_ram_size(8))
-            self.assertFalse(validate_ram_size(6))
+            self.assertTrue(validate_ram_size(6))
             self.assertFalse(validate_ram_size(-1))
 
     def test_if_cpu_cores_is_valid(self):
         with self.client:
             self.assertTrue(validate_cpu_cores(4))
             self.assertTrue(validate_cpu_cores(16))
-            self.assertFalse(validate_cpu_cores(7))
+            self.assertTrue(validate_cpu_cores(7))
             self.assertFalse(validate_cpu_cores(-4))
 
     def test_if_hd_size_is_valid(self):

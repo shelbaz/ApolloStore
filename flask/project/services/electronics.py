@@ -258,11 +258,11 @@ def validate_weight(weight):
 
 # Validates that the RAM size entered is a power of 2
 def validate_ram_size(ram_size):
-    return (int(ram_size) != 0 and ((int(ram_size) & (int(ram_size) - 1)) == 0))
+    return (int(ram_size) > 0)
 
 
 def validate_cpu_cores(cpu_cores):
-    return (int(cpu_cores) % 2 == 0 and int(cpu_cores) > 0)
+    return (int(cpu_cores) > 0)
 
 
 # Validates that a positive hard drive disk size is entered

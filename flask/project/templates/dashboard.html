@@ -10,23 +10,6 @@
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
 
 
-<script type="text/javascript">
-    var myTable;
-    $(document).ready(function() {
-       myTable = $('#projTable').DataTable( {
-        columnDefs: [ {
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   0
-        } ],
-        select: {
-            style:    'os',
-            selector: 'td:first-child'
-        },
-        order: [[ 1, 'asc' ]]
-    } );
-    });
-</script>
 
 
 
@@ -46,7 +29,7 @@ function getSelected() {
 <div class="container">
 
     <div class="section">
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
+        <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
@@ -54,9 +37,12 @@ function getSelected() {
         </button>
         <button class="btn btn-primary btn-lg" onclick="getSelected()">
             Delete Item
-        </button>
+        </button> -->
         <div class="col-md-12 text-left">
-            <h1>List of Items</h1>
+            <h1>Welcome {{user.first_name}} !</h1>
+            
+ <!-- 
+
             <table id="projTable" class="table table-responsive table-bordered table-striped">
                 <thead>
                     <tr>
@@ -80,7 +66,7 @@ function getSelected() {
                 </tbody>
             </table>    
             
-        </div>
+        </div> -->
 
         <div class="col-md-8" >
             <p> </p>
@@ -461,7 +447,7 @@ function getSelected() {
 
 <button type="submit" class="btn btn-default">Submit</button>
 </form>
-
+<!-- 
 <script>
 $("#itemOptions").on("change", function() {
     $("#" + $(this).val()).show().siblings();
@@ -513,7 +499,7 @@ $("#itemOptions").on("change", function() {
 
 
 </script>
-
+ -->
 
 </div>
 
