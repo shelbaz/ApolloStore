@@ -32,11 +32,41 @@ def index():
 def test():
     return render_template('test.html')
 
+
 @website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
 #@auth.login_required
 def add_desktop_inventory(model):
     add_item_to_inventory(model)
     return redirect('/desktop')
+
+
+@website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_television_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/television')
+
+
+@website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_monitor_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/monitor')
+
+
+@website_blueprint.route('/add-inventory/tablet/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_tablet_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/tablet')
+
+
+@website_blueprint.route('/add-inventory/laptop/<string:model>', methods=['POST'])
+#@auth.login_required
+def add_laptop_inventory(model):
+    add_item_to_inventory(model)
+    return redirect('/laptop')
+
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
 #@auth.login_required
@@ -50,6 +80,7 @@ def desktop():
         cpucores = request.form.get('cpu_cores')
         hdsize = request.form.get('hd_size')
         dimensions = request.form.get('desktopdimensions')
+        print('sick', flush=True)
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
             desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
@@ -65,73 +96,68 @@ def desktop():
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
 #@auth.login_required
 def laptop():
-    if request.method == 'POST' and request.form['laptop_display_size']:
+    if request.method == 'POST':
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        operatingsystem = request.form['operating_system']
-        displaysize = request.form['laptop_display_size']
-        touchscreen = request.form['touchscreen']
-        camera = request.form['camera']
-        battery = request.form['battery']
+        price = request.form.get('price')
+        weight = request.form.get('weight')
+        brand = request.form.get('brand')
+        processor = request.form.get('processor')
+        ramsize = request.form.get('ram_size')
+        cpucores = request.form.get('cpu_cores')
+        hdsize = request.form.get('hd_size')
+        operatingsystem = request.form.get('operating_system')
+        displaysize = request.form.get('laptop_display_size')
+        touchscreen = request.form.get('touchscreen')
+        camera = request.form.get('camera')
+        if touchscreen:
+            touchscreen = True
+        else:
+            touchscreen = False
+        if camera:
+            camera = True
+        else:
+            camera = False
+        battery = request.form.get('battery')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
             laptop = create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
 
             if laptop:
-                return render_template('laptop.html'), 201
+                return redirect('/laptop')
             else:
                 logger.error('couldnt create laptop item')
 
     return render_template('laptop.html', laptops=get_all_laptops())
 
 
-@website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
-#@auth.login_required
-def add_television_inventory(model):
-    add_item_to_inventory(model)
-    return redirect('/television')
-
-
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
 #@auth.login_required
 def tablet():
-    if request.method == 'POST' and request.form['tablet_display_size']:
+    if request.method == 'POST':
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        operatingsystem = request.form['operating_system']
-        displaysize = request.form['tablet_display_size']
-        camera = request.form['camera']
-        battery = request.form['battery']
-        dimensions = request.form['dimensions']
+        price = request.form.get('price')
+        weight = request.form.get('weight')
+        brand = request.form.get('brand')
+        processor = request.form.get('processor')
+        ramsize = request.form.get('ram_size')
+        cpucores = request.form.get('cpu_cores')
+        hdsize = request.form.get('hd_size')
+        operatingsystem = request.form.get('operating_system')
+        displaysize = request.form.get('tablet_display_size')
+        camera = request.form.get('camera')
+        battery = request.form.get('battery')
+        dimensions = request.form.get('dimensions')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, os, camera)
+            tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, operatingsystem, camera)
 
             if tablet:
-                return render_template('tablet.html'), 201
+                return redirect('/tablet')
             else:
                 logger.error('couldnt create tablet item')
 
     return render_template('tablet.html', tablets=get_all_tablets())
 
-
-@website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
-#@auth.login_required
-def add_monitor_inventory(model):
-    add_item_to_inventory(model)
-    return redirect('/monitor')
 
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 #@auth.login_required
