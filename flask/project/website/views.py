@@ -205,102 +205,102 @@ def television():
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 #@auth.login_required
 def dashboard():
-    if request.method == 'POST' and request.form['desktopdimensions']:
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        dimensions = request.form['desktopdimensions']
+#     if request.method == 'POST' and request.form['desktopdimensions']:
+#         price = request.form['price']
+#         weight = request.form['weight']
+#         brand = request.form['brand']
+#         processor = request.form['processor']
+#         ramsize = request.form['ram_size']
+#         cpucores = request.form['cpu_cores']
+#         hdsize = request.form['hd_size']
+#         dimensions = request.form['desktopdimensions']
 
-        if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
-            desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
+#         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
+#             desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
 
-            if desktop:
-                return render_template('dashboard.html'), 201
-            else:
-                logger.error('couldnt create desktop item')
+#             if desktop:
+#                 return render_template('dashboard.html'), 201
+#             else:
+#                 logger.error('couldnt create desktop item')
 
-    if request.method == 'POST' and request.form['laptop_display_size']:
+#     if request.method == 'POST' and request.form['laptop_display_size']:
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        operatingsystem = request.form['operating_system']
-        displaysize = request.form['laptop_display_size']
-        touchscreen = request.form['touchscreen']
-        camera = request.form['camera']
-        battery = request.form['battery']
+#         price = request.form['price']
+#         weight = request.form['weight']
+#         brand = request.form['brand']
+#         processor = request.form['processor']
+#         ramsize = request.form['ram_size']
+#         cpucores = request.form['cpu_cores']
+#         hdsize = request.form['hd_size']
+#         operatingsystem = request.form['operating_system']
+#         displaysize = request.form['laptop_display_size']
+#         touchscreen = request.form['touchscreen']
+#         camera = request.form['camera']
+#         battery = request.form['battery']
 
-        if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            laptop = create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
+#         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+#             laptop = create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
 
-            if laptop:
-                return render_template('dashboard.html'), 201
-            else:
-                logger.error('couldnt create laptop item')
+#             if laptop:
+#                 return render_template('dashboard.html'), 201
+#             else:
+#                 logger.error('couldnt create laptop item')
 
-    if request.method == 'POST' and request.form['tablet_display_size']:
+#     if request.method == 'POST' and request.form['tablet_display_size']:
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        processor = request.form['processor']
-        ramsize = request.form['ram_size']
-        cpucores = request.form['cpu_cores']
-        hdsize = request.form['hd_size']
-        operatingsystem = request.form['operating_system']
-        displaysize = request.form['tablet_display_size']
-        camera = request.form['camera']
-        battery = request.form['battery']
-        dimensions = request.form['dimensions']
+#         price = request.form['price']
+#         weight = request.form['weight']
+#         brand = request.form['brand']
+#         processor = request.form['processor']
+#         ramsize = request.form['ram_size']
+#         cpucores = request.form['cpu_cores']
+#         hdsize = request.form['hd_size']
+#         operatingsystem = request.form['operating_system']
+#         displaysize = request.form['tablet_display_size']
+#         camera = request.form['camera']
+#         battery = request.form['battery']
+#         dimensions = request.form['dimensions']
 
-        if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, os, camera)
+#         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+#             tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, os, camera)
 
-            if tablet:
-                return render_template('dashboard.html'), 201
-            else:
-                logger.error('couldnt create tablet item')
+#             if tablet:
+#                 return render_template('dashboard.html'), 201
+#             else:
+#                 logger.error('couldnt create tablet item')
 
-    if request.method == 'POST' and request.form['monitor_dimensions']:
+#     if request.method == 'POST' and request.form['monitor_dimensions']:
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        dimensions = request.form['monitor_dimensions']
+#         price = request.form['price']
+#         weight = request.form['weight']
+#         brand = request.form['brand']
+#         dimensions = request.form['monitor_dimensions']
 
-        if price and weight and brand and dimensions:
-            monitor = create_monitor(brand, price, weight, dimensions)
+#         if price and weight and brand and dimensions:
+#             monitor = create_monitor(brand, price, weight, dimensions)
 
-            if monitor:
-                return render_template('dashboard.html'), 201
-            else:
-                logger.error('couldnt create monitor item')
+#             if monitor:
+#                 return render_template('dashboard.html'), 201
+#             else:
+#                 logger.error('couldnt create monitor item')
 
-    if request.method == 'POST' and request.form['tv_dimensions']:
+#     if request.method == 'POST' and request.form['tv_dimensions']:
 
-        price = request.form['price']
-        weight = request.form['weight']
-        brand = request.form['brand']
-        dimensions = request.form['tv_dimensions']
-        tvtype = request.form['tv_type']
+#         price = request.form['price']
+#         weight = request.form['weight']
+#         brand = request.form['brand']
+#         dimensions = request.form['tv_dimensions']
+#         tvtype = request.form['tv_type']
 
-        if price and weight and brand and dimensions:
-            television = create_television(brand, price, weight, tvtype, dimensions)
+#         if price and weight and brand and dimensions:
+#             television = create_television(brand, price, weight, tvtype, dimensions)
 
-            if television:
-                return render_template('dashboard.html'), 201
-            else:
-                logger.error('couldnt create tv item')
+#             if television:
+#                 return render_template('dashboard.html'), 201
+#             else:
+#                 logger.error('couldnt create tv item')
 
-    return render_template('dashboard.html')
+    return redirect('/laptop')
 
 
 # Registers a new user
@@ -320,7 +320,10 @@ def register():
         user = create_user(first_name, last_name, address, email, password, phone, admin)
 
         if user:
-            return render_template('index.html'), 201
+            # logs user in after successful registration
+            g.user = user
+            login_user(g.user)
+            return redirect('/')
         else:
             logger.error('couldnt create user')
             abort(403)
@@ -344,8 +347,7 @@ def login():
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
 
-    return redirect('/dashboard')
-
+    return redirect('/laptop')
 
 # Logs the user out
 @website_blueprint.route('/logout')
