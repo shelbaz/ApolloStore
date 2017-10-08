@@ -3,12 +3,17 @@
 # -----------------------------------------------
 
 from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
-from project.services.authentication import create_user
-from project.services.electronics import create_desktop, create_television, create_tablet, create_monitor, create_laptop
+from project.services.authentication_service import AuthenticationService
+from project.services.desktop_service import DesktopService
+from project.services.television_service import TelevisionService
+from project.services.tablet_service import TabletService
+from project.services.monitor_service import MonitorService
+from project.services.laptop_service import LaptopService
 from project import logger
 from project.models.auth_model import User
+from project.gateaways.auth_gateaway import UserGateaway
 from flask_login import login_required, current_user, login_user, logout_user
-from project.services.electronics import get_all_televisions, get_all_tablets, get_all_monitors, get_all_laptops, get_all_desktops, add_item_to_inventory
+from project.services.inventory_service import InventoryService
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -29,35 +34,35 @@ def index():
 @website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
 @login_required
 def add_desktop_inventory(model):
-    add_item_to_inventory(model)
+    InventoryService.add_item_to_inventory(model)
     return redirect('/desktop')
 
 
 @website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
 @login_required
 def add_television_inventory(model):
-    add_item_to_inventory(model)
+    InventoryService.add_item_to_inventory(model)
     return redirect('/television')
 
 
 @website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
 @login_required
 def add_monitor_inventory(model):
-    add_item_to_inventory(model)
+    InventoryService.add_item_to_inventory(model)
     return redirect('/monitor')
 
 
 @website_blueprint.route('/add-inventory/tablet/<string:model>', methods=['POST'])
 @login_required
 def add_tablet_inventory(model):
-    add_item_to_inventory(model)
+    InventoryService.add_item_to_inventory(model)
     return redirect('/tablet')
 
 
 @website_blueprint.route('/add-inventory/laptop/<string:model>', methods=['POST'])
 @login_required
 def add_laptop_inventory(model):
-    add_item_to_inventory(model)
+    InventoryService.add_item_to_inventory(model)
     return redirect('/laptop')
 
 
@@ -75,14 +80,14 @@ def desktop():
         dimensions = request.form.get('desktopdimensions')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
-            desktop = create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
+            desktop = DesktopService.create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
 
             if desktop:
                 return redirect('/desktop')
             else:
                 logger.error('couldnt create desktop item')
 
-    return render_template('desktop.html', user=g.user, desktops=get_all_desktops())
+    return render_template('desktop.html', user=g.user, desktops=DesktopService.get_all_desktops())
 
 
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
@@ -112,14 +117,14 @@ def laptop():
         battery = request.form.get('battery')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            laptop = create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
+            laptop = LaptopService.create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
 
             if laptop:
                 return redirect('/laptop')
             else:
                 logger.error('couldnt create laptop item')
 
-    return render_template('laptop.html', user=g.user, laptops=get_all_laptops())
+    return render_template('laptop.html', user=g.user, laptops=LaptopService.get_all_laptops())
 
 
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
@@ -141,14 +146,14 @@ def tablet():
         dimensions = request.form.get('dimensions')
 
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            tablet = create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, operatingsystem, camera)
+            tablet = TabletService.create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, operatingsystem, camera)
 
             if tablet:
                 return redirect('/tablet')
             else:
                 logger.error('couldnt create tablet item')
 
-    return render_template('tablet.html', user=g.user, tablets=get_all_tablets())
+    return render_template('tablet.html', user=g.user, tablets=TabletService.get_all_tablets())
 
 
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
@@ -162,14 +167,14 @@ def monitor():
         dimensions = request.form.get('monitor_dimensions')
 
         if price and weight and brand and dimensions:
-            monitor = create_monitor(brand, price, weight, dimensions)
+            monitor = MonitorService.create_monitor(brand, price, weight, dimensions)
 
             if monitor:
                 return redirect('/monitor')
             else:
                 logger.error('couldnt create monitor item')
 
-    return render_template('monitor.html', user=g.user, monitors=get_all_monitors())
+    return render_template('monitor.html', user=g.user, monitors=MonitorService.get_all_monitors())
 
 
 @website_blueprint.route('/television', methods=['GET', 'POST'])
@@ -184,14 +189,14 @@ def television():
         tvtype = request.form.get('tv_type')
 
         if price and weight and brand and dimensions:
-            television = create_television(brand, price, weight, tvtype, dimensions)
+            television = TelevisionService.create_television(brand, price, weight, tvtype, dimensions)
 
             if television:
                 return redirect('/television')
             else:
                 logger.error('couldnt create tv item')
 
-    return render_template('television.html', user=g.user, televisions=get_all_televisions())
+    return render_template('television.html', user=g.user, televisions=TelevisionService.get_all_televisions())
 
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
@@ -214,7 +219,7 @@ def register():
 
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
-        user = create_user(first_name, last_name, address, email, password, phone, admin)
+        user = AuthenticationService.create_user(first_name, last_name, address, email, password, phone, admin)
 
         if user:
             # logs user in after successful registration
@@ -235,10 +240,12 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User.query_filtered_by(email=email)
-    if not user or not user[0].verify_password(password):
+    rows = UserGateaway.query_filtered_by(email=email)
+    user = AuthenticationService.get_user_from_rows(rows)
+
+    if not user or not user.verify_password(password):
         return 'Wrong credentials.'
-    g.user = user[0]
+    g.user = user
 
     login_user(g.user)
 

@@ -14,8 +14,12 @@
 import unittest
 import json
 from tests.base_create_objects import BaseTestCase
-from project.services.electronics import create_desktop, create_laptop, create_tablet, create_monitor, create_television, \
-    validate_price, validate_weight, validate_ram_size, validate_cpu_cores, validate_hd_size
+from project.services.electronic_service import ElectronicService
+from project.services.desktop_service import DesktopService
+from project.services.laptop_service import LaptopService
+from project.services.monitor_service import MonitorService
+from project.services.tablet_service import TabletService
+from project.services.television_service import TelevisionService
 from tests.helpers import make_auth_header
 from flask import g
 
@@ -25,35 +29,35 @@ from flask import g
 class TestCreationObjects(BaseTestCase):
     def test_if_price_is_valid(self):
         with self.client:
-            self.assertTrue(validate_price(99))
-            self.assertFalse(validate_price(-1))
+            self.assertTrue(ElectronicService.validate_price(99))
+            self.assertFalse(ElectronicService.validate_price(-1))
 
     def test_if_weight_is_valid(self):
         with self.client:
-            self.assertTrue(validate_weight(99))
-            self.assertFalse(validate_weight(-1))
+            self.assertTrue(ElectronicService.validate_weight(99))
+            self.assertFalse(ElectronicService.validate_weight(-1))
 
     def test_if_ram_size_is_valid(self):
         with self.client:
-            self.assertTrue(validate_ram_size(8))
-            self.assertTrue(validate_ram_size(6))
-            self.assertFalse(validate_ram_size(-1))
+            self.assertTrue(ElectronicService.validate_ram_size(8))
+            self.assertTrue(ElectronicService.validate_ram_size(6))
+            self.assertFalse(ElectronicService.validate_ram_size(-1))
 
     def test_if_cpu_cores_is_valid(self):
         with self.client:
-            self.assertTrue(validate_cpu_cores(4))
-            self.assertTrue(validate_cpu_cores(16))
-            self.assertTrue(validate_cpu_cores(7))
-            self.assertFalse(validate_cpu_cores(-4))
+            self.assertTrue(ElectronicService.validate_cpu_cores(4))
+            self.assertTrue(ElectronicService.validate_cpu_cores(16))
+            self.assertTrue(ElectronicService.validate_cpu_cores(7))
+            self.assertFalse(ElectronicService.validate_cpu_cores(-4))
 
     def test_if_hd_size_is_valid(self):
         with self.client:
-            self.assertTrue(validate_hd_size(99))
-            self.assertFalse(validate_hd_size(-1))
+            self.assertTrue(ElectronicService.validate_hd_size(99))
+            self.assertFalse(ElectronicService.validate_hd_size(-1))
 
     def test_create_desktop_object(self):
         with self.client:
-            desktop = create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
+            desktop = DesktopService.create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
 
             self.assertEqual(desktop.price, 500)
             self.assertEqual(desktop.weight, 100)
@@ -66,7 +70,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_laptop_object(self):
         with self.client:
-            laptop = create_laptop('LG', 600, 200, '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
+            laptop = LaptopService.create_laptop('LG', 600, 200, '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
 
             self.assertEqual(laptop.price, 600)
             self.assertEqual(laptop.weight, 200)
@@ -83,7 +87,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_tablet_object(self):
         with self.client:
-            tablet = create_tablet('Microsoft', 1200, 1.2, '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
+            tablet = TabletService.create_tablet('Microsoft', 1200, 1.2, '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
 
             self.assertEqual(tablet.price, 1200)
             self.assertEqual(tablet.weight, 1.2)
@@ -100,7 +104,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_monitor_object(self):
         with self.client:
-            monitor = create_monitor('Asus', 300, 5, '25x30')
+            monitor = MonitorService.create_monitor('Asus', 300, 5, '25x30')
 
             self.assertEqual(monitor.price, 300)
             self.assertEqual(monitor.weight, 5)
@@ -109,7 +113,7 @@ class TestCreationObjects(BaseTestCase):
 
     def test_create_television_object(self):
         with self.client:
-            television = create_television('Panasonic', 3000, 15, 'Smart', '40x50')
+            television = TelevisionService.create_television('Panasonic', 3000, 15, 'Smart', '40x50')
 
             self.assertEqual(television.price, 3000)
             self.assertEqual(television.weight, 15)
