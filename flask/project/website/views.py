@@ -3,12 +3,17 @@
 # -----------------------------------------------
 
 from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
-from project.services.authentication import create_user
-from project.services.electronics import create_desktop, create_television, create_tablet, create_monitor, create_laptop
+from project.services.authentication import create_user, get_user_from_rows
+from project.services.desktop_service import create_desktop, get_all_desktops
+from project.services.television_service import create_television, get_all_televisions
+from project.services.tablet_service import create_tablet, get_all_tablets
+from project.services.monitor_service import create_monitor, get_all_monitors
+from project.services.laptop_service import create_laptop, get_all_laptops
 from project import logger
 from project.models.auth_model import User
+from project.gateaways.auth_gateaway import UserGateaway
 from flask_login import login_required, current_user, login_user, logout_user
-from project.services.electronics import get_all_televisions, get_all_tablets, get_all_monitors, get_all_laptops, get_all_desktops, add_item_to_inventory
+from project.services.inventory_service import add_item_to_inventory
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -235,7 +240,9 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = User.query_filtered_by(email=email)
+    rows = UserGateaway.query_filtered_by(email=email)
+    user = get_user_from_rows(rows)
+
     if not user or not user[0].verify_password(password):
         return 'Wrong credentials.'
     g.user = user[0]
