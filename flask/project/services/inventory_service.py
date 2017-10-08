@@ -8,31 +8,37 @@ from re import match
 from uuid import uuid4
 import traceback
 
-# Adds an item of a specific model number to the inventory
-def add_item_to_inventory(model):
-    try:
-        inventory = Inventory(id=str(uuid4()), model=model)
-        InventoryGateaway.insert_into_db(inventory)
 
-        logger.info('Added %s to the inventory successfully!' % (model,))
+class InventoryService():
 
-        return inventory
 
-    except Exception as e:
-        logger.error(traceback.format_exc())
+    # Adds an item of a specific model number to the inventory
+    @staticmethod
+    def add_item_to_inventory(model):
+        try:
+            inventory = Inventory(id=str(uuid4()), model=model)
+            InventoryGateaway.insert_into_db(inventory)
 
-# Returns all inventory items from rows taken from db
-def get_inventory_items_from_rows(rows):
-    if rows:
-        inventories = []
+            logger.info('Added %s to the inventory successfully!' % (model,))
 
-        for row in rows:
-            inventory = Inventory(row[0], row[1])
-            inventories.append(inventory)
+            return inventory
 
-        if inventories:
-            return inventories
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
+    # Returns all inventory items from rows taken from db
+    @staticmethod
+    def get_inventory_items_from_rows(rows):
+        if rows:
+            inventories = []
+
+            for row in rows:
+                inventory = Inventory(row[0], row[1])
+                inventories.append(inventory)
+
+            if inventories:
+                return inventories
+            else:
+                return None
         else:
             return None
-    else:
-        return None
