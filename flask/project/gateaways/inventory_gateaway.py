@@ -40,12 +40,13 @@ class InventoryGateaway(object):
                     cursor.execute('DROP TABLE inventories;')
 
     # Insert inventory into database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(inventory):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
                     """INSERT INTO inventories (id, model) VALUES ('%s', '%s');"""
-                    % (self.id, self.model))
+                    % (inventory.id, inventory.model))
 
     @staticmethod
     # Queries the inventory table with the filters given as parameters (only equality filters)
@@ -73,15 +74,3 @@ class InventoryGateaway(object):
         else:
             return None
 
-        '''
-        inventories = []
-
-        for row in rows:
-            inventory = Inventory(row[0], row[1])
-            inventories.append(inventory)
-
-        if inventories:
-            return inventories
-        else:
-            return None
-        '''

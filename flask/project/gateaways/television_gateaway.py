@@ -50,13 +50,13 @@ class TelevisionGateaway(Item):
 
 
     # Adds the television to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(tv):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                super().insert_into_db()
                 cursor.execute(
                     """INSERT INTO televisions (model, type, dimensions) VALUES ('%s', '%s', '%s');"""
-                    % (self.model, self.type, self.dimensions))
+                    % (tv.model, tv.type, tv.dimensions))
 
     @staticmethod
     # Queries the televisions table with the filters given as parameters (only equality filters)
@@ -79,13 +79,4 @@ class TelevisionGateaway(Item):
                 cursor.execute(query)
                 rows = cursor.fetchall()
 
-        televisions = []
-
-        for row in rows:
-            television = Television(row[0], row[1], row[2], row[3], row[4], row[5])
-            televisions.append(television)
-
-        if televisions:
-            return televisions
-        else:
-            return None
+        return rows

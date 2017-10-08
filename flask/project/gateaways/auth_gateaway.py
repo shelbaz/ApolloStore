@@ -50,12 +50,13 @@ class UserGateaway():
                     cursor.execute('DROP TABLE users;')
 
     # Adds the user to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(user):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
                     """INSERT INTO users (id, first_name, last_name, address, email, password_hash, phone, admin) VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);"""
-                    % (self.id, self.first_name, self.last_name, self.address, self.email, self.password_hash, self.phone, str(self.admin)))
+                    % (user.id, user.first_name, user.last_name, user.address, user.email, user.password_hash, user.phone, str(user.admin)))
 
     # Queries the users table with the filters given as parameters (only equality filters)
     @staticmethod
@@ -87,18 +88,5 @@ class UserGateaway():
         else:
             return None
 
-        '''
 
-        users = []
-
-        for row in rows:
-            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
-            user.password_hash = row[5]
-            users.append(user)
-
-        if users:
-            return users
-        else:
-            return None
-        '''
 

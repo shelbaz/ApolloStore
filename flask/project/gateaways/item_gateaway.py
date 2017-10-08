@@ -42,12 +42,13 @@ class ItemGateaway(object):
                     cursor.execute('DROP TABLE items;')
 
     # Adds the item to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(item):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
                     """INSERT INTO items (model, brand, price, weight) VALUES ('%s', '%s', %s, %s);"""
-                    % (self.model, self.brand, str(self.price), str(self.weight)))
+                    % (item.model, item.brand, str(item.price), str(item.weight)))
 
     @staticmethod
     # Queries the items table with the filters given as parameters (only equality filters)

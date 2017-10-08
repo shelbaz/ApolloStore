@@ -50,13 +50,13 @@ class LaptopGateaway(Item):
                     cursor.execute('DROP TABLE laptops;')
 
     # Adds the laptop to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(laptop):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                super().insert_into_db()
                 cursor.execute(
                     """INSERT INTO laptops (model, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera) VALUES ('%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s', '%s');"""
-                    % (self.model, self.display_size, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery_info, self.os, str(self.touchscreen), str(self.camera)))
+                    % (laptop.model, laptop.display_size, laptop.processor, str(laptop.ram_size), str(laptop.cpu_cores), str(laptop.hd_size), laptop.battery_info, laptop.os, str(laptop.touchscreen), str(laptop.camera)))
 
 
     @staticmethod
@@ -84,16 +84,3 @@ class LaptopGateaway(Item):
             return rows
         else:
             return None
-
-        '''
-        laptops = []
-
-        for row in rows:
-            laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
-            laptops.append(laptop)
-
-        if laptops:
-            return laptops
-        else:
-            return None
-        '''

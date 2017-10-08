@@ -41,13 +41,13 @@ class MonitorGateaway(Item):
                     cursor.execute('DROP TABLE monitors;')
 
     # Adds the monitor to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(monitor):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                super().insert_into_db()
                 cursor.execute(
                     """INSERT INTO monitors (model, dimensions) VALUES ('%s', '%s');"""
-                    % (self.model, self.dimensions))
+                    % (monitor.model, monitor.dimensions))
 
     @staticmethod
     # Queries the monitors table with the filters given as parameters (only equality filters)
@@ -75,15 +75,3 @@ class MonitorGateaway(Item):
         else:
             return None
 
-        '''
-        monitors = []
-
-        for row in rows:
-            monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
-            monitors.append(monitor)
-
-        if monitors:
-            return monitors
-        else:
-            return None
-        '''

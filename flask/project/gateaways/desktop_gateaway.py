@@ -45,13 +45,13 @@ class DesktopGateaway(Item):
                     cursor.execute('DROP TABLE desktops;')
 
     # Adds the desktop to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(desktop):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                super().insert_into_db()
                 cursor.execute(
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
-                    % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
+                    % (desktop.model, desktop.processor, str(desktop.ram_size), str(desktop.cpu_cores), str(desktop.hd_size), desktop.dimensions))
 
     @staticmethod
     # Queries the desktops table with the filters given as parameters (only equality filters)
@@ -78,16 +78,3 @@ class DesktopGateaway(Item):
             return rows
         else:
             return None
-
-        '''
-        desktops = []
-
-        for row in rows:
-            desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
-            desktops.append(desktop)
-
-        if desktops:
-            return desktops
-        else:
-            return None
-        '''

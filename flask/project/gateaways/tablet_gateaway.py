@@ -50,13 +50,13 @@ class TabletGateaway(Item):
                     cursor.execute('DROP TABLE tablets;')
 
     # Adds the tablet to the database
-    def insert_into_db(self):
+    @staticmethod
+    def insert_into_db(tablet):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                super().insert_into_db()
                 cursor.execute(
                     """INSERT INTO tablets (model, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info) VALUES ('%s', '%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s');"""
-                    % (self.model, self.display_size, self.dimensions, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.battery, self.os, self.camera_info))
+                    % (tablet.model, tablet.display_size, tablet.dimensions, tablet.processor, str(tablet.ram_size), str(tablet.cpu_cores), str(tablet.hd_size), tablet.battery, tablet.os, tablet.camera_info))
 
     @staticmethod
     # Queries the tablets table with the filters given as parameters (only equality filters)
@@ -83,16 +83,3 @@ class TabletGateaway(Item):
             return rows
         else:
             return None
-
-        ''' 
-        tablets = []
-
-        for row in rows:
-            tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12])
-            tablets.append(tablet)
-
-        if tablets:
-            return tablets
-        else:
-            return None
-        '''
