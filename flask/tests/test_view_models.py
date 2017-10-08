@@ -26,6 +26,7 @@ from project.gateaways.television_gateaway import TelevisionGateaway
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 
 
 # This class inherits from the base class in 'base_viewmodels.py', in order to
@@ -106,10 +107,10 @@ class TestViewModels(BaseTestCase):
     def test_should_count_for_searched_model(self):
         with self.client:
             tv1 = TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
-            result = ElectronicService.get_count('televisions', tv1.model)
+            result = InventoryGateaway.get_count('televisions', tv1.model)
             self.assertEqual(result, 0)
             InventoryService.add_item_to_inventory(tv1.model)
-            result = ElectronicService.get_count('televisions', tv1.model)
+            result = InventoryGateaway.get_count('televisions', tv1.model)
             self.assertEqual(result, 1)
 
     # Test to see if add item to inventory works for Electronics

@@ -7,6 +7,7 @@ from project.gateaways.laptop_gateaway import LaptopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
 import traceback
@@ -42,7 +43,7 @@ class LaptopService():
 
             if laptops:
                 for laptop in laptops:
-                    count = ElectronicService.get_count('laptops', laptop.model)
+                    count = InventoryGateaway.get_count('laptops', laptop.model)
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:

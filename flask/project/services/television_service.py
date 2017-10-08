@@ -6,6 +6,7 @@ from project.models.television_model import Television
 from project.gateaways.television_gateaway import TelevisionGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
 import traceback
@@ -39,7 +40,7 @@ class TelevisionService():
 
             if televisions:
                 for television in televisions:
-                    count = ElectronicService.get_count('televisions', television.model)
+                    count = InventoryGateaway.get_count('televisions', television.model)
                     televisions_with_count.append([television, count])
                 return televisions_with_count
             else:

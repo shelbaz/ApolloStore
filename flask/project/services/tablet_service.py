@@ -6,6 +6,7 @@ from project.models.tablet_model import Tablet
 from project.gateaways.tablet_gateaway import TabletGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
 import traceback
@@ -40,7 +41,7 @@ class TabletService():
 
             if tablets:
                 for tablet in tablets:
-                    count = ElectronicService.get_count('tablets', tablet.model)
+                    count = InventoryGateaway.get_count('tablets', tablet.model)
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:

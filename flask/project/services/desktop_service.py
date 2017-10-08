@@ -7,6 +7,7 @@ from project.gateaways.desktop_gateaway import DesktopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
 import traceback
@@ -41,7 +42,7 @@ class DesktopService():
 
             if desktops:
                 for desktop in desktops:
-                    count = ElectronicService.get_count('desktops', desktop.model)
+                    count = InventoryGateaway.get_count('desktops', desktop.model)
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:

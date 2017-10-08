@@ -6,6 +6,7 @@ from project.models.monitor_model import Monitor
 from project.gateaways.monitor_gateaway import MonitorGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
 import traceback
@@ -39,7 +40,7 @@ class MonitorService():
 
             if monitors:
                 for monitor in monitors:
-                    count = ElectronicService.get_count('monitors', monitor.model)
+                    count = InventoryGateaway.get_count('monitors', monitor.model)
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:
