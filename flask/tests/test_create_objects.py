@@ -14,8 +14,12 @@
 import unittest
 import json
 from tests.base_create_objects import BaseTestCase
-from project.services.electronics import create_desktop, create_laptop, create_tablet, create_monitor, create_television, \
-    validate_price, validate_weight, validate_ram_size, validate_cpu_cores, validate_hd_size
+from project.services.electronics import validate_price, validate_weight, validate_ram_size, validate_cpu_cores, validate_hd_size
+from project.services.desktop_service import create_desktop
+from project.services.laptop_service import create_laptop
+from project.services.monitor_service import create_monitor
+from project.services.tablet_service import create_tablet
+from project.services.television_service import create_television
 from tests.helpers import make_auth_header
 from flask import g
 

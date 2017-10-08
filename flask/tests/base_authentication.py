@@ -9,7 +9,7 @@
 
 from flask_testing import TestCase
 from project import create_app, logger
-from project.models import create_tables, drop_tables
+from project.gateaways import create_tables, drop_tables
 import os
 import logging
 
