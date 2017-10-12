@@ -27,6 +27,10 @@ class InventoryService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    # Deletes an item from the inventory
+    def delete_item_from_inventory(model):
+        delete_item('inventories', model)
+
     # Returns all inventory items from rows taken from db
     @staticmethod
     def get_inventory_items_from_rows(rows):
