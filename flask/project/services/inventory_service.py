@@ -37,7 +37,7 @@ class InventoryService():
             for row in rows:
                 #check identity map
                 if InventoryService.identityMap.hasId(row[0]):
-                    inventory = DesktopService.identityMap.getObject(row[0])
+                    inventory = InventoryService.identityMap.getObject(row[0])
                 else:
                     inventory = Inventory(row[0], row[1])
                     InventoryService.identityMap.set(inventory.id, inventory)
