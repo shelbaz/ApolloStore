@@ -1,19 +1,23 @@
-from project.services.desktop_service import delete_desktop
-from project.services.laptop_service import delete_laptop
-from project.services.monitor_service import delete_monitor
-from project.services.tablet_service import delete_tablet
-from project.services.television_service import delete_television
+from project.services.desktop_service import DesktopService
+from project.services.laptop_service import LaptopService
+from project.services.monitor_service import MonitorService
+from project.services.tablet_service import TabletService
+from project.services.television_service import TelevisionService
+from project.services.inventory_service import InventoryService
 
-def delete_electronic(type):
+def delete_electronic(type, item):
     if type == 'desktops':
-        delete_desktop()
+        DesktopService.delete_desktop(item)
     elif type == 'laptops':
-        delete_laptop()
+        LaptopService.delete_laptop(item)
     elif type == 'monitors':
-        delete_monitor()
+        MonitorService.delete_monitor(item)
     elif type == 'tablets':
-        delete_tablet()
+        TabletService.delete_tablet(item)
     elif type == 'televisions':
-        delete_television()
+        TelevisionService.delete_television(item)
+    elif type == 'inventories':
+        InventoryService.delete_item_from_inventory(item)
     else:
         return
+

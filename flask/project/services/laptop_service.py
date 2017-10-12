@@ -8,6 +8,7 @@ from project.gateaways.laptop_gateaway import LaptopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
+from project.services.inventory_service import InventoryService
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4
@@ -70,5 +71,7 @@ class LaptopService():
         else:
             return None
 
-    def delete_laptop(self):
-        delete_item('laptops', self.model)
+    def delete_laptop(item):
+        rows = InventoryGateaway.query_filtered_by(model=item.model)
+        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
+        delete_item(id=inventory.id)

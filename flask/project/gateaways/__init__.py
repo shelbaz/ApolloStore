@@ -86,17 +86,16 @@ def drop_tables():
         time.sleep(5)
         drop_tables()
 
-def delete_item(type, model):
-    query = """
-        DELETE FROM " + type + " WHERE model='" + model + "';
-    """
-    query2 = """
-        DELETE FROM items WHERE model='" + model + "';
-    """
+def delete_item(**kwargs):
+    filters = []
+
+    for key, value in kwargs.items():
+        filters.append(str(key) + '=\'' + str(value) + '\'')
+
+    filters = ' AND '.join(filters)
+    print(filters, flush=True)
+    query = 'DELETE FROM inventories WHERE %s;' % (filters,)
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
-            if type != 'inventories':
-                cursor.execute(query2)
 
-                
