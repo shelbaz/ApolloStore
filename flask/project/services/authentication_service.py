@@ -10,6 +10,7 @@ import traceback
 
 class AuthenticationService():
     # Creates a user that is valid
+
     @staticmethod
     def create_user(first_name, last_name, address, email, password, phone, admin):
         try:

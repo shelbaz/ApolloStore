@@ -7,12 +7,15 @@ from project.gateaways.monitor_gateaway import MonitorGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
 
 
 class MonitorService():
+
+    identityMap = IdentityMap()
 
     # Creates a monitor that is valid
     @staticmethod
@@ -22,6 +25,7 @@ class MonitorService():
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
                 ItemGateaway.insert_into_db(monitor)
                 MonitorGateaway.insert_into_db(monitor)
+                MonitorService.identityMap.set(monitor.model, monitor)
 
                 logger.info('Monitor created successfully!')
 
@@ -54,8 +58,15 @@ class MonitorService():
         if rows:
             monitors = []
             for row in rows:
-                monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
+                #check identity map
+                if MonitorService.identityMap.hasId(row[0]):
+                    monitor = MonitorService.identityMap.getObject(row[0])
+                else:
+                    monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
+                    MonitorService.identityMap.set(monitor.model, monitor)
+
                 monitors.append(monitor)
+            
             if monitors:
                 return monitors
             else:
