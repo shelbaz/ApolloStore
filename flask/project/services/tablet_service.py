@@ -3,6 +3,7 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.tablet_model import Tablet
+from project.gateaways import delete_item
 from project.gateaways.tablet_gateaway import TabletGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
@@ -65,3 +66,6 @@ class TabletService():
                 return None
         else:
             return None
+
+    def delete_tablet(self):
+        delete_item('tablets', self.model)

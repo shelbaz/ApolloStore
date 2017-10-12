@@ -3,6 +3,7 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.inventory_model import Inventory
+from project.gateaways import delete_item
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from re import match
 from uuid import uuid4

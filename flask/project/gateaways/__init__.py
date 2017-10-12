@@ -85,3 +85,15 @@ def drop_tables():
         # Tries dropping the tables again if an exception is raised
         time.sleep(5)
         drop_tables()
+
+def delete_item(type, model):
+    query = """
+        DELETE FROM " + type + " WHERE model='" + model + "';
+    """
+    query2 = """
+        DELETE FROM items WHERE model='" + model + "';
+    """
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            cursor.execute(query2)

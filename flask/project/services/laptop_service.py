@@ -3,6 +3,7 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.laptop_model import Laptop
+from project.gateaways import delete_item
 from project.gateaways.laptop_gateaway import LaptopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
@@ -68,5 +69,8 @@ class LaptopService():
                 return None
         else:
             return None
+
+    def delete_laptop(self):
+        delete_item('laptops', self.model)
 
 

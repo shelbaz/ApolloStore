@@ -2,6 +2,7 @@
 from flask import g
 from project import logger
 from project.models import connect_to_db
+from project.gateaways import delete_item
 from project.models.desktop_model import Desktop
 from project.gateaways.desktop_gateaway import DesktopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
@@ -65,3 +66,5 @@ class DesktopService():
         else:
             return None
 
+    def delete_desktop(self):
+        delete_item('desktops', self.model)
