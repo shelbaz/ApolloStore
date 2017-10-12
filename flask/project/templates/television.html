@@ -76,8 +76,9 @@ function getSelected() {
 	                    {% for television in televisions: %}
 	                    <tr>
 	                        <td></td>
-                            <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{television[0].model}}');">+</button></td>
-	                        <td>{{television[1]}}</td>
+                            <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{television[0].model}}');">+</button>
+                            <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{television[0].model}}');">-</button></td>
+                            <td>{{television[1]}}</td>
 	                        <td>{{television[0].model}}</td>
 	                        <td>{{television[0].price}}</td>
 	                        <td>{{television[0].weight}}</td>
@@ -113,6 +114,20 @@ function getSelected() {
                 document.body.appendChild(form)
                 form.submit();
                 console.log('submitted');
+            }
+        </script>
+
+        <script>
+            function delete_from_inventory(model) {
+                console.log(model);
+                model += ":television";
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-item/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+                console.log('deleted');
             }
         </script>
 

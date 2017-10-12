@@ -65,6 +65,15 @@ def add_laptop_inventory(model):
     InventoryService.add_item_to_inventory(model)
     return redirect('/laptop')
 
+@website_blueprint.route('/delete-item/<string:model>', methods=['POST'])
+@login_required
+def delete_item_from_inventory(model):
+    models = model.split(":")
+    modelId=models[0]
+    type= models[1]
+    InventoryService.delete_item_from_inventory(modelId)
+    return redirect('/'+ type)
+
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
 @login_required

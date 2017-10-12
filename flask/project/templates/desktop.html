@@ -24,21 +24,19 @@
             selector: 'td:first-child'
         },
         order: [[ 1, 'asc' ]]
+
     } );
     });
 </script>
 
 
-
 <script>
-function getSelected() {
-   var selectedIds = myTable.columns().checkboxes.selected()[0];
-   console.log(selectedIds)
-
-   selectedIds.forEach(function(selectedId) {
-       // Do something
-   });
-}
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var selectedId = myTable.rows('.selected').data()[0][3];
+        console.log(selectedId);
+        delete_from_inventory(selectedId);
+    }
 </script>
 
 
@@ -79,7 +77,8 @@ function getSelected() {
                     {% for desktop in desktops: %}
                     <tr>
                         <td></td>
-                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{desktop[0].model}}');">+</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{desktop[0].model}}');">+</button>
+                        <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{desktop[0].model}}');">-</button></td>
                         <td>{{desktop[1]}}</td>
                         <td>{{desktop[0].model}}</td>
                         <td>{{desktop[0].price}}</td>
@@ -91,6 +90,7 @@ function getSelected() {
                         <td>{{desktop[0].hd_size}}</td>
                         <td>{{desktop[0].dimensions}}</td>
                     </tr>
+
                     {% endfor %}
                 {% else: %}
                         <tr>
@@ -119,10 +119,24 @@ function getSelected() {
                  form.setAttribute('method', 'post');
                  form.setAttribute('action', '/add-inventory/desktop/' + model);
                  form.style.display = 'hidden';
-                 document.body.appendChild(form)
+                 document.body.appendChild(form);
                  form.submit();
                  console.log('submitted');
              }
+        </script>
+
+        <script>
+            function delete_from_inventory(model) {
+                console.log(model);
+                model += ":desktop";
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-item/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+                console.log('deleted');
+            }
         </script>
 
         <div class="col-md-8" >

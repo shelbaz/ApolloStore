@@ -75,7 +75,8 @@ function getSelected() {
                     {% for monitor in monitors: %}
                     <tr>
                         <td></td>
-                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{monitor[0].model}}');">+</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{monitor[0].model}}');">+</button>
+                        <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{monitor[0].model}}');">-</button></td>
                         <td>{{monitor[1]}}</td>
                         <td>{{monitor[0].model}}</td>
                         <td>{{monitor[0].price}}</td>
@@ -111,6 +112,20 @@ function getSelected() {
                  form.submit();
                  console.log('submitted');
              }
+        </script>
+
+         <script>
+            function delete_from_inventory(model) {
+                console.log(model);
+                model += ":monitor";
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-item/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+                console.log('deleted');
+            }
         </script>
 
         <div class="col-md-8" >
