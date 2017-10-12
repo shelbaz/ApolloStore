@@ -27,6 +27,11 @@ class InventoryService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    def delete_electronic(model):
+        rows = InventoryGateaway.query_filtered_by(model=model)
+        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
+        delete_item(id=inventory.id)
+
     # Returns all inventory items from rows taken from db
     @staticmethod
     def get_inventory_items_from_rows(rows):

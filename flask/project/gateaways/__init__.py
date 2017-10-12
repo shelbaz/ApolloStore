@@ -93,7 +93,7 @@ def delete_item(**kwargs):
         filters.append(str(key) + '=\'' + str(value) + '\'')
 
     filters = ' AND '.join(filters)
-    print(filters, flush=True)
+
     query = 'DELETE FROM inventories WHERE %s;' % (filters,)
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
