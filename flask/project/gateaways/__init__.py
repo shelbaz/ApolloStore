@@ -96,4 +96,7 @@ def delete_item(type, model):
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
-            cursor.execute(query2)
+            if type != 'inventories':
+                cursor.execute(query2)
+
+                
