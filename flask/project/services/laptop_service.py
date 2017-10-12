@@ -72,5 +72,3 @@ class LaptopService():
 
     def delete_laptop(self):
         delete_item('laptops', self.model)
-
-
