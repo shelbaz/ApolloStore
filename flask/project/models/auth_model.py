@@ -1,13 +1,33 @@
 
-from project.models import connect_to_db
-import psycopg2
-import os
 from passlib.apps import custom_app_context as pwd_context
-from itsdangerous import (TimedJSONWebSignatureSerializer
-                          as Serializer, BadSignature, SignatureExpired)
+from project.gateways import create_table, drop_table
 
 
 class User():
+
+    attributes = {
+        'id': 'UUID',
+        'first_name': 'varchar(64)',
+        'last_name': 'varchar(64)',
+        'address': 'varchar(256)',
+        'email': 'varchar(128)',
+        'password_hash': 'varchar(256)',
+        'phone': 'varchar(64)',
+        'admin': 'boolean'
+    }
+
+    constraints = {
+        'PRIMARY KEY': '(id)',
+        'UNIQUE': '(email)'
+    }
+
+    @staticmethod
+    def create_table():
+        create_table('users', __class__.attributes, __class__.constraints)
+
+    @staticmethod
+    def drop_table():
+        drop_table('users')
 
     # Constructor that creates a new user
     def __init__(self, id, first_name, last_name, address, email, phone, admin):

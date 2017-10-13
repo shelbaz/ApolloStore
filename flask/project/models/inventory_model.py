@@ -1,5 +1,5 @@
 
-from project.gateaways import create_table, drop_table
+from project.gateways import create_table, drop_table
 
 
 class Inventory(object):

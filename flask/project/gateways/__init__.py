@@ -70,37 +70,29 @@ def drop_table(name):
             if bool(cursor.rowcount):
                 cursor.execute('DROP TABLE %s;' % name)
 
+from project.models.auth_model import User
+from project.models.item_model import Item
+from project.models.inventory_model import Inventory
+from project.models.cart_model import Cart
+from project.models.television_model import Television
+from project.models.tablet_model import Tablet
+from project.models.monitor_model import Monitor
+from project.models.laptop_model import Laptop
+from project.models.desktop_model import Desktop
+
 
 # Calls the class functions that create the tables of the corresponding models
 def create_tables():
     try:
-        from project.gateaways.auth_gateaway import UserGateaway
-        UserGateaway.create_table()
-
-        from project.models.item_model import Item
+        User.create_table()
         Item.create_table()
-
-        from project.models.inventory_model import Inventory
         Inventory.create_table()
-
-        from project.gateaways.cart_gateaway import CartGateaway
-        CartGateaway.create_table()
-
-        from project.models.television_model import Television
+        Cart.create_table()
         Television.create_table()
-
-        from project.models.tablet_model import Tablet
         Tablet.create_table()
-
-        from project.models.monitor_model import Monitor
         Monitor.create_table()
-
-        from project.models.laptop_model import Laptop
         Laptop.create_table()
-
-        from project.models.desktop_model import Desktop
         Desktop.create_table()
-
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
         time.sleep(5)
@@ -110,37 +102,20 @@ def create_tables():
 # Calls the class functions that drop the tables of the corresponding models
 def drop_tables():
     try:
-        from project.models.television_model import Television
         Television.drop_table()
-
-        from project.models.tablet_model import Tablet
         Tablet.drop_table()
-
-        from project.models.monitor_model import Monitor
         Monitor.drop_table()
-
-        from project.models.laptop_model import Laptop
         Laptop.drop_table()
-
-        from project.models.desktop_model import Desktop
         Desktop.drop_table()
-
-        from project.gateaways.cart_gateaway import CartGateaway
-        CartGateaway.drop_table()
-
-        from project.models.inventory_model import Inventory
+        Cart.drop_table()
         Inventory.drop_table()
-
-        from project.models.item_model import Item
         Item.drop_table()
-
-        from project.gateaways.auth_gateaway import UserGateaway
-        UserGateaway.drop_table()
-
+        User.drop_table()
     except Exception:
         # Tries dropping the tables again if an exception is raised
         time.sleep(5)
         drop_tables()
+
 
 def delete_item(**kwargs):
     filters = []
@@ -154,4 +129,3 @@ def delete_item(**kwargs):
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
-

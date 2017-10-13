@@ -90,12 +90,12 @@ def test_one(test_file):
 
 @manager.command
 def create():
-    from project.gateaways import create_tables
+    from project.gateways import create_tables
     create_tables()
 
 @manager.command
 def drop():
-    from project.gateaways import drop_tables
+    from project.gateways import drop_tables
     drop_tables()
 
 
