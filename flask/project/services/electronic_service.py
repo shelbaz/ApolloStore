@@ -10,12 +10,15 @@ from project.models.television_model import Television
 from project.models.inventory_model import Inventory
 from project.models.item_model import Item
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
 
 
 class ElectronicService():
+
+    identityMap = IdentityMap()
 
     # Validates that a positive price is entered
     @staticmethod

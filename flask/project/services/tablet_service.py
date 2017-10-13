@@ -7,12 +7,15 @@ from project.gateaways.tablet_gateaway import TabletGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
 
 
 class TabletService():
+
+    identityMap = IdentityMap()
 
     # Creates a tablet that is valid
     def create_tablet(brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
@@ -23,6 +26,7 @@ class TabletService():
 
                 ItemGateaway.insert_into_db(tablet)
                 TabletGateaway.insert_into_db(tablet)
+                TabletService.identityMap.set(tablet.model, tablet)
 
                 logger.info('Tablet created successfully!')
 
@@ -56,9 +60,16 @@ class TabletService():
 
         if rows:
             for row in rows:
-                tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
+                #check identity map
+                if TabletService.identityMap.hasId(row[0]):
+                    tablet = TabletService.identityMap.getObject(row[0])
+                else:
+                    tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                                 row[11], row[12])
+                    TabletService.identityMap.set(tablet.model, tablet)
+
                 tablets.append(tablet)
+            
             if tablets:
                 return tablets
             else:

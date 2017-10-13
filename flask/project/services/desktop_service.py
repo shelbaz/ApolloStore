@@ -8,12 +8,15 @@ from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
+# from project.services.abstract_service import AbstractService
 from re import match
 from uuid import uuid4
 import traceback
 
 class DesktopService():
 
+    identityMap = IdentityMap()
 
     # Creates a desktop that is valid
     @staticmethod
@@ -24,6 +27,7 @@ class DesktopService():
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
                 ItemGateaway.insert_into_db(desktop)
                 DesktopGateaway.insert_into_db(desktop)
+                DesktopService.identityMap.set(desktop.model, desktop)
 
                 logger.info('Desktop created successfully!')
 
@@ -56,8 +60,17 @@ class DesktopService():
         if rows:
             desktops = []
             for row in rows:
-                desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+                #check identity map
+                if DesktopService.identityMap.hasId(row[0]):
+                    logger.debug("found object in identity map")
+                    desktop = DesktopService.identityMap.getObject(row[0])
+                else: 
+                    logger.debug("inserting desktop into identity map")
+                    desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+                    DesktopService.identityMap.set(desktop.model, desktop)
+
                 desktops.append(desktop)
+
             if desktops:
                 return desktops
             else:

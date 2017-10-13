@@ -8,12 +8,15 @@ from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
 
 
 class LaptopService():
+
+    identityMap = IdentityMap()
 
     # Creates a laptop that is valid
     @staticmethod
@@ -25,6 +28,7 @@ class LaptopService():
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
                 ItemGateaway.insert_into_db(laptop)
                 LaptopGateaway.insert_into_db(laptop)
+                LaptopService.identityMap.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
 
@@ -58,8 +62,14 @@ class LaptopService():
 
         if rows:
             for row in rows:
-                laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
+                #check identity map
+                if LaptopService.identityMap.hasId(row[0]):
+                    laptop = LaptopService.identityMap.getObject(row[0])
+                else:
+                    laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                                 row[11], row[12])
+                    LaptopService.identityMap.set(laptop.model, laptop)
+                    
                 laptops.append(laptop)
 
             if laptops:
