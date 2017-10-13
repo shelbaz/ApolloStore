@@ -49,6 +49,15 @@ class MonitorGateaway(Item):
                     """INSERT INTO monitors (model, dimensions) VALUES ('%s', '%s');"""
                     % (monitor.model, monitor.dimensions))
 
+    # Removes the monitor to the database
+    @staticmethod
+    def remove_from_db(monitor):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM monitors WHERE model='%s';"""
+                    % monitor.model)
+
     @staticmethod
     # Queries the monitors table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):

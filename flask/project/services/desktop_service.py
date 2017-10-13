@@ -38,6 +38,27 @@ class DesktopService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def update_desktop(model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
+        try:
+            rows = DesktopGateaway.query_filtered_by(model=model)
+            desktop1 = DesktopService.get_desktops_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
+                desktop2 = Desktop(model=model, brand=brand, price=price, weight=weight, processor=processor,
+                                  ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
+                DesktopGateaway.remove_from_db(desktop1)
+                ItemGateaway.remove_from_db(desktop1)
+                ItemGateaway.insert_into_db(desktop2)
+                DesktopGateaway.insert_into_db(desktop2)
+                DesktopService.identityMap.set(desktop2.model, desktop2)
+
+                logger.info('Desktop updated successfully!')
+
+                return desktop2
+
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
     # Queries the list of all desktops and their count
     @staticmethod
     def get_all_desktops():

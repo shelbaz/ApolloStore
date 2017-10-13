@@ -39,6 +39,26 @@ class LaptopService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def update_laptop(model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
+        try:
+            rows = LaptopGateaway.query_filtered_by(model=model)
+            laptop1 = LaptopService.get_laptops_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
+                laptop2 = Laptop(model=model, brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
+                                cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
+                LaptopGateaway.remove_from_db(laptop1)
+                ItemGateaway.remove_from_db(laptop1)
+                ItemGateaway.insert_into_db(laptop2)
+                LaptopGateaway.insert_into_db(laptop2)
+                LaptopService.identityMap.set(laptop2.model, laptop2)
+
+                logger.info('Laptop updated successfully!')
+
+                return laptop2
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
     # Queries the list of all laptops and their count
     @staticmethod
     def get_all_laptops():

@@ -37,6 +37,26 @@ class TabletService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def update_tablet(model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
+        try:
+            rows = TabletGateaway.query_filtered_by(model=model)
+            tablet1 = TabletService.get_tablets_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
+                tablet2 = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
+                                ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
+                TabletGateaway.remove_from_db(tablet1)
+                ItemGateaway.remove_from_db(tablet1)
+                ItemGateaway.insert_into_db(tablet2)
+                TabletGateaway.insert_into_db(tablet2)
+                TabletService.identityMap.set(tablet2.model, tablet2)
+
+                logger.info('Tablet updated successfully!')
+
+                return tablet2
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
     # Queries the list of all tablets and their count
     @staticmethod
     def get_all_tablets():

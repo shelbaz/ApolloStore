@@ -58,6 +58,14 @@ class LaptopGateaway(Item):
                     """INSERT INTO laptops (model, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera) VALUES ('%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s', '%s');"""
                     % (laptop.model, laptop.display_size, laptop.processor, str(laptop.ram_size), str(laptop.cpu_cores), str(laptop.hd_size), laptop.battery_info, laptop.os, str(laptop.touchscreen), str(laptop.camera)))
 
+    # Removes the laptop to the database
+    @staticmethod
+    def remove_from_db(laptop):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM laptops WHERE model='%s';"""
+                    % laptop.model)
 
     @staticmethod
     # Queries the laptops table with the filters given as parameters (only equality filters)

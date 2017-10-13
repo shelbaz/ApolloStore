@@ -50,6 +50,15 @@ class ItemGateaway(object):
                     """INSERT INTO items (model, brand, price, weight) VALUES ('%s', '%s', %s, %s);"""
                     % (item.model, item.brand, str(item.price), str(item.weight)))
 
+    # Removes the item to the database
+    @staticmethod
+    def remove_from_db(item):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM items WHERE model='%s';"""
+                    % item.model)
+
     @staticmethod
     # Queries the items table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):

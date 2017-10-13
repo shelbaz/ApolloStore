@@ -36,6 +36,25 @@ class TelevisionService():
         except Exception as e:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def update_television(model, brand, price, weight, type, dimensions):
+        try:
+            rows = TelevisionGateaway.query_filtered_by(model=model)
+            television1 = TelevisionService.get_televisions_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
+                television2 = Television(model=str(uuid4()), brand=brand, price=price, weight=weight, type=type, dimensions=dimensions)
+                TelevisionGateaway.remove_from_db(television1)
+                ItemGateaway.remove_from_db(television1)
+                ItemGateaway.insert_into_db(television2)
+                TelevisionGateaway.insert_into_db(television2)
+                TelevisionService.identityMap.set(television2.model, television2)
+
+                logger.info('Television updated successfully!')
+
+                return television2
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
     # Queries the list of all televisions and their count
     @staticmethod
     def get_all_televisions():

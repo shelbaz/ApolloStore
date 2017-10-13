@@ -58,6 +58,15 @@ class TabletGateaway(Item):
                     """INSERT INTO tablets (model, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info) VALUES ('%s', '%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s');"""
                     % (tablet.model, tablet.display_size, tablet.dimensions, tablet.processor, str(tablet.ram_size), str(tablet.cpu_cores), str(tablet.hd_size), tablet.battery, tablet.os, tablet.camera_info))
 
+    # Removes the tablet to the database
+    @staticmethod
+    def remove_from_db(tablet):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM tablets WHERE model='%s';"""
+                    % tablet.model)
+
     @staticmethod
     # Queries the tablets table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
