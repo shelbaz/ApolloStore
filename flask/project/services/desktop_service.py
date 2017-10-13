@@ -2,14 +2,11 @@
 from flask import g
 from project import logger
 from project.models import connect_to_db
-from project.gateways import delete_item
+from project.gateways import delete_item, get_inventory_count
 from project.models.desktop_model import Desktop
-from project.gateways.desktop_gateway import DesktopGateway
-from project.gateways.item_gateway import ItemGateway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 # from project.services.abstract_service import AbstractService
 from re import match
@@ -27,8 +24,7 @@ class DesktopService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
-                ItemGateway.insert_into_db(desktop)
-                DesktopGateway.insert_into_db(desktop)
+                desktop.insert()
                 DesktopService.identityMap.set(desktop.model, desktop)
 
                 logger.info('Desktop created successfully!')
@@ -48,7 +44,7 @@ class DesktopService():
 
             if desktops:
                 for desktop in desktops:
-                    count = InventoryGateway.get_count('desktops', desktop.model)
+                    count = get_inventory_count('desktops', desktop.model)
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:

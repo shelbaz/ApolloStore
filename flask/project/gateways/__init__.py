@@ -3,6 +3,8 @@ import psycopg2
 import time
 import os
 from flask import current_app
+import traceback
+from project import logger
 
 
 # Creates a connection to the PostgreSQL using the test database if an argument is passed, and using the dev database if none is passed
@@ -13,6 +15,42 @@ def connect_to_db():
     else:
         with psycopg2.connect(os.getenv('DATABASE_URL')) as connection:
             return connection
+
+
+def insert_into_db(table, attributes, obj):
+
+    types_with_no_quotes = ['integer', 'decimal', 'boolean']
+
+    query = 'INSERT INTO %s (' % table
+
+    currently_first_attribute = True
+
+    for key in attributes.keys():
+        if currently_first_attribute:
+            currently_first_attribute = False
+        else:
+            query += ', '
+        query += key
+
+    query += ') VALUES ('
+
+    currently_first_attribute = True
+
+    for key, value in attributes.items():
+        if currently_first_attribute:
+            currently_first_attribute = False
+        else:
+            query += ', '
+        if value in types_with_no_quotes:
+            query += str(getattr(obj, key))
+        else:
+            query += '\'%s\'' % str(getattr(obj, key))
+
+    query += ');'
+
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
 
 
 def query_filtered_by(*tables, **conditions):
@@ -41,6 +79,32 @@ def query_filtered_by(*tables, **conditions):
         return rows
     else:
         return None
+
+
+def get_inventory_count(table, model):
+    try:
+        query = 'SELECT COUNT(*) FROM inventories NATURAL JOIN (SELECT * FROM %s WHERE model=\'%s\') AS x;' % (table, model)
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                count = cursor.fetchone()
+        return count[0]
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
+def delete_item(**kwargs):
+    filters = []
+
+    for key, value in kwargs.items():
+        filters.append(str(key) + '=\'' + str(value) + '\'')
+
+    filters = ' AND '.join(filters)
+
+    query = 'DELETE FROM inventories WHERE %s;' % (filters,)
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
 
 
 def create_table(name, attributes, constraints, *enum):
@@ -143,17 +207,3 @@ def drop_tables():
         # Tries dropping the tables again if an exception is raised
         time.sleep(5)
         drop_tables()
-
-
-def delete_item(**kwargs):
-    filters = []
-
-    for key, value in kwargs.items():
-        filters.append(str(key) + '=\'' + str(value) + '\'')
-
-    filters = ' AND '.join(filters)
-
-    query = 'DELETE FROM inventories WHERE %s;' % (filters,)
-    with connect_to_db() as connection:
-        with connection.cursor() as cursor:
-            cursor.execute(query)

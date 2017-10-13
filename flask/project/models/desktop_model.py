@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table, query_filtered_by
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
 
 
 class Desktop(Item):
@@ -44,3 +44,7 @@ class Desktop(Item):
     @staticmethod 
     def query(**conditions):
         return query_filtered_by('items', 'desktops', **conditions)
+
+    def insert(self):
+        super().insert()
+        insert_into_db('desktops', __class__.attributes, self)

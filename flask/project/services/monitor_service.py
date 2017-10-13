@@ -3,12 +3,9 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.monitor_model import Monitor
-from project.gateways import delete_item
-from project.gateways.monitor_gateway import MonitorGateway
-from project.gateways.item_gateway import ItemGateway
+from project.gateways import delete_item, get_inventory_count
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -25,8 +22,7 @@ class MonitorService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
-                ItemGateway.insert_into_db(monitor)
-                MonitorGateway.insert_into_db(monitor)
+                monitor.insert()
                 MonitorService.identityMap.set(monitor.model, monitor)
 
                 logger.info('Monitor created successfully!')
@@ -46,7 +42,7 @@ class MonitorService():
 
             if monitors:
                 for monitor in monitors:
-                    count = InventoryGateway.get_count('monitors', monitor.model)
+                    count = get_inventory_count('monitors', monitor.model)
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:

@@ -2,7 +2,6 @@ from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from project import logger, login_manager
 from project.models.auth_model import User
-from project.gateways.auth_gateway import UserGateway
 from re import match
 from uuid import uuid4
 import traceback
@@ -20,7 +19,7 @@ class AuthenticationService():
                     if User.query(email=email) is None:
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
                         user.hash_password(password)
-                        UserGateway.insert_into_db(user)
+                        user.insert()
 
                         logger.info('User with email %s successfully created' % (email,))
 

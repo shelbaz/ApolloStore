@@ -24,10 +24,9 @@ from project.models.monitor_model import Monitor
 from project.models.tablet_model import Tablet
 from project.models.television_model import Television
 from project.models.inventory_model import Inventory
-from project.gateways.inventory_gateway import InventoryGateway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
+from project.gateways import get_inventory_count
 
 
 # This class inherits from the base class in 'base_viewmodels.py', in order to
@@ -104,14 +103,14 @@ class TestViewModels(BaseTestCase):
             self.assertEqual(result1[0].brand, 'Samsung')
             self.assertEqual(result2, None)
 
-    # Test to see if get_count function works for Electronics
+    # Test to see if get_inventory_count function works for Electronics
     def test_should_count_for_searched_model(self):
         with self.client:
             tv1 = TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
-            result = InventoryGateway.get_count('televisions', tv1.model)
+            result = get_inventory_count('televisions', tv1.model)
             self.assertEqual(result, 0)
             InventoryService.add_item_to_inventory(tv1.model)
-            result = InventoryGateway.get_count('televisions', tv1.model)
+            result = get_inventory_count('televisions', tv1.model)
             self.assertEqual(result, 1)
 
     # Test to see if add item to inventory works for Electronics
@@ -122,7 +121,7 @@ class TestViewModels(BaseTestCase):
             InventoryService.add_item_to_inventory(tv1.model)
             rows = Inventory.query(model=tv1.model)
             result = InventoryService.get_inventory_items_from_rows(rows)
-            self.assertEqual(len (result), 2)
+            self.assertEqual(len(result), 2)
 
     # Tests to see if all desktops will be returned
     def test_should_return_all_desktops(self):

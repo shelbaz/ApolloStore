@@ -3,13 +3,10 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.laptop_model import Laptop
-from project.gateways import delete_item
-from project.gateways.laptop_gateway import LaptopGateway
-from project.gateways.item_gateway import ItemGateway
+from project.gateways import delete_item, get_inventory_count
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -28,8 +25,7 @@ class LaptopService():
 
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
-                ItemGateway.insert_into_db(laptop)
-                LaptopGateway.insert_into_db(laptop)
+                laptop.insert()
                 LaptopService.identityMap.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
@@ -49,7 +45,7 @@ class LaptopService():
 
             if laptops:
                 for laptop in laptops:
-                    count = InventoryGateway.get_count('laptops', laptop.model)
+                    count = get_inventory_count('laptops', laptop.model)
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:

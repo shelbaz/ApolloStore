@@ -3,12 +3,9 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.television_model import Television
-from project.gateways import delete_item
-from project.gateways.television_gateway import TelevisionGateway
-from project.gateways.item_gateway import ItemGateway
+from project.gateways import delete_item, get_inventory_count
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -25,8 +22,7 @@ class TelevisionService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 television = Television(model=str(uuid4()), brand=brand, price=price, weight=weight, type=type, dimensions=dimensions)
-                ItemGateway.insert_into_db(television)
-                TelevisionGateway.insert_into_db(television)
+                television.insert()
                 TelevisionService.identityMap.set(television.model, television)
 
                 logger.info('Television created successfully!')
@@ -46,7 +42,7 @@ class TelevisionService():
 
             if televisions:
                 for television in televisions:
-                    count = InventoryGateway.get_count('televisions', television.model)
+                    count = get_inventory_count('televisions', television.model)
                     televisions_with_count.append([television, count])
                 return televisions_with_count
             else:

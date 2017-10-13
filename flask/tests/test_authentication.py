@@ -16,7 +16,6 @@ import json
 from tests.base_authentication import BaseTestCase
 from project.services.authentication_service import  AuthenticationService
 from project.models.auth_model import User
-from project.gateways.auth_gateway import UserGateway
 from tests.helpers import make_auth_header
 from flask import g
 

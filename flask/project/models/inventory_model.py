@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table, query_filtered_by
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
 
 
 class Inventory(object):
@@ -32,3 +32,6 @@ class Inventory(object):
     @staticmethod
     def query(**conditions):
         return query_filtered_by('inventories', **conditions)
+
+    def insert(self):
+        insert_into_db('inventories', __class__.attributes, self)

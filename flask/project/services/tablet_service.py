@@ -3,12 +3,9 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.tablet_model import Tablet
-from project.gateways import delete_item
-from project.gateways.tablet_gateway import TabletGateway
-from project.gateways.item_gateway import ItemGateway
+from project.gateways import delete_item, get_inventory_count
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -25,9 +22,7 @@ class TabletService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
-
-                ItemGateway.insert_into_db(tablet)
-                TabletGateway.insert_into_db(tablet)
+                tablet.insert()
                 TabletService.identityMap.set(tablet.model, tablet)
 
                 logger.info('Tablet created successfully!')
@@ -47,7 +42,7 @@ class TabletService():
 
             if tablets:
                 for tablet in tablets:
-                    count = InventoryGateway.get_count('tablets', tablet.model)
+                    count = get_inventory_count('tablets', tablet.model)
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:

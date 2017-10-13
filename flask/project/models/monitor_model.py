@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table, query_filtered_by
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
 
 
 class Monitor(Item):
@@ -36,3 +36,7 @@ class Monitor(Item):
     @staticmethod
     def query(**conditions):
         return query_filtered_by('items', 'monitors', **conditions)
+
+    def insert(self):
+        super().insert()
+        insert_into_db('monitors', __class__.attributes, self)

@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table, query_filtered_by
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
 
 
 class Cart(object):
@@ -38,3 +38,6 @@ class Cart(object):
     @staticmethod
     def query(**conditions):
         return query_filtered_by('carts', **conditions)
+
+    def insert(self):
+        insert_into_db('carts', __class__.attributes, self)

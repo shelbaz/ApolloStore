@@ -4,7 +4,6 @@ from project import logger
 from project.models import connect_to_db
 from project.models.inventory_model import Inventory
 from project.gateways import delete_item
-from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -20,7 +19,7 @@ class InventoryService():
     def add_item_to_inventory(model):
         try:
             inventory = Inventory(id=str(uuid4()), model=model)
-            InventoryGateway.insert_into_db(inventory)
+            inventory.insert()
             InventoryService.identityMap.set(inventory.id, inventory)
             logger.info('Added %s to the inventory successfully!' % (model,))
 
