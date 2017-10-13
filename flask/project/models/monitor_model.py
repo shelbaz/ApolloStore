@@ -1,10 +1,27 @@
 
 from project.models.item_model import Item
-from project.models import connect_to_db
-import psycopg2
+from project.gateways import create_table, drop_table
 
 
 class Monitor(Item):
+
+    attributes = {
+        'model': 'UUID',
+        'dimensions': 'varchar(64)'
+    }
+
+    constraints = {
+        'PRIMARY KEY': '(model)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)'
+    }
+
+    @staticmethod
+    def create_table():
+        create_table('monitors', attributes, constraints)
+
+    @staticmethod
+    def drop_table():
+        drop_table('monitors')
 
     # Constructor that creates a new monitor
     def __init__(self, model, brand, price, weight, dimensions):
@@ -15,4 +32,3 @@ class Monitor(Item):
         # Initialize object attributes
         self.model = model
         self.dimensions = dimensions
-

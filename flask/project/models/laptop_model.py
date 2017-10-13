@@ -1,10 +1,35 @@
 
 from project.models.item_model import Item
-from project.models import connect_to_db
-import psycopg2
+from project.gateways import create_table, drop_table
 
 
 class Laptop(Item):
+
+    attributes = {
+        'model': 'UUID',
+        'display_size': 'varchar(64)',
+        'processor': 'varchar(64)',
+        'ram_size': 'integer',
+        'cpu_cores': 'integer',
+        'hd_size': 'integer',
+        'battery_info': 'varchar(64)',
+        'os': 'varchar(64)',
+        'touchscreen': 'boolean',
+        'camera': 'boolean'
+    }
+
+    constraints = {
+        'PRIMARY KEY': '(model)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)'
+    }
+
+    @staticmethod
+    def create_table():
+        create_table('laptops', attributes, constraints)
+
+    @staticmethod
+    def drop_table():
+        drop_table('laptops')
 
     # Constructor that creates a new laptop
     def __init__(self, model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):

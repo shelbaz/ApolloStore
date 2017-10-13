@@ -1,9 +1,26 @@
 
-from project.models import connect_to_db
-import psycopg2
+from project.gateways import create_table, drop_table
 
 
 class Inventory(object):
+
+    attributes = {
+        'id': 'UUID',
+        'model': 'UUID'
+    }
+
+    constraints = {
+        'PRIMARY KEY': '(id)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)'
+    }
+
+    @staticmethod
+    def create_table():
+        create_table('inventories', attributes, constraints)
+
+    @staticmethod
+    def drop_table():
+        drop_table('inventories')
 
     # Constructor that creates inventory
     def __init__(self, id, model):
