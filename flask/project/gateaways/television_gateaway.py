@@ -58,6 +58,15 @@ class TelevisionGateaway(Item):
                     """INSERT INTO televisions (model, type, dimensions) VALUES ('%s', '%s', '%s');"""
                     % (tv.model, tv.type, tv.dimensions))
 
+    # Removes the television to the database
+    @staticmethod
+    def remove_from_db(television):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM televisions WHERE model='%s';"""
+                    % television.model)
+
     @staticmethod
     # Queries the televisions table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):

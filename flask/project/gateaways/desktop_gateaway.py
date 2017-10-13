@@ -53,6 +53,15 @@ class DesktopGateaway(Item):
                     """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
                     % (desktop.model, desktop.processor, str(desktop.ram_size), str(desktop.cpu_cores), str(desktop.hd_size), desktop.dimensions))
 
+    # Removes the desktop to the database
+    @staticmethod
+    def remove_from_db(desktop):
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """DELETE FROM desktops WHERE model='%s';"""
+                    % desktop.model)
+
     @staticmethod
     # Queries the desktops table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):

@@ -3,10 +3,13 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.monitor_model import Monitor
+from project.gateaways import delete_item
 from project.gateaways.monitor_gateaway import MonitorGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.services.inventory_service import InventoryService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
@@ -14,12 +17,15 @@ import traceback
 
 class MonitorService():
 
+    identityMap = IdentityMap()
+
     # Creates a monitor that is valid
     @staticmethod
     def create_monitor(brand, price, weight, dimensions):
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
+                MonitorService.identityMap.set(monitor.model, monitor)
 
                 return monitor
 
@@ -32,6 +38,25 @@ class MonitorService():
         ItemGateaway.insert_into_db(monitor)
         MonitorGateaway.insert_into_db(monitor)
         logger.info('Monitor created successfully!')
+
+    @staticmethod
+    def update_monitor(model, brand, price, weight, dimensions):
+        try:
+            rows = MonitorGateaway.query_filtered_by(model=model)
+            monitor1 = MonitorService.get_monitors_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
+                monitor2 = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
+                MonitorGateaway.remove_from_db(monitor1)
+                ItemGateaway.remove_from_db(monitor1)
+                ItemGateaway.insert_into_db(monitor2)
+                MonitorGateaway.insert_into_db(monitor2)
+                MonitorService.identityMap.set(monitor2.model, monitor2)
+
+                logger.info('Monitor updated successfully!')
+
+                return monitor2
+        except Exception as e:
+            logger.error(traceback.format_exc())
 
     # Queries the list of all monitors and their count
     @staticmethod
@@ -57,8 +82,15 @@ class MonitorService():
         if rows:
             monitors = []
             for row in rows:
-                monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
+                #check identity map
+                if MonitorService.identityMap.hasId(row[0]):
+                    monitor = MonitorService.identityMap.getObject(row[0])
+                else:
+                    monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
+                    MonitorService.identityMap.set(monitor.model, monitor)
+
                 monitors.append(monitor)
+
             if monitors:
                 return monitors
             else:

@@ -85,3 +85,17 @@ def drop_tables():
         # Tries dropping the tables again if an exception is raised
         time.sleep(5)
         drop_tables()
+
+def delete_item(**kwargs):
+    filters = []
+
+    for key, value in kwargs.items():
+        filters.append(str(key) + '=\'' + str(value) + '\'')
+
+    filters = ' AND '.join(filters)
+
+    query = 'DELETE FROM inventories WHERE %s;' % (filters,)
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+

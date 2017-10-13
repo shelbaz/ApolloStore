@@ -3,10 +3,13 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.tablet_model import Tablet
+from project.gateaways import delete_item
 from project.gateaways.tablet_gateaway import TabletGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.services.inventory_service import InventoryService
 from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
 import traceback
@@ -14,12 +17,16 @@ import traceback
 
 class TabletService():
 
+    identityMap = IdentityMap()
+
     # Creates a tablet that is valid
     def create_tablet(brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
+
+                TabletService.identityMap.set(tablet.model, tablet)
 
                 return tablet
 
@@ -31,6 +38,26 @@ class TabletService():
         ItemGateaway.insert_into_db(tablet)
         TabletGateaway.insert_into_db(tablet)
         logger.info('Tablet created successfully!')
+
+    @staticmethod
+    def update_tablet(model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
+        try:
+            rows = TabletGateaway.query_filtered_by(model=model)
+            tablet1 = TabletService.get_tablets_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
+                tablet2 = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
+                                ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
+                TabletGateaway.remove_from_db(tablet1)
+                ItemGateaway.remove_from_db(tablet1)
+                ItemGateaway.insert_into_db(tablet2)
+                TabletGateaway.insert_into_db(tablet2)
+                TabletService.identityMap.set(tablet2.model, tablet2)
+
+                logger.info('Tablet updated successfully!')
+
+                return tablet2
+        except Exception as e:
+            logger.error(traceback.format_exc())
 
     # Queries the list of all tablets and their count
     @staticmethod
@@ -57,9 +84,16 @@ class TabletService():
 
         if rows:
             for row in rows:
-                tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
+                #check identity map
+                if TabletService.identityMap.hasId(row[0]):
+                    tablet = TabletService.identityMap.getObject(row[0])
+                else:
+                    tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                                 row[11], row[12])
+                    TabletService.identityMap.set(tablet.model, tablet)
+
                 tablets.append(tablet)
+
             if tablets:
                 return tablets
             else:
