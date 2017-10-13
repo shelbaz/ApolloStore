@@ -6,49 +6,6 @@ import psycopg2
 
 class LaptopGateaway(Item):
 
-    # Class function that creates the 'laptops' table
-    @staticmethod
-    def create_table():
-        # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
-
-                # Searches if there is already a table named 'laptops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('laptops',))
-
-                # Creates table 'laptops' if it doesn't exist
-                if not bool(cursor.rowcount):
-                    cursor.execute(
-                        """
-                        CREATE TABLE laptops (
-                          model UUID PRIMARY KEY,
-                          display_size varchar(64),
-                          processor varchar(64),
-                          ram_size integer,
-                          cpu_cores integer,
-                          hd_size integer,
-                          battery_info varchar(64),
-                          os varchar(64),
-                          touchscreen boolean,
-                          camera boolean,
-                          FOREIGN KEY (model) REFERENCES items (model)
-                        );
-                        """
-                    )
-
-    # Class function that deletes the 'laptops' table
-    @staticmethod
-    def drop_table():
-        # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
-                # Searches if there is already a table named 'laptops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('laptops',))
-
-                # Deletes table 'laptops' if it exists
-                if bool(cursor.rowcount):
-                    cursor.execute('DROP TABLE laptops;')
-
     # Adds the laptop to the database
     @staticmethod
     def insert_into_db(laptop):

@@ -88,6 +88,17 @@ def test_one(test_file):
         return 1
 
 
+@manager.command
+def create():
+    from project.gateaways import create_tables
+    create_tables()
+
+@manager.command
+def drop():
+    from project.gateaways import drop_tables
+    drop_tables()
+
+
 # Starts the Flask app.
 if __name__ == '__main__':
     manager.run()

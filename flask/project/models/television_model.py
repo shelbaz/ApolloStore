@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateaways import create_table, drop_table
 
 
 class Television(Item):
@@ -16,13 +16,11 @@ class Television(Item):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    enums = (
-        {'types': '(\'HD\', \'LED\', \'3D\', \'Smart\')'}
-    )
+    enum = {'types': '(\'HD\', \'LED\', \'3D\', \'Smart\')'}
 
     @staticmethod
     def create_table():
-        create_table('televisions', attributes, constraints, enums)
+        create_table('televisions', __class__.attributes, __class__.constraints, __class__.enum)
 
     @staticmethod
     def drop_table():

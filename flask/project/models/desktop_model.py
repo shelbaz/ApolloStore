@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateaways import create_table, drop_table
 
 
 class Desktop(Item):
@@ -21,7 +21,7 @@ class Desktop(Item):
 
     @staticmethod
     def create_table():
-        create_table('desktops', attributes, constraints)
+        create_table('desktops', __class__.attributes, __class__.constraints)
 
     @staticmethod
     def drop_table():

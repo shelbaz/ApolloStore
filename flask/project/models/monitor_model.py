@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateaways import create_table, drop_table
 
 
 class Monitor(Item):
@@ -17,7 +17,7 @@ class Monitor(Item):
 
     @staticmethod
     def create_table():
-        create_table('monitors', attributes, constraints)
+        create_table('monitors', __class__.attributes, __class__.constraints)
 
     @staticmethod
     def drop_table():

@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table
+from project.gateaways import create_table, drop_table
 
 
 class Inventory(object):
@@ -16,7 +16,7 @@ class Inventory(object):
 
     @staticmethod
     def create_table():
-        create_table('inventories', attributes, constraints)
+        create_table('inventories', __class__.attributes, __class__.constraints)
 
     @staticmethod
     def drop_table():

@@ -15,35 +15,91 @@ def connect_to_db():
             return connection
 
 
+def create_table(name, attributes, constraints, *enum):
+    # Using the 'with' statement automatically commits and closes database connections
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+
+            # Searches if there is already a table with the same name
+            cursor.execute("select * from information_schema.tables where table_name=%s", (name,))
+
+            query = ''
+
+            # Adds ENUM type if existent
+            if enum:
+                for key, value in enum[0].items():
+                    query += """
+                            DO $$
+                            BEGIN
+                                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'types') THEN
+                                    CREATE TYPE %s AS ENUM %s;
+                                END IF;
+                            END$$;
+                            """ % (key, value)
+
+            query += 'CREATE TABLE %s (' % name
+
+            # Adds attributes
+            for key, value in attributes.items():
+                query += '%s %s, ' % (key, value)
+
+            currently_first_constraint = True
+
+            # Adds constraints
+            for key, value in constraints.items():
+                if currently_first_constraint:
+                    query += '%s %s' % (key, value)
+                    currently_first_constraint = False
+                else:
+                    query += ', %s %s' % (key, value)
+
+            query += ');'
+
+            if not bool(cursor.rowcount):
+                cursor.execute(query)
+
+
+def drop_table(name):
+    # Using the 'with' statement automatically commits and closes database connections
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            # Searches if there is already a table with the same name
+            cursor.execute("select * from information_schema.tables where table_name=%s", (name,))
+
+            # Deletes table if it exists
+            if bool(cursor.rowcount):
+                cursor.execute('DROP TABLE %s;' % name)
+
+
 # Calls the class functions that create the tables of the corresponding models
 def create_tables():
     try:
         from project.gateaways.auth_gateaway import UserGateaway
         UserGateaway.create_table()
 
-        from project.gateaways.item_gateaway import ItemGateaway
-        ItemGateaway.create_table()
+        from project.models.item_model import Item
+        Item.create_table()
 
-        from project.gateaways.inventory_gateaway import InventoryGateaway
-        InventoryGateaway.create_table()
+        from project.models.inventory_model import Inventory
+        Inventory.create_table()
 
         from project.gateaways.cart_gateaway import CartGateaway
         CartGateaway.create_table()
 
-        from project.gateaways.desktop_gateaway import DesktopGateaway
-        DesktopGateaway.create_table()
+        from project.models.television_model import Television
+        Television.create_table()
 
-        from project.gateaways.laptop_gateaway import LaptopGateaway
-        LaptopGateaway.create_table()
+        from project.models.tablet_model import Tablet
+        Tablet.create_table()
 
-        from project.gateaways.monitor_gateaway import MonitorGateaway
-        MonitorGateaway.create_table()
+        from project.models.monitor_model import Monitor
+        Monitor.create_table()
 
-        from project.gateaways.tablet_gateaway import TabletGateaway
-        TabletGateaway.create_table()
+        from project.models.laptop_model import Laptop
+        Laptop.create_table()
 
-        from project.gateaways.television_gateaway import TelevisionGateaway
-        TelevisionGateaway.create_table()
+        from project.models.desktop_model import Desktop
+        Desktop.create_table()
 
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
@@ -54,29 +110,29 @@ def create_tables():
 # Calls the class functions that drop the tables of the corresponding models
 def drop_tables():
     try:
-        from project.gateaways.television_gateaway import TelevisionGateaway
-        TelevisionGateaway.drop_table()
+        from project.models.television_model import Television
+        Television.drop_table()
 
-        from project.gateaways.tablet_gateaway import TabletGateaway
-        TabletGateaway.drop_table()
+        from project.models.tablet_model import Tablet
+        Tablet.drop_table()
 
-        from project.gateaways.monitor_gateaway import MonitorGateaway
-        MonitorGateaway.drop_table()
+        from project.models.monitor_model import Monitor
+        Monitor.drop_table()
 
-        from project.gateaways.laptop_gateaway import LaptopGateaway
-        LaptopGateaway.drop_table()
+        from project.models.laptop_model import Laptop
+        Laptop.drop_table()
 
-        from project.gateaways.desktop_gateaway import DesktopGateaway
-        DesktopGateaway.drop_table()
+        from project.models.desktop_model import Desktop
+        Desktop.drop_table()
 
         from project.gateaways.cart_gateaway import CartGateaway
         CartGateaway.drop_table()
 
-        from project.gateaways.inventory_gateaway import InventoryGateaway
-        InventoryGateaway.drop_table()
+        from project.models.inventory_model import Inventory
+        Inventory.drop_table()
 
-        from project.gateaways.item_gateaway import ItemGateaway
-        ItemGateaway.drop_table()
+        from project.models.item_model import Item
+        Item.drop_table()
 
         from project.gateaways.auth_gateaway import UserGateaway
         UserGateaway.drop_table()
