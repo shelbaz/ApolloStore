@@ -14,6 +14,8 @@ from project.models.auth_model import User
 from project.gateaways.auth_gateaway import UserGateaway
 from flask_login import login_required, current_user, login_user, logout_user
 from project.services.inventory_service import InventoryService
+from project.services.unitofwork_service import UnitOfWorkService
+
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -34,35 +36,50 @@ def index():
 @website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
 @login_required
 def add_desktop_inventory(model):
-    InventoryService.add_item_to_inventory(model)
+    unitofwork = UnitOfWorkService('new')
+    inventory = InventoryService.add_item_to_inventory(model)
+    unitofwork.register_new('inventory', inventory)
+    unitofwork.commit()
     return redirect('/desktop')
 
 
 @website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
 @login_required
 def add_television_inventory(model):
-    InventoryService.add_item_to_inventory(model)
+    unitofwork = UnitOfWorkService('new')
+    inventory = InventoryService.add_item_to_inventory(model)
+    unitofwork.register_new('inventory', inventory)
+    unitofwork.commit()
     return redirect('/television')
 
 
 @website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
 @login_required
 def add_monitor_inventory(model):
-    InventoryService.add_item_to_inventory(model)
+    unitofwork = UnitOfWorkService('new')
+    inventory = InventoryService.add_item_to_inventory(model)
+    unitofwork.register_new('inventory', inventory)
+    unitofwork.commit()
     return redirect('/monitor')
 
 
 @website_blueprint.route('/add-inventory/tablet/<string:model>', methods=['POST'])
 @login_required
 def add_tablet_inventory(model):
-    InventoryService.add_item_to_inventory(model)
+    unitofwork = UnitOfWorkService('new')
+    inventory = InventoryService.add_item_to_inventory(model)
+    unitofwork.register_new('inventory', inventory)
+    unitofwork.commit()
     return redirect('/tablet')
 
 
 @website_blueprint.route('/add-inventory/laptop/<string:model>', methods=['POST'])
 @login_required
 def add_laptop_inventory(model):
-    InventoryService.add_item_to_inventory(model)
+    unitofwork = UnitOfWorkService('new')
+    inventory = InventoryService.add_item_to_inventory(model)
+    unitofwork.register_new('inventory', inventory)
+    unitofwork.commit()
     return redirect('/laptop')
 
 @website_blueprint.route('/delete-item/<string:model>', methods=['POST'])
@@ -78,6 +95,8 @@ def delete_item_from_inventory(model):
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
 @login_required
 def desktop():
+    unitofwork = UnitOfWorkService('new')
+
     if request.method == 'POST':
         price = request.form.get('price')
         weight = request.form.get('weight')
@@ -91,6 +110,9 @@ def desktop():
         if price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
             desktop = DesktopService.create_desktop(brand, price, weight, processor, ramsize, cpucores, hdsize, dimensions)
 
+            unitofwork.register_new('desktop', desktop)
+            unitofwork.commit()
+
             if desktop:
                 return redirect('/desktop')
             else:
@@ -102,6 +124,8 @@ def desktop():
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
 @login_required
 def laptop():
+    unitofwork = UnitOfWorkService('new')
+
     if request.method == 'POST':
 
         price = request.form.get('price')
@@ -128,6 +152,9 @@ def laptop():
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
             laptop = LaptopService.create_laptop(brand, price, weight, displaysize, processor, ramsize, cpucores, hdsize, battery, operatingsystem, touchscreen, camera)
 
+            unitofwork.register_new('laptop', laptop)
+            unitofwork.commit()
+
             if laptop:
                 return redirect('/laptop')
             else:
@@ -139,6 +166,8 @@ def laptop():
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
 @login_required
 def tablet():
+    unitofwork = UnitOfWorkService('new')
+
     if request.method == 'POST':
 
         price = request.form.get('price')
@@ -157,6 +186,9 @@ def tablet():
         if price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
             tablet = TabletService.create_tablet(brand, price, weight, displaysize, dimensions, processor, ramsize, cpucores, hdsize, battery, operatingsystem, camera)
 
+            unitofwork.register_new('tablet', tablet)
+            unitofwork.commit()
+
             if tablet:
                 return redirect('/tablet')
             else:
@@ -168,6 +200,8 @@ def tablet():
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 @login_required
 def monitor():
+    unitofwork = UnitOfWorkService('new')
+
     if request.method == 'POST':
 
         price = request.form.get('price')
@@ -177,6 +211,9 @@ def monitor():
 
         if price and weight and brand and dimensions:
             monitor = MonitorService.create_monitor(brand, price, weight, dimensions)
+
+            unitofwork.register_new('monitor', monitor)
+            unitofwork.commit()
 
             if monitor:
                 return redirect('/monitor')
@@ -189,6 +226,8 @@ def monitor():
 @website_blueprint.route('/television', methods=['GET', 'POST'])
 @login_required
 def television():
+    unitofwork = UnitOfWorkService('new')
+
     if request.method == 'POST':
 
         price = request.form.get('price')
@@ -199,6 +238,9 @@ def television():
 
         if price and weight and brand and dimensions:
             television = TelevisionService.create_television(brand, price, weight, tvtype, dimensions)
+
+            unitofwork.register_new('television', television)
+            unitofwork.commit()
 
             if television:
                 return redirect('/television')

@@ -25,16 +25,18 @@ class TelevisionService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 television = Television(model=str(uuid4()), brand=brand, price=price, weight=weight, type=type, dimensions=dimensions)
-                ItemGateaway.insert_into_db(television)
-                TelevisionGateaway.insert_into_db(television)
                 TelevisionService.identityMap.set(television.model, television)
-
-                logger.info('Television created successfully!')
 
                 return television
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_television(television):
+        ItemGateaway.insert_into_db(television)
+        TelevisionGateaway.insert_into_db(television)
+        logger.info('Television created successfully!')
 
     @staticmethod
     def update_television(model, brand, price, weight, type, dimensions):
@@ -84,10 +86,10 @@ class TelevisionService():
                     television = TelevisionService.identityMap.getObject(row[0])
                 else:
                     television = Television(row[0], row[1], row[2], row[3], row[4], row[5])
-                    TelevisionService.identityMap.set(television.model, television)        
+                    TelevisionService.identityMap.set(television.model, television)
 
                 televisions.append(television)
-            
+
             if televisions:
                 return televisions
             else:

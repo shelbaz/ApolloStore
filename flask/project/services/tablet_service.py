@@ -26,16 +26,18 @@ class TabletService():
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
 
-                ItemGateaway.insert_into_db(tablet)
-                TabletGateaway.insert_into_db(tablet)
                 TabletService.identityMap.set(tablet.model, tablet)
-
-                logger.info('Tablet created successfully!')
 
                 return tablet
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_tablet(tablet):
+        ItemGateaway.insert_into_db(tablet)
+        TabletGateaway.insert_into_db(tablet)
+        logger.info('Tablet created successfully!')
 
     @staticmethod
     def update_tablet(model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
@@ -91,7 +93,7 @@ class TabletService():
                     TabletService.identityMap.set(tablet.model, tablet)
 
                 tablets.append(tablet)
-            
+
             if tablets:
                 return tablets
             else:
