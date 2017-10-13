@@ -2,11 +2,13 @@
 from flask import g
 from project import logger
 from project.models import connect_to_db
+from project.gateaways import delete_item
 from project.models.desktop_model import Desktop
 from project.gateaways.desktop_gateaway import DesktopGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
+from project.services.inventory_service import InventoryService
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
 # from project.services.abstract_service import AbstractService

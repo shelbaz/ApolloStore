@@ -3,6 +3,7 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.inventory_model import Inventory
+from project.gateaways import delete_item
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
 from re import match
@@ -27,6 +28,11 @@ class InventoryService():
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    def delete_item_from_inventory(model):
+        rows = InventoryGateaway.query_filtered_by(model=model)
+        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
+        delete_item(id=inventory.id)
 
     # Returns all inventory items from rows taken from db
     @staticmethod

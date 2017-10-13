@@ -3,9 +3,11 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.monitor_model import Monitor
+from project.gateaways import delete_item
 from project.gateaways.monitor_gateaway import MonitorGateaway
 from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
+from project.services.inventory_service import InventoryService
 from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
 from re import match
