@@ -121,22 +121,18 @@
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
-                 console.log('submitted');
              }
         </script>
 
         <script>
-            function delete_from_inventory(model) {
-                console.log(model);
-                model += ":desktop";
-                var form = document.createElement('form');
-                form.setAttribute('method', 'post');
-                form.setAttribute('action', '/delete-item/' + model);
-                form.style.display = 'hidden';
-                document.body.appendChild(form);
-                form.submit();
-                console.log('deleted');
-            }
+             function delete_from_inventory(model) {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/remove-inventory/desktop/' + model);
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form);
+                 form.submit();
+             }
         </script>
 
         <div class="col-md-8" >

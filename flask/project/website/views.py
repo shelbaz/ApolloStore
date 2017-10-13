@@ -2,7 +2,7 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
+from flask import render_template, Blueprint, g, request, abort, redirect
 from project.services.authentication_service import AuthenticationService
 from project.services.desktop_service import DesktopService
 from project.services.television_service import TelevisionService
@@ -30,48 +30,17 @@ def index():
     return render_template('index.html')
 
 
-@website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
+@website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_desktop_inventory(model):
+def add_desktop_inventory(electronic, model):
     InventoryService.add_item_to_inventory(model)
-    return redirect('/desktop')
+    return redirect('/' + electronic)
 
-
-@website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
+@website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_television_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/television')
-
-
-@website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
-@login_required
-def add_monitor_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/monitor')
-
-
-@website_blueprint.route('/add-inventory/tablet/<string:model>', methods=['POST'])
-@login_required
-def add_tablet_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/tablet')
-
-
-@website_blueprint.route('/add-inventory/laptop/<string:model>', methods=['POST'])
-@login_required
-def add_laptop_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/laptop')
-
-@website_blueprint.route('/delete-item/<string:model>', methods=['POST'])
-@login_required
-def delete_item_from_inventory(model):
-    models = model.split(":")
-    modelId=models[0]
-    type= models[1]
-    InventoryService.delete_item_from_inventory(modelId)
-    return redirect('/'+ type)
+def delete_item_from_inventory(electronic, model):
+    InventoryService.delete_item_from_inventory(model)
+    return redirect('/' + electronic)
 
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])

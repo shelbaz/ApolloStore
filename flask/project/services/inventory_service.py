@@ -25,11 +25,6 @@ class InventoryService():
         except Exception:
             logger.error(traceback.format_exc())
 
-    def delete_item_from_inventory(model):
-        rows = Inventory.query(model=model)
-        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
-        delete_item(id=inventory.id)
-
     # Returns all inventory items from rows taken from db
     @staticmethod
     def get_inventory_items_from_rows(rows):
@@ -52,3 +47,10 @@ class InventoryService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_item_from_inventory(model):
+        rows = Inventory.query(model=model)
+        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
+        inventory.delete()
+        
