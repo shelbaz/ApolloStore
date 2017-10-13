@@ -1,11 +1,8 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.inventory_model import Inventory
 from project.gateways import delete_item
 from project.identityMap import IdentityMap
-from re import match
 from uuid import uuid4
 import traceback
 
@@ -25,7 +22,7 @@ class InventoryService():
 
             return inventory
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     def delete_item_from_inventory(model):

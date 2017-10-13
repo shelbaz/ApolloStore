@@ -1,13 +1,9 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.monitor_model import Monitor
-from project.gateways import delete_item, get_inventory_count
+from project.gateways import get_inventory_count
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
 from project.identityMap import IdentityMap
-from re import match
 from uuid import uuid4
 import traceback
 
@@ -29,7 +25,7 @@ class MonitorService():
 
                 return monitor
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all monitors and their count
@@ -47,7 +43,7 @@ class MonitorService():
                 return monitors_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all monitors from rows taken from db

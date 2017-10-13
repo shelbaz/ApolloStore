@@ -1,7 +1,6 @@
 
 import unittest
 from tests.base_create_objects import BaseTestCase
-from project.services.electronic_service import ElectronicService
 from project.services.desktop_service import DesktopService
 from project.services.laptop_service import LaptopService
 from project.services.monitor_service import MonitorService
@@ -24,7 +23,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.delete_electronic(desktop.model)
             rows = Inventory.query(model=desktop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
-            self.assertEqual(1,len(items))
+            self.assertEqual(1, len(items))
 
     def test_delete_laptop(self):
         with self.client:
@@ -75,6 +74,3 @@ class TestDeletionObjects(BaseTestCase):
 # Runs the tests.
 if __name__ == '__main__':
     unittest.main()
-
-
-

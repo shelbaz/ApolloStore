@@ -1,13 +1,9 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.tablet_model import Tablet
-from project.gateways import delete_item, get_inventory_count
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
 from project.identityMap import IdentityMap
-from re import match
+from project.gateways import get_inventory_count
 from uuid import uuid4
 import traceback
 
@@ -29,7 +25,7 @@ class TabletService():
 
                 return tablet
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all tablets and their count
@@ -47,7 +43,7 @@ class TabletService():
                 return tablets_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all tablets from rows taken from db

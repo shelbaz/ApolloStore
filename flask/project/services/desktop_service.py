@@ -1,17 +1,12 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
-from project.gateways import delete_item, get_inventory_count
+from project.gateways import get_inventory_count
 from project.models.desktop_model import Desktop
-from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
 from project.identityMap import IdentityMap
-# from project.services.abstract_service import AbstractService
-from re import match
 from uuid import uuid4
 import traceback
+
 
 class DesktopService():
 
@@ -31,7 +26,7 @@ class DesktopService():
 
                 return desktop
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all desktops and their count
@@ -49,7 +44,7 @@ class DesktopService():
                 return desktops_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all desktops from rows taken from db
@@ -75,4 +70,3 @@ class DesktopService():
                 return None
         else:
             return None
-

@@ -12,12 +12,9 @@
 
 
 import unittest
-import json
 from tests.base_authentication import BaseTestCase
 from project.services.authentication_service import  AuthenticationService
 from project.models.auth_model import User
-from tests.helpers import make_auth_header
-from flask import g
 
 
 # This class inherits from the base class in 'base_authentication.py', in order to
@@ -67,7 +64,7 @@ class TestAuthentication(BaseTestCase):
                                 address='123213432g',
                                 phone='34543534',
                                 admin=True)
-            response = self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
+            self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
             rows = User.query(email=request_data['email'])
             user= AuthenticationService.get_user_from_rows(rows)

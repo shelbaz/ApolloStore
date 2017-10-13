@@ -24,7 +24,6 @@ from project.models.monitor_model import Monitor
 from project.models.tablet_model import Tablet
 from project.models.television_model import Television
 from project.models.inventory_model import Inventory
-from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
 from project.gateways import get_inventory_count
 
@@ -32,6 +31,7 @@ from project.gateways import get_inventory_count
 # This class inherits from the base class in 'base_viewmodels.py', in order to
 # get the create_app, setUp and tearDown methods.
 class TestViewModels(BaseTestCase):
+    
     # Test to see if the query function works for the Laptop class
     def test_should_return_query_results_for_laptop(self):
         with self.client:

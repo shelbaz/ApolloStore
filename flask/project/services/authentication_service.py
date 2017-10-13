@@ -1,5 +1,4 @@
-from flask import g
-from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+
 from project import logger, login_manager
 from project.models.auth_model import User
 from re import match
@@ -8,8 +7,8 @@ import traceback
 
 
 class AuthenticationService():
-    # Creates a user that is valid
 
+    # Creates a user that is valid
     @staticmethod
     def create_user(first_name, last_name, address, email, password, phone, admin):
         try:
@@ -25,7 +24,7 @@ class AuthenticationService():
 
                         return user
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     @staticmethod
