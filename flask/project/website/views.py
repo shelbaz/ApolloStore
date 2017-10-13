@@ -36,6 +36,7 @@ def add_desktop_inventory(electronic, model):
     InventoryService.add_item_to_inventory(model)
     return redirect('/' + electronic)
 
+
 @website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def delete_item_from_inventory(electronic, model):

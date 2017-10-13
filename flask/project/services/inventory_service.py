@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.inventory_model import Inventory
-from project.gateways import delete_item
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
