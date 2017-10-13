@@ -20,7 +20,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(desktop.model)
             InventoryService.add_item_to_inventory(desktop.model)
 
-            InventoryService.delete_electronic(desktop.model)
+            InventoryService.delete_item_from_inventory(desktop.model)
             rows = Inventory.query(model=desktop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
@@ -32,7 +32,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(laptop.model)
             InventoryService.add_item_to_inventory(laptop.model)
 
-            InventoryService.delete_electronic(laptop.model)
+            InventoryService.delete_item_from_inventory(laptop.model)
             rows = Inventory.query(model=laptop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
@@ -43,7 +43,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(monitor.model)
             InventoryService.add_item_to_inventory(monitor.model)
 
-            InventoryService.delete_electronic(monitor.model)
+            InventoryService.delete_item_from_inventory(monitor.model)
             rows = Inventory.query(model=monitor.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
@@ -55,7 +55,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(tablet.model)
             InventoryService.add_item_to_inventory(tablet.model)
 
-            InventoryService.delete_electronic(tablet.model)
+            InventoryService.delete_item_from_inventory(tablet.model)
             rows = Inventory.query(model=tablet.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
@@ -66,7 +66,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(television.model)
             InventoryService.add_item_to_inventory(television.model)
 
-            InventoryService.delete_electronic(television.model)
+            InventoryService.delete_item_from_inventory(television.model)
             rows = Inventory.query(model=television.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
