@@ -2,14 +2,14 @@
 from flask import g
 from project import logger
 from project.models import connect_to_db
-from project.gateaways import delete_item
+from project.gateways import delete_item
 from project.models.desktop_model import Desktop
-from project.gateaways.desktop_gateaway import DesktopGateaway
-from project.gateaways.item_gateaway import ItemGateaway
+from project.gateways.desktop_gateway import DesktopGateway
+from project.gateways.item_gateway import ItemGateway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 # from project.services.abstract_service import AbstractService
 from re import match
@@ -27,8 +27,8 @@ class DesktopService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
-                ItemGateaway.insert_into_db(desktop)
-                DesktopGateaway.insert_into_db(desktop)
+                ItemGateway.insert_into_db(desktop)
+                DesktopGateway.insert_into_db(desktop)
                 DesktopService.identityMap.set(desktop.model, desktop)
 
                 logger.info('Desktop created successfully!')
@@ -42,13 +42,13 @@ class DesktopService():
     @staticmethod
     def get_all_desktops():
         try:
-            rows = DesktopGateaway.query_filtered_by()
+            rows = DesktopGateway.query_filtered_by()
             desktops = DesktopService.get_desktops_from_rows(rows)
             desktops_with_count = []
 
             if desktops:
                 for desktop in desktops:
-                    count = InventoryGateaway.get_count('desktops', desktop.model)
+                    count = InventoryGateway.get_count('desktops', desktop.model)
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:

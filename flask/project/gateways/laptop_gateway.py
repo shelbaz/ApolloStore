@@ -4,7 +4,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class LaptopGateaway(Item):
+class LaptopGateway(Item):
 
     # Adds the laptop to the database
     @staticmethod

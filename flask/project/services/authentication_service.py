@@ -2,7 +2,7 @@ from flask import g
 from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
 from project import logger, login_manager
 from project.models.auth_model import User
-from project.gateaways.auth_gateaway import UserGateaway
+from project.gateways.auth_gateway import UserGateway
 from re import match
 from uuid import uuid4
 import traceback
@@ -17,10 +17,10 @@ class AuthenticationService():
             if AuthenticationService.validate_email(email):
                 if AuthenticationService.validate_name(first_name) and AuthenticationService.validate_name(last_name):
                     # if validate_password(password):
-                    if UserGateaway.query_filtered_by(email=email) is None:
+                    if UserGateway.query_filtered_by(email=email) is None:
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
                         user.hash_password(password)
-                        UserGateaway.insert_into_db(user)
+                        UserGateway.insert_into_db(user)
 
                         logger.info('User with email %s successfully created' % (email,))
 
@@ -73,7 +73,7 @@ class AuthenticationService():
     def load_user(user_id):
 
         rows = []
-        rows = UserGateaway.query_filtered_by(id=user_id)
+        rows = UserGateway.query_filtered_by(id=user_id)
         users = []
 
         for row in rows:

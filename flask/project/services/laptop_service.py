@@ -3,13 +3,13 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.laptop_model import Laptop
-from project.gateaways import delete_item
-from project.gateaways.laptop_gateaway import LaptopGateaway
-from project.gateaways.item_gateaway import ItemGateaway
+from project.gateways import delete_item
+from project.gateways.laptop_gateway import LaptopGateway
+from project.gateways.item_gateway import ItemGateway
 from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -28,8 +28,8 @@ class LaptopService():
 
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
-                ItemGateaway.insert_into_db(laptop)
-                LaptopGateaway.insert_into_db(laptop)
+                ItemGateway.insert_into_db(laptop)
+                LaptopGateway.insert_into_db(laptop)
                 LaptopService.identityMap.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
@@ -43,13 +43,13 @@ class LaptopService():
     @staticmethod
     def get_all_laptops():
         try:
-            rows = LaptopGateaway.query_filtered_by()
+            rows = LaptopGateway.query_filtered_by()
             laptops = LaptopService.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
                 for laptop in laptops:
-                    count = InventoryGateaway.get_count('laptops', laptop.model)
+                    count = InventoryGateway.get_count('laptops', laptop.model)
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:

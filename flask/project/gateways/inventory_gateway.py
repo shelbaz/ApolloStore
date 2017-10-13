@@ -4,7 +4,7 @@ import psycopg2
 from project import logger
 import traceback
 
-class InventoryGateaway(object):
+class InventoryGateway(object):
 
     # Insert inventory into database
     @staticmethod

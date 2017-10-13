@@ -3,12 +3,12 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.monitor_model import Monitor
-from project.gateaways import delete_item
-from project.gateaways.monitor_gateaway import MonitorGateaway
-from project.gateaways.item_gateaway import ItemGateaway
+from project.gateways import delete_item
+from project.gateways.monitor_gateway import MonitorGateway
+from project.gateways.item_gateway import ItemGateway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -25,8 +25,8 @@ class MonitorService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
-                ItemGateaway.insert_into_db(monitor)
-                MonitorGateaway.insert_into_db(monitor)
+                ItemGateway.insert_into_db(monitor)
+                MonitorGateway.insert_into_db(monitor)
                 MonitorService.identityMap.set(monitor.model, monitor)
 
                 logger.info('Monitor created successfully!')
@@ -40,13 +40,13 @@ class MonitorService():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = MonitorGateaway.query_filtered_by()
+            rows = MonitorGateway.query_filtered_by()
             monitors = MonitorService.get_monitors_from_rows(rows)
             monitors_with_count = []
 
             if monitors:
                 for monitor in monitors:
-                    count = InventoryGateaway.get_count('monitors', monitor.model)
+                    count = InventoryGateway.get_count('monitors', monitor.model)
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:

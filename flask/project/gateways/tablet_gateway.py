@@ -4,7 +4,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class TabletGateaway(Item):
+class TabletGateway(Item):
 
     # Adds the tablet to the database
     @staticmethod

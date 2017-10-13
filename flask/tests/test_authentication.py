@@ -16,7 +16,7 @@ import json
 from tests.base_authentication import BaseTestCase
 from project.services.authentication_service import  AuthenticationService
 from project.models.auth_model import User
-from project.gateaways.auth_gateaway import UserGateaway
+from project.gateways.auth_gateway import UserGateway
 from tests.helpers import make_auth_header
 from flask import g
 
@@ -70,7 +70,7 @@ class TestAuthentication(BaseTestCase):
                                 admin=True)
             response = self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
-            rows = UserGateaway.query_filtered_by(email=request_data['email'])
+            rows = UserGateway.query_filtered_by(email=request_data['email'])
             user= AuthenticationService.get_user_from_rows(rows)
 
             self.assertTrue(user)

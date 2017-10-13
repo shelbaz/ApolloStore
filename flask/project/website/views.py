@@ -11,7 +11,7 @@ from project.services.monitor_service import MonitorService
 from project.services.laptop_service import LaptopService
 from project import logger
 from project.models.auth_model import User
-from project.gateaways.auth_gateaway import UserGateaway
+from project.gateways.auth_gateway import UserGateway
 from flask_login import login_required, current_user, login_user, logout_user
 from project.services.inventory_service import InventoryService
 
@@ -249,7 +249,7 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    rows = UserGateaway.query_filtered_by(email=email)
+    rows = UserGateway.query_filtered_by(email=email)
     user = AuthenticationService.get_user_from_rows(rows)
 
     if not user or not user.verify_password(password):

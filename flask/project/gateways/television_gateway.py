@@ -4,7 +4,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class TelevisionGateaway(Item):
+class TelevisionGateway(Item):
 
     # Adds the television to the database
     @staticmethod

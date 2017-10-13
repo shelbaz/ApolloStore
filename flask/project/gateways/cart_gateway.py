@@ -2,7 +2,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class CartGateaway(object):
+class CartGateway(object):
 
     # Class function that creates the 'carts' table
     @staticmethod
