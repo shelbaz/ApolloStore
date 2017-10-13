@@ -3,7 +3,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class ItemGateaway(object):
+class ItemGateway(object):
 
     # Class function that creates the 'items' table
     @staticmethod

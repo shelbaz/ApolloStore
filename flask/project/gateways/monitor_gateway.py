@@ -3,7 +3,7 @@ from project.models.item_model import Item
 from project.models import connect_to_db
 import psycopg2
 
-class MonitorGateaway(Item):
+class MonitorGateway(Item):
 
     # Class function that creates the 'monitors' table
     @staticmethod

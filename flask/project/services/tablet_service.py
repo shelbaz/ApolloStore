@@ -3,12 +3,12 @@ from flask import g
 from project import logger
 from project.models import connect_to_db
 from project.models.tablet_model import Tablet
-from project.gateaways import delete_item
-from project.gateaways.tablet_gateaway import TabletGateaway
-from project.gateaways.item_gateaway import ItemGateaway
+from project.gateways import delete_item
+from project.gateways.tablet_gateway import TabletGateway
+from project.gateways.item_gateway import ItemGateway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.inventory_gateway import InventoryGateway
 from project.identityMap import IdentityMap
 from re import match
 from uuid import uuid4
@@ -26,8 +26,8 @@ class TabletService():
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
 
-                ItemGateaway.insert_into_db(tablet)
-                TabletGateaway.insert_into_db(tablet)
+                ItemGateway.insert_into_db(tablet)
+                TabletGateway.insert_into_db(tablet)
                 TabletService.identityMap.set(tablet.model, tablet)
 
                 logger.info('Tablet created successfully!')
@@ -41,13 +41,13 @@ class TabletService():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = TabletGateaway.query_filtered_by()
+            rows = TabletGateway.query_filtered_by()
             tablets = TabletService.get_tablets_from_rows(rows)
             tablets_with_count = []
 
             if tablets:
                 for tablet in tablets:
-                    count = InventoryGateaway.get_count('tablets', tablet.model)
+                    count = InventoryGateway.get_count('tablets', tablet.model)
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:

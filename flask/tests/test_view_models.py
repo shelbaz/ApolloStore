@@ -18,15 +18,15 @@ from project.services.television_service import TelevisionService
 from project.services.tablet_service import TabletService
 from project.services.monitor_service import MonitorService
 from project.services.laptop_service import LaptopService
-from project.gateaways.desktop_gateaway import DesktopGateaway
-from project.gateaways.laptop_gateaway import LaptopGateaway
-from project.gateaways.monitor_gateaway import MonitorGateaway
-from project.gateaways.tablet_gateaway import TabletGateaway
-from project.gateaways.television_gateaway import TelevisionGateaway
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.desktop_gateway import DesktopGateway
+from project.gateways.laptop_gateway import LaptopGateway
+from project.gateways.monitor_gateway import MonitorGateway
+from project.gateways.tablet_gateway import TabletGateway
+from project.gateways.television_gateway import TelevisionGateway
+from project.gateways.inventory_gateway import InventoryGateway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways.inventory_gateway import InventoryGateway
 
 
 # This class inherits from the base class in 'base_viewmodels.py', in order to
@@ -39,8 +39,8 @@ class TestViewModels(BaseTestCase):
             LaptopService.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
             LaptopService.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
 
-            rows1 = LaptopGateaway.query_filtered_by(brand='Asus')
-            rows2 = LaptopGateaway.query_filtered_by(brand='Acer')
+            rows1 = LaptopGateway.query_filtered_by(brand='Asus')
+            rows2 = LaptopGateway.query_filtered_by(brand='Acer')
             result1= LaptopService.get_laptops_from_rows(rows1)
             result2= LaptopService.get_laptops_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Asus')
@@ -53,8 +53,8 @@ class TestViewModels(BaseTestCase):
             TabletService.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
             TabletService.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
 
-            rows1 = TabletGateaway.query_filtered_by(brand='Asus')
-            rows2 = TabletGateaway.query_filtered_by(brand='Apple')
+            rows1 = TabletGateway.query_filtered_by(brand='Asus')
+            rows2 = TabletGateway.query_filtered_by(brand='Apple')
             result1 = TabletService.get_tablets_from_rows(rows1)
             result2 = TabletService.get_tablets_from_rows(rows2)
             self.assertEqual(len(result1), 2)
@@ -67,8 +67,8 @@ class TestViewModels(BaseTestCase):
             DesktopService.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
             DesktopService.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
 
-            rows1 = DesktopGateaway.query_filtered_by(brand='Asus')
-            rows2 = DesktopGateaway.query_filtered_by(brand='Acer')
+            rows1 = DesktopGateway.query_filtered_by(brand='Asus')
+            rows2 = DesktopGateway.query_filtered_by(brand='Acer')
             result1 = DesktopService.get_desktops_from_rows(rows1)
             result2 = DesktopService.get_desktops_from_rows(rows2)
             self.assertEqual(result1[0].price, 600)
@@ -81,8 +81,8 @@ class TestViewModels(BaseTestCase):
             MonitorService.create_monitor('Dell', 600, 10, '150x100')
             MonitorService.create_monitor('Asus', 600, 10, '170x100')
 
-            rows1 = MonitorGateaway.query_filtered_by(dimensions='150x100')
-            rows2 = MonitorGateaway.query_filtered_by(brand='Acer')
+            rows1 = MonitorGateway.query_filtered_by(dimensions='150x100')
+            rows2 = MonitorGateway.query_filtered_by(brand='Acer')
             result1 = MonitorService.get_monitors_from_rows(rows1)
             result2 = MonitorService.get_monitors_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Dell')
@@ -96,8 +96,8 @@ class TestViewModels(BaseTestCase):
             TelevisionService.create_television('Samsung', 600, 10, '3D', '125x100')
             TelevisionService.create_television('Asus', 600, 10, 'Smart', '125x100')
 
-            rows1 = TelevisionGateaway.query_filtered_by(type='3D')
-            rows2 = TelevisionGateaway.query_filtered_by(brand='Toshiba')
+            rows1 = TelevisionGateway.query_filtered_by(type='3D')
+            rows2 = TelevisionGateway.query_filtered_by(brand='Toshiba')
             result1 = TelevisionService.get_televisions_from_rows(rows1)
             result2 = TelevisionService.get_televisions_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Samsung')
@@ -107,10 +107,10 @@ class TestViewModels(BaseTestCase):
     def test_should_count_for_searched_model(self):
         with self.client:
             tv1 = TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
-            result = InventoryGateaway.get_count('televisions', tv1.model)
+            result = InventoryGateway.get_count('televisions', tv1.model)
             self.assertEqual(result, 0)
             InventoryService.add_item_to_inventory(tv1.model)
-            result = InventoryGateaway.get_count('televisions', tv1.model)
+            result = InventoryGateway.get_count('televisions', tv1.model)
             self.assertEqual(result, 1)
 
     # Test to see if add item to inventory works for Electronics
@@ -119,7 +119,7 @@ class TestViewModels(BaseTestCase):
             tv1 = TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
             InventoryService.add_item_to_inventory(tv1.model)
             InventoryService.add_item_to_inventory(tv1.model)
-            rows = InventoryGateaway.query_filtered_by(model=tv1.model)
+            rows = InventoryGateway.query_filtered_by(model=tv1.model)
             result = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(len (result), 2)
 

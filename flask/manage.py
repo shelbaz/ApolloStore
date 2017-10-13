@@ -7,7 +7,7 @@ from project import create_app, logger
 from flask_script import Manager
 import coverage
 import unittest
-from project.gateaways import create_tables
+from project.gateways import create_tables
 
 
 # The logger should always be used instead of a print(). You need to import it from

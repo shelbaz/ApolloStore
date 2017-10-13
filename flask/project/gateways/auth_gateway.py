@@ -7,7 +7,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer
                           as Serializer, BadSignature, SignatureExpired)
 
 
-class UserGateaway():
+class UserGateway():
 
     # Class function that creates the 'users' table
     @staticmethod

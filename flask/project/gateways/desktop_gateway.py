@@ -3,64 +3,58 @@ from project.models.item_model import Item
 from project.models import connect_to_db
 import psycopg2
 
+class DesktopGateway(Item):
 
-class LaptopGateaway(Item):
-
-    # Class function that creates the 'laptops' table
+    # Class function that creates the 'desktops' table
     @staticmethod
     def create_table():
         # Using the 'with' statement automatically commits and closes database connections
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
 
-                # Searches if there is already a table named 'laptops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('laptops',))
+                # Searches if there is already a table named 'desktops'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
 
-                # Creates table 'laptops' if it doesn't exist
+                # Creates table 'desktops' if it doesn't exist
                 if not bool(cursor.rowcount):
                     cursor.execute(
                         """
-                        CREATE TABLE laptops (
+                        CREATE TABLE desktops (
                           model UUID PRIMARY KEY,
-                          display_size varchar(64),
                           processor varchar(64),
                           ram_size integer,
                           cpu_cores integer,
                           hd_size integer,
-                          battery_info varchar(64),
-                          os varchar(64),
-                          touchscreen boolean,
-                          camera boolean,
+                          dimensions varchar(64),
                           FOREIGN KEY (model) REFERENCES items (model)
                         );
                         """
                     )
 
-    # Class function that deletes the 'laptops' table
+    # Class function that deletes the 'desktops' table
     @staticmethod
     def drop_table():
         # Using the 'with' statement automatically commits and closes database connections
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
-                # Searches if there is already a table named 'laptops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('laptops',))
+                # Searches if there is already a table named 'desktops'
+                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
 
-                # Deletes table 'laptops' if it exists
+                # Deletes table 'desktops' if it exists
                 if bool(cursor.rowcount):
-                    cursor.execute('DROP TABLE laptops;')
+                    cursor.execute('DROP TABLE desktops;')
 
-    # Adds the laptop to the database
+    # Adds the desktop to the database
     @staticmethod
-    def insert_into_db(laptop):
+    def insert_into_db(desktop):
         with connect_to_db() as connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    """INSERT INTO laptops (model, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera) VALUES ('%s', '%s', '%s', %s, %s, %s, '%s', '%s', '%s', '%s');"""
-                    % (laptop.model, laptop.display_size, laptop.processor, str(laptop.ram_size), str(laptop.cpu_cores), str(laptop.hd_size), laptop.battery_info, laptop.os, str(laptop.touchscreen), str(laptop.camera)))
-
+                    """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
+                    % (desktop.model, desktop.processor, str(desktop.ram_size), str(desktop.cpu_cores), str(desktop.hd_size), desktop.dimensions))
 
     @staticmethod
-    # Queries the laptops table with the filters given as parameters (only equality filters)
+    # Queries the desktops table with the filters given as parameters (only equality filters)
     def query_filtered_by(**kwargs):
 
         filters = []
@@ -71,9 +65,9 @@ class LaptopGateaway(Item):
         filters = ' AND '.join(filters)
 
         if filters:
-            query = 'SELECT * FROM items NATURAL JOIN laptops WHERE %s;' % (filters,)
+            query = 'SELECT * FROM items NATURAL JOIN desktops WHERE %s;' % (filters,)
         else:
-            query = 'SELECT * FROM items NATURAL JOIN laptops;'
+            query = 'SELECT * FROM items NATURAL JOIN desktops;'
 
         with connect_to_db() as connection:
             with connection.cursor() as cursor:

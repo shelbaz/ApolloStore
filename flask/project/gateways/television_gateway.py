@@ -4,7 +4,7 @@ from project.models import connect_to_db
 import psycopg2
 
 
-class TelevisionGateaway(Item):
+class TelevisionGateway(Item):
 
     # Class function that creates the 'televisions' table
     @staticmethod
