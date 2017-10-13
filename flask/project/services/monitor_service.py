@@ -67,3 +67,14 @@ class MonitorService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Monitor.query(model=model)
+            monitor = MonitorService.get_monitors_from_rows(rows)[0]
+
+            monitor.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

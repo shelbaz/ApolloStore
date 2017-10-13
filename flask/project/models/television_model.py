@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
 
 
 class Television(Item):
@@ -44,3 +44,7 @@ class Television(Item):
     def insert(self):
         super().insert()
         insert_into_db('televisions', __class__.attributes, self)
+
+    def delete(self):
+        super().delete()
+        delete_from_db('televisions', model=self.model)

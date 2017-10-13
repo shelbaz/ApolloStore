@@ -67,3 +67,14 @@ class TelevisionService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Television.query(model=model)
+            television = TelevisionService.get_televisions_from_rows(rows)[0]
+
+            television.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

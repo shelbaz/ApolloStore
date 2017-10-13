@@ -1,6 +1,6 @@
 
 from passlib.apps import custom_app_context as pwd_context
-from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
 
 
 class User():
@@ -47,6 +47,9 @@ class User():
 
     def insert(self):
         insert_into_db('users', __class__.attributes, self)
+
+    def delete(self):
+        delete_from_db('users', id=self.id)
 
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):

@@ -70,3 +70,14 @@ class DesktopService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Desktop.query(model=model)
+            desktop = DesktopService.get_desktops_from_rows(rows)[0]
+
+            desktop.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

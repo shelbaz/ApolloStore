@@ -93,18 +93,21 @@ def get_inventory_count(table, model):
         logger.error(traceback.format_exc())
 
 
-def delete_item(**kwargs):
+def delete_from_db(*tables, **conditions):
+
     filters = []
 
-    for key, value in kwargs.items():
+    for key, value in conditions.items():
         filters.append(str(key) + '=\'' + str(value) + '\'')
 
     filters = ' AND '.join(filters)
 
-    query = 'DELETE FROM inventories WHERE %s;' % (filters,)
-    with connect_to_db() as connection:
-        with connection.cursor() as cursor:
-            cursor.execute(query)
+    for table in tables:
+        query = 'DELETE FROM %s WHERE %s;' % (table, filters)
+
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
 
 
 def create_table(name, attributes, constraints, *enum):

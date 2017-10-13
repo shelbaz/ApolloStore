@@ -69,3 +69,14 @@ class TabletService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Tablet.query(model=model)
+            tablet = TabletService.get_tablets_from_rows(rows)[0]
+
+            tablet.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

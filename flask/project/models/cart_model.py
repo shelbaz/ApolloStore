@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
 
 
 class Cart(object):
@@ -41,3 +41,6 @@ class Cart(object):
 
     def insert(self):
         insert_into_db('carts', __class__.attributes, self)
+
+    def delete(self):
+        delete_from_db('carts', id=self.id)

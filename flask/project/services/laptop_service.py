@@ -71,3 +71,14 @@ class LaptopService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Laptop.query(model=model)
+            laptop = LaptopService.get_laptops_from_rows(rows)[0]
+
+            laptop.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

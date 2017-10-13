@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
 
 
 class Item(object):
@@ -38,3 +38,6 @@ class Item(object):
 
     def insert(self):
         insert_into_db('items', __class__.attributes, self)
+
+    def delete(self):
+        delete_from_db('items', model=self.model)
