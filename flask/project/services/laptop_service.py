@@ -20,18 +20,19 @@ class LaptopService():
     def create_laptop(brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
-
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
-                ItemGateaway.insert_into_db(laptop)
-                LaptopGateaway.insert_into_db(laptop)
-
-                logger.info('Laptop created successfully!')
 
                 return laptop
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_laptop(laptop):
+        ItemGateaway.insert_into_db(laptop)
+        LaptopGateaway.insert_into_db(laptop)
+        logger.info('Laptop created successfully!')
 
     # Queries the list of all laptops and their count
     @staticmethod

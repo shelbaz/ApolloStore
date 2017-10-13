@@ -21,15 +21,16 @@ class TabletService():
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
 
-                ItemGateaway.insert_into_db(tablet)
-                TabletGateaway.insert_into_db(tablet)
-
-                logger.info('Tablet created successfully!')
-
                 return tablet
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_tablet(tablet):
+        ItemGateaway.insert_into_db(tablet)
+        TabletGateaway.insert_into_db(tablet)
+        logger.info('Tablet created successfully!')
 
     # Queries the list of all tablets and their count
     @staticmethod

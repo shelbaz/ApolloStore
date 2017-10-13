@@ -17,14 +17,16 @@ class InventoryService():
     def add_item_to_inventory(model):
         try:
             inventory = Inventory(id=str(uuid4()), model=model)
-            InventoryGateaway.insert_into_db(inventory)
-
-            logger.info('Added %s to the inventory successfully!' % (model,))
 
             return inventory
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_inventory(inventory):
+        InventoryGateaway.insert_into_db(inventory)
+        logger.info('Added %s to the inventory successfully!' )
 
     # Returns all inventory items from rows taken from db
     @staticmethod

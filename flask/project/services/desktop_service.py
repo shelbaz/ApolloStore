@@ -14,7 +14,6 @@ import traceback
 
 class DesktopService():
 
-
     # Creates a desktop that is valid
     @staticmethod
     def create_desktop(brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
@@ -22,15 +21,16 @@ class DesktopService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
-                ItemGateaway.insert_into_db(desktop)
-                DesktopGateaway.insert_into_db(desktop)
-
-                logger.info('Desktop created successfully!')
-
                 return desktop
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_desktop(desktop):
+        ItemGateaway.insert_into_db(desktop)
+        DesktopGateaway.insert_into_db(desktop)
+        logger.info('Desktop created successfully!')
 
     # Queries the list of all desktops and their count
     @staticmethod

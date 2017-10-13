@@ -20,15 +20,17 @@ class TelevisionService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 television = Television(model=str(uuid4()), brand=brand, price=price, weight=weight, type=type, dimensions=dimensions)
-                ItemGateaway.insert_into_db(television)
-                TelevisionGateaway.insert_into_db(television)
-
-                logger.info('Television created successfully!')
 
                 return television
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_television(television):
+        ItemGateaway.insert_into_db(television)
+        TelevisionGateaway.insert_into_db(television)
+        logger.info('Television created successfully!')
 
     # Queries the list of all televisions and their count
     @staticmethod

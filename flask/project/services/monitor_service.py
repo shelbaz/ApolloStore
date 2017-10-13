@@ -20,15 +20,18 @@ class MonitorService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
-                ItemGateaway.insert_into_db(monitor)
-                MonitorGateaway.insert_into_db(monitor)
-
-                logger.info('Monitor created successfully!')
 
                 return monitor
 
         except Exception as e:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def insert_monitor(monitor):
+        print(monitor, flush=True)
+        ItemGateaway.insert_into_db(monitor)
+        MonitorGateaway.insert_into_db(monitor)
+        logger.info('Monitor created successfully!')
 
     # Queries the list of all monitors and their count
     @staticmethod
