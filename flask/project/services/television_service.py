@@ -40,7 +40,7 @@ class TelevisionService():
     @staticmethod
     def get_all_televisions():
         try:
-            rows = TelevisionGateway.query_filtered_by()
+            rows = Television.query()
             televisions = TelevisionService.get_televisions_from_rows(rows)
             televisions_with_count = []
 

@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Item(object):
@@ -31,3 +31,7 @@ class Item(object):
         self.brand = brand
         self.price = price
         self.weight = weight
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('items', **conditions)

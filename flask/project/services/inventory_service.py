@@ -30,7 +30,7 @@ class InventoryService():
             logger.error(traceback.format_exc())
 
     def delete_item_from_inventory(model):
-        rows = InventoryGateway.query_filtered_by(model=model)
+        rows = Inventory.query(model=model)
         inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
         delete_item(id=inventory.id)
 

@@ -1,6 +1,6 @@
 
 from passlib.apps import custom_app_context as pwd_context
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class User():
@@ -40,6 +40,10 @@ class User():
         self.email = email
         self.phone = phone
         self.admin = admin
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('users', **conditions)
 
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):

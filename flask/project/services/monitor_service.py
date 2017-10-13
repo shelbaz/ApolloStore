@@ -40,7 +40,7 @@ class MonitorService():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = MonitorGateway.query_filtered_by()
+            rows = Monitor.query()
             monitors = MonitorService.get_monitors_from_rows(rows)
             monitors_with_count = []
 

@@ -1,5 +1,5 @@
 
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Cart(object):
@@ -34,3 +34,7 @@ class Cart(object):
         self.inventory_id = inventory_id
         self.user_id = user_id
         self.added_time = added_time
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('carts', **conditions)

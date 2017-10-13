@@ -6,10 +6,9 @@
 # ------------------------------------------------------------------
 
 
-from flask import Flask, g, request, current_app
+from flask import Flask
 import os
 import logging
-import psycopg2
 from flask_login import LoginManager
 
 

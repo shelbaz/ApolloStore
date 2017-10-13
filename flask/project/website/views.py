@@ -249,7 +249,7 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    rows = UserGateway.query_filtered_by(email=email)
+    rows = User.query(email=email)
     user = AuthenticationService.get_user_from_rows(rows)
 
     if not user or not user.verify_password(password):

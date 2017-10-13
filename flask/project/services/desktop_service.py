@@ -42,7 +42,7 @@ class DesktopService():
     @staticmethod
     def get_all_desktops():
         try:
-            rows = DesktopGateway.query_filtered_by()
+            rows = Desktop.query()
             desktops = DesktopService.get_desktops_from_rows(rows)
             desktops_with_count = []
 

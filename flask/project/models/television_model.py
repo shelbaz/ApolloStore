@@ -1,13 +1,13 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Television(Item):
 
     attributes = {
         'model': 'UUID',
-        'types': 'types',
+        'type': 'types',
         'dimensions': 'varchar(64)'
     }
 
@@ -36,3 +36,7 @@ class Television(Item):
         self.model = model
         self.type = type
         self.dimensions = dimensions
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('items', 'televisions', **conditions)

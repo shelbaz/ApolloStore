@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Monitor(Item):
@@ -32,3 +32,7 @@ class Monitor(Item):
         # Initialize object attributes
         self.model = model
         self.dimensions = dimensions
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('items', 'monitors', **conditions)

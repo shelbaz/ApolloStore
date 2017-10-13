@@ -15,13 +15,41 @@ def connect_to_db():
             return connection
 
 
+def query_filtered_by(*tables, **conditions):
+
+    filters = []
+
+    for key, value in conditions.items():
+        filters.append(str(key) + '=\'' + str(value) + '\'')
+
+    filters = ' AND '.join(filters)
+
+    # Joins the tables if multiple are given
+    tables = ' NATURAL JOIN '.join(tables)
+
+    if filters:
+        query = 'SELECT * FROM %s WHERE %s;' % (tables, filters)
+    else:
+        query = 'SELECT * FROM %s;' % tables
+
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+    if rows:
+        return rows
+    else:
+        return None
+
+
 def create_table(name, attributes, constraints, *enum):
     # Using the 'with' statement automatically commits and closes database connections
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
 
             # Searches if there is already a table with the same name
-            cursor.execute("select * from information_schema.tables where table_name=%s", (name,))
+            cursor.execute('SELECT * FROM information_schema.tables WHERE table_name=\'%s\'' % name)
 
             query = ''
 
@@ -31,11 +59,11 @@ def create_table(name, attributes, constraints, *enum):
                     query += """
                             DO $$
                             BEGIN
-                                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'types') THEN
+                                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname='%s') THEN
                                     CREATE TYPE %s AS ENUM %s;
                                 END IF;
                             END$$;
-                            """ % (key, value)
+                            """ % (key, key, value)
 
             query += 'CREATE TABLE %s (' % name
 
@@ -64,7 +92,7 @@ def drop_table(name):
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             # Searches if there is already a table with the same name
-            cursor.execute("select * from information_schema.tables where table_name=%s", (name,))
+            cursor.execute('SELECT * FROM information_schema.tables WHERE table_name=\'%s\'' % name)
 
             # Deletes table if it exists
             if bool(cursor.rowcount):

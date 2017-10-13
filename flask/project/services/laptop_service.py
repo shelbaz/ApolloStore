@@ -43,7 +43,7 @@ class LaptopService():
     @staticmethod
     def get_all_laptops():
         try:
-            rows = LaptopGateway.query_filtered_by()
+            rows = Laptop.query()
             laptops = LaptopService.get_laptops_from_rows(rows)
             laptops_with_count = []
 

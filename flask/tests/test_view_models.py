@@ -18,11 +18,12 @@ from project.services.television_service import TelevisionService
 from project.services.tablet_service import TabletService
 from project.services.monitor_service import MonitorService
 from project.services.laptop_service import LaptopService
-from project.gateways.desktop_gateway import DesktopGateway
-from project.gateways.laptop_gateway import LaptopGateway
-from project.gateways.monitor_gateway import MonitorGateway
-from project.gateways.tablet_gateway import TabletGateway
-from project.gateways.television_gateway import TelevisionGateway
+from project.models.desktop_model import Desktop
+from project.models.laptop_model import Laptop
+from project.models.monitor_model import Monitor
+from project.models.tablet_model import Tablet
+from project.models.television_model import Television
+from project.models.inventory_model import Inventory
 from project.gateways.inventory_gateway import InventoryGateway
 from project.services.electronic_service import ElectronicService
 from project.services.inventory_service import InventoryService
@@ -32,63 +33,63 @@ from project.gateways.inventory_gateway import InventoryGateway
 # This class inherits from the base class in 'base_viewmodels.py', in order to
 # get the create_app, setUp and tearDown methods.
 class TestViewModels(BaseTestCase):
-    # Test to see if the query_filtered_by function works for the Laptop class
+    # Test to see if the query function works for the Laptop class
     def test_should_return_query_results_for_laptop(self):
         with self.client:
             LaptopService.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
             LaptopService.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
             LaptopService.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
 
-            rows1 = LaptopGateway.query_filtered_by(brand='Asus')
-            rows2 = LaptopGateway.query_filtered_by(brand='Acer')
+            rows1 = Laptop.query(brand='Asus')
+            rows2 = Laptop.query(brand='Acer')
             result1= LaptopService.get_laptops_from_rows(rows1)
             result2= LaptopService.get_laptops_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Asus')
             self.assertEqual(result2, None)
 
-    # Test to see if the query_filtered_by function works for the Tablet class
+    # Test to see if the query function works for the Tablet class
     def test_should_return_query_results_for_tablet(self):
         with self.client:
             TabletService.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
             TabletService.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
             TabletService.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
 
-            rows1 = TabletGateway.query_filtered_by(brand='Asus')
-            rows2 = TabletGateway.query_filtered_by(brand='Apple')
+            rows1 = Tablet.query(brand='Asus')
+            rows2 = Tablet.query(brand='Apple')
             result1 = TabletService.get_tablets_from_rows(rows1)
             result2 = TabletService.get_tablets_from_rows(rows2)
             self.assertEqual(len(result1), 2)
             self.assertEqual(result2, None)
 
-    # Test to see if the query_filtered_by function works for the Desktop class
+    # Test to see if the query function works for the Desktop class
     def test_should_return_query_results_for_desktop(self):
         with self.client:
             DesktopService.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
             DesktopService.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
             DesktopService.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
 
-            rows1 = DesktopGateway.query_filtered_by(brand='Asus')
-            rows2 = DesktopGateway.query_filtered_by(brand='Acer')
+            rows1 = Desktop.query(brand='Asus')
+            rows2 = Desktop.query(brand='Acer')
             result1 = DesktopService.get_desktops_from_rows(rows1)
             result2 = DesktopService.get_desktops_from_rows(rows2)
             self.assertEqual(result1[0].price, 600)
             self.assertEqual(result2, None)
 
-    # Test to see if the query_filtered_by function works for the Monitor class
+    # Test to see if the query function works for the Monitor class
     def test_should_return_query_results_for_monitor(self):
         with self.client:
             MonitorService.create_monitor('Asus', 600, 10, '125x100')
             MonitorService.create_monitor('Dell', 600, 10, '150x100')
             MonitorService.create_monitor('Asus', 600, 10, '170x100')
 
-            rows1 = MonitorGateway.query_filtered_by(dimensions='150x100')
-            rows2 = MonitorGateway.query_filtered_by(brand='Acer')
+            rows1 = Monitor.query(dimensions='150x100')
+            rows2 = Monitor.query(brand='Acer')
             result1 = MonitorService.get_monitors_from_rows(rows1)
             result2 = MonitorService.get_monitors_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Dell')
             self.assertEqual(result2, None)
 
-    # Test to see if the query_filtered_by function works for the Television class
+    # Test to see if the query function works for the Television class
     def test_should_return_query_results_for_television(self):
         with self.client:
             TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
@@ -96,8 +97,8 @@ class TestViewModels(BaseTestCase):
             TelevisionService.create_television('Samsung', 600, 10, '3D', '125x100')
             TelevisionService.create_television('Asus', 600, 10, 'Smart', '125x100')
 
-            rows1 = TelevisionGateway.query_filtered_by(type='3D')
-            rows2 = TelevisionGateway.query_filtered_by(brand='Toshiba')
+            rows1 = Television.query(type='3D')
+            rows2 = Television.query(brand='Toshiba')
             result1 = TelevisionService.get_televisions_from_rows(rows1)
             result2 = TelevisionService.get_televisions_from_rows(rows2)
             self.assertEqual(result1[0].brand, 'Samsung')
@@ -119,7 +120,7 @@ class TestViewModels(BaseTestCase):
             tv1 = TelevisionService.create_television('Asus', 600, 10, 'HD', '125x100')
             InventoryService.add_item_to_inventory(tv1.model)
             InventoryService.add_item_to_inventory(tv1.model)
-            rows = InventoryGateway.query_filtered_by(model=tv1.model)
+            rows = Inventory.query(model=tv1.model)
             result = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(len (result), 2)
 

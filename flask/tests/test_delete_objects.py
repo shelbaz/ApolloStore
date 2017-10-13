@@ -8,7 +8,7 @@ from project.services.monitor_service import MonitorService
 from project.services.tablet_service import TabletService
 from project.services.television_service import TelevisionService
 from project.services.inventory_service import InventoryService
-from project.gateways.inventory_gateway import InventoryGateway
+from project.models.inventory_model import Inventory
 
 
 # This class inherits from the base class in 'base_create_objects.py', in order to
@@ -22,7 +22,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(desktop.model)
 
             InventoryService.delete_electronic(desktop.model)
-            rows = InventoryGateway.query_filtered_by(model=desktop.model)
+            rows = Inventory.query(model=desktop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1,len(items))
 
@@ -34,7 +34,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(laptop.model)
 
             InventoryService.delete_electronic(laptop.model)
-            rows = InventoryGateway.query_filtered_by(model=laptop.model)
+            rows = Inventory.query(model=laptop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -45,7 +45,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(monitor.model)
 
             InventoryService.delete_electronic(monitor.model)
-            rows = InventoryGateway.query_filtered_by(model=monitor.model)
+            rows = Inventory.query(model=monitor.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -57,7 +57,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(tablet.model)
 
             InventoryService.delete_electronic(tablet.model)
-            rows = InventoryGateway.query_filtered_by(model=tablet.model)
+            rows = Inventory.query(model=tablet.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -68,7 +68,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(television.model)
 
             InventoryService.delete_electronic(television.model)
-            rows = InventoryGateway.query_filtered_by(model=television.model)
+            rows = Inventory.query(model=television.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 

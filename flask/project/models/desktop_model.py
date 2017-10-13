@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Desktop(Item):
@@ -40,3 +40,7 @@ class Desktop(Item):
         self.cpu_cores = cpu_cores
         self.hd_size = hd_size
         self.dimensions = dimensions
+ 
+    @staticmethod 
+    def query(**conditions):
+        return query_filtered_by('items', 'desktops', **conditions)

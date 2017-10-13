@@ -1,6 +1,6 @@
 
 from project.models.item_model import Item
-from project.gateways import create_table, drop_table
+from project.gateways import create_table, drop_table, query_filtered_by
 
 
 class Laptop(Item):
@@ -48,3 +48,7 @@ class Laptop(Item):
         self.os = os
         self.touchscreen = touchscreen
         self.camera = camera
+
+    @staticmethod
+    def query(**conditions):
+        return query_filtered_by('items', 'laptops', **conditions)

@@ -70,7 +70,7 @@ class TestAuthentication(BaseTestCase):
                                 admin=True)
             response = self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
-            rows = UserGateway.query_filtered_by(email=request_data['email'])
+            rows = User.query(email=request_data['email'])
             user= AuthenticationService.get_user_from_rows(rows)
 
             self.assertTrue(user)

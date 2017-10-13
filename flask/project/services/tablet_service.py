@@ -41,7 +41,7 @@ class TabletService():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = TabletGateway.query_filtered_by()
+            rows = Tablet.query()
             tablets = TabletService.get_tablets_from_rows(rows)
             tablets_with_count = []
 
