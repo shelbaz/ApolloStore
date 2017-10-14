@@ -1,19 +1,12 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.laptop_model import Laptop
-from project.gateaways import delete_item
-from project.gateaways.laptop_gateaway import LaptopGateaway
-from project.gateaways.item_gateaway import ItemGateaway
-from project.models.item_model import Item
-from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.gateways import get_inventory_count
 from project.identityMap import IdentityMap
-from re import match
+from project.services.electronic_service import ElectronicService
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class LaptopService():
@@ -28,33 +21,32 @@ class LaptopService():
 
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
-                ItemGateaway.insert_into_db(laptop)
-                LaptopGateaway.insert_into_db(laptop)
+                laptop.insert()
                 LaptopService.identityMap.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
 
                 return laptop
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all laptops and their count
     @staticmethod
     def get_all_laptops():
         try:
-            rows = LaptopGateaway.query_filtered_by()
+            rows = Mapper.query('items', 'laptops')
             laptops = LaptopService.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
                 for laptop in laptops:
-                    count = InventoryGateaway.get_count('laptops', laptop.model)
+                    count = get_inventory_count('laptops', laptop.model)
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all laptops from rows taken from db
@@ -80,3 +72,14 @@ class LaptopService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Mapper.query('items', 'laptops', model=model)
+            laptop = LaptopService.get_laptops_from_rows(rows)[0]
+
+            laptop.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

@@ -28,7 +28,6 @@ class TestWebsite(BaseTestCase):
             # Asserts that the HTTP status code of the response is 200.
             self.assertEqual(response.status_code, 200)
 
-
 # Runs the tests.
 if __name__ == '__main__':
     unittest.main()

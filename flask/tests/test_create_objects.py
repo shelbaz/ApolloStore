@@ -12,16 +12,12 @@
 
 
 import unittest
-import json
 from tests.base_create_objects import BaseTestCase
 from project.services.electronic_service import ElectronicService
 from project.services.desktop_service import DesktopService
 from project.services.laptop_service import LaptopService
 from project.services.monitor_service import MonitorService
 from project.services.tablet_service import TabletService
-from project.services.television_service import TelevisionService
-from tests.helpers import make_auth_header
-from flask import g
 
 
 # This class inherits from the base class in 'base_create_objects.py', in order to
@@ -110,16 +106,6 @@ class TestCreationObjects(BaseTestCase):
             self.assertEqual(monitor.weight, 5)
             self.assertEqual(monitor.brand, 'Asus')
             self.assertEqual(monitor.dimensions, '25x30')
-
-    def test_create_television_object(self):
-        with self.client:
-            television = TelevisionService.create_television('Panasonic', 3000, 15, 'Smart', '40x50')
-
-            self.assertEqual(television.price, 3000)
-            self.assertEqual(television.weight, 15)
-            self.assertEqual(television.brand, 'Panasonic')
-            self.assertEqual(television.type, 'Smart')
-            self.assertEqual(television.dimensions, '40x50')
 
 # Runs the tests.
 if __name__ == '__main__':

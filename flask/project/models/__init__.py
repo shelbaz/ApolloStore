@@ -1,6 +1,5 @@
 
 import psycopg2
-import time
 import os
 from flask import current_app
 
@@ -13,4 +12,3 @@ def connect_to_db():
     else:
         with psycopg2.connect(os.getenv('DATABASE_URL')) as connection:
             return connection
-

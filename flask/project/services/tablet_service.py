@@ -1,18 +1,12 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.tablet_model import Tablet
-from project.gateaways import delete_item
-from project.gateaways.tablet_gateaway import TabletGateaway
-from project.gateaways.item_gateaway import ItemGateaway
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
-from re import match
+from project.gateways import get_inventory_count
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class TabletService():
@@ -25,34 +19,32 @@ class TabletService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 tablet = Tablet(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, dimensions=dimensions, processor=processor,
                                 ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, battery=battery, os=os, camera_info=camera_info)
-
-                ItemGateaway.insert_into_db(tablet)
-                TabletGateaway.insert_into_db(tablet)
+                tablet.insert()
                 TabletService.identityMap.set(tablet.model, tablet)
 
                 logger.info('Tablet created successfully!')
 
                 return tablet
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all tablets and their count
     @staticmethod
     def get_all_tablets():
         try:
-            rows = TabletGateaway.query_filtered_by()
+            rows = Mapper.query('items', 'tablets')
             tablets = TabletService.get_tablets_from_rows(rows)
             tablets_with_count = []
 
             if tablets:
                 for tablet in tablets:
-                    count = InventoryGateaway.get_count('tablets', tablet.model)
+                    count = get_inventory_count('tablets', tablet.model)
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all tablets from rows taken from db
@@ -78,3 +70,14 @@ class TabletService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Mapper.query('items', 'tablets', model=model)
+            tablet = TabletService.get_tablets_from_rows(rows)[0]
+
+            tablet.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

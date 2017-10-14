@@ -116,15 +116,12 @@ function getSelected() {
 
          <script>
             function delete_from_inventory(model) {
-                console.log(model);
-                model += ":monitor";
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/delete-item/' + model);
+                form.setAttribute('action', '/remove-inventory/monitor/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
-                console.log('deleted');
             }
         </script>
 

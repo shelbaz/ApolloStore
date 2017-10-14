@@ -7,7 +7,7 @@ from project import create_app, logger
 from flask_script import Manager
 import coverage
 import unittest
-from project.gateaways import create_tables
+from project.gateways import create_tables
 
 
 # The logger should always be used instead of a print(). You need to import it from
@@ -86,6 +86,21 @@ def test_one(test_file):
         return 0
     else:
         return 1
+
+
+@manager.command
+def create():
+    from project.gateways import create_tables
+    create_tables()
+
+@manager.command
+def drop():
+    import traceback
+    try:
+        from project.gateways import drop_tables
+        drop_tables()
+    except Exception:
+        logger.error(traceback.format_exc())
 
 
 # Starts the Flask app.

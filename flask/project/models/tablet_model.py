@@ -1,19 +1,47 @@
 
 from project.models.item_model import Item
-from project.models import connect_to_db
-import psycopg2
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
+from project.orm import Mapper
 
 
-class Tablet(Item):
+class Tablet(Item, Mapper):
+
+    name = 'tablets'
+
+    attributes = {
+        'model': 'UUID',
+        'brand': 'varchar(64)',
+        'price': 'decimal',
+        'weight': 'decimal',
+        'display_size': 'varchar(64)',
+        'dimensions': 'varchar(64)',
+        'processor': 'varchar(64)',
+        'ram_size': 'integer',
+        'cpu_cores': 'integer',
+        'hd_size': 'integer',
+        'battery': 'varchar(64)',
+        'os': 'varchar(64)',
+        'camera_info': 'varchar(64)'
+    }
+
+    constraints = {
+        'PRIMARY KEY': '(model)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)'
+    }
 
     # Constructor that creates a new tablet
     def __init__(self, model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
 
+        Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
+
         # Creates the Item object
-        super().__init__(model, brand, price, weight)
+        self._item = Item(model)
 
         # Initialize object attributes
         self.model = model
+        self.brand = brand
+        self.price = price
+        self.weight = weight
         self.display_size = display_size
         self.dimensions = dimensions
         self.processor = processor
@@ -23,5 +51,3 @@ class Tablet(Item):
         self.battery = battery
         self.os = os
         self.camera_info = camera_info
-
- 

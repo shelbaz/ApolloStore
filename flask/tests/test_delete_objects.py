@@ -1,14 +1,13 @@
 
 import unittest
 from tests.base_create_objects import BaseTestCase
-from project.services.electronic_service import ElectronicService
 from project.services.desktop_service import DesktopService
 from project.services.laptop_service import LaptopService
 from project.services.monitor_service import MonitorService
 from project.services.tablet_service import TabletService
-from project.services.television_service import TelevisionService
 from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
+from project.models.inventory_model import Inventory
+from project.orm import Mapper
 
 
 # This class inherits from the base class in 'base_create_objects.py', in order to
@@ -21,10 +20,10 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(desktop.model)
             InventoryService.add_item_to_inventory(desktop.model)
 
-            InventoryService.delete_electronic(desktop.model)
-            rows = InventoryGateaway.query_filtered_by(model=desktop.model)
+            InventoryService.delete_item_from_inventory(desktop.model)
+            rows = Mapper.query('inventories', model=desktop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
-            self.assertEqual(1,len(items))
+            self.assertEqual(1, len(items))
 
     def test_delete_laptop(self):
         with self.client:
@@ -33,8 +32,8 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(laptop.model)
             InventoryService.add_item_to_inventory(laptop.model)
 
-            InventoryService.delete_electronic(laptop.model)
-            rows = InventoryGateaway.query_filtered_by(model=laptop.model)
+            InventoryService.delete_item_from_inventory(laptop.model)
+            rows = Mapper.query('inventories', model=laptop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -44,8 +43,8 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(monitor.model)
             InventoryService.add_item_to_inventory(monitor.model)
 
-            InventoryService.delete_electronic(monitor.model)
-            rows = InventoryGateaway.query_filtered_by(model=monitor.model)
+            InventoryService.delete_item_from_inventory(monitor.model)
+            rows = Mapper.query('inventories', model=monitor.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -56,25 +55,11 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(tablet.model)
             InventoryService.add_item_to_inventory(tablet.model)
 
-            InventoryService.delete_electronic(tablet.model)
-            rows = InventoryGateaway.query_filtered_by(model=tablet.model)
-            items = InventoryService.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
-
-    def test_delete_television(self):
-        with self.client:
-            television = TelevisionService.create_television('Panasonic', 3000, 15, 'Smart', '40x50')
-            InventoryService.add_item_to_inventory(television.model)
-            InventoryService.add_item_to_inventory(television.model)
-
-            InventoryService.delete_electronic(television.model)
-            rows = InventoryGateaway.query_filtered_by(model=television.model)
+            InventoryService.delete_item_from_inventory(tablet.model)
+            rows = Mapper.query('inventories', model=tablet.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
 # Runs the tests.
 if __name__ == '__main__':
     unittest.main()
-
-
-

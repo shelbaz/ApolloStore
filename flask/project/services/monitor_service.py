@@ -1,18 +1,12 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.monitor_model import Monitor
-from project.gateaways import delete_item
-from project.gateaways.monitor_gateaway import MonitorGateaway
-from project.gateaways.item_gateaway import ItemGateaway
+from project.gateways import get_inventory_count
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
-from re import match
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class MonitorService():
@@ -25,33 +19,32 @@ class MonitorService():
         try:
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
                 monitor = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
-                ItemGateaway.insert_into_db(monitor)
-                MonitorGateaway.insert_into_db(monitor)
+                monitor.insert()
                 MonitorService.identityMap.set(monitor.model, monitor)
 
                 logger.info('Monitor created successfully!')
 
                 return monitor
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all monitors and their count
     @staticmethod
     def get_all_monitors():
         try:
-            rows = MonitorGateaway.query_filtered_by()
+            rows = Mapper.query('items', 'monitors')
             monitors = MonitorService.get_monitors_from_rows(rows)
             monitors_with_count = []
 
             if monitors:
                 for monitor in monitors:
-                    count = InventoryGateaway.get_count('monitors', monitor.model)
+                    count = get_inventory_count('monitors', monitor.model)
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all monitors from rows taken from db
@@ -75,3 +68,14 @@ class MonitorService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Mapper.query('items', 'monitors', model=model)
+            monitor = MonitorService.get_monitors_from_rows(rows)[0]
+
+            monitor.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

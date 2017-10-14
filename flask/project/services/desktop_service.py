@@ -1,20 +1,13 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
-from project.gateaways import delete_item
+from project.gateways import get_inventory_count
 from project.models.desktop_model import Desktop
-from project.gateaways.desktop_gateaway import DesktopGateaway
-from project.gateaways.item_gateaway import ItemGateaway
-from project.models.item_model import Item
 from project.services.electronic_service import ElectronicService
-from project.services.inventory_service import InventoryService
-from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
-# from project.services.abstract_service import AbstractService
-from re import match
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
+
 
 class DesktopService():
 
@@ -27,33 +20,32 @@ class DesktopService():
             if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
                 desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
-                ItemGateaway.insert_into_db(desktop)
-                DesktopGateaway.insert_into_db(desktop)
+                desktop.insert()
                 DesktopService.identityMap.set(desktop.model, desktop)
 
                 logger.info('Desktop created successfully!')
 
                 return desktop
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Queries the list of all desktops and their count
     @staticmethod
     def get_all_desktops():
         try:
-            rows = DesktopGateaway.query_filtered_by()
+            rows = Mapper.query('items', 'desktops')
             desktops = DesktopService.get_desktops_from_rows(rows)
             desktops_with_count = []
 
             if desktops:
                 for desktop in desktops:
-                    count = InventoryGateaway.get_count('desktops', desktop.model)
+                    count = get_inventory_count('desktops', desktop.model)
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:
                 return None
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     # Returns all desktops from rows taken from db
@@ -80,3 +72,13 @@ class DesktopService():
         else:
             return None
 
+    @staticmethod
+    def delete_model(model):
+        try:
+            rows = Mapper.query('items', 'desktops', model=model)
+            desktop = DesktopService.get_desktops_from_rows(rows)[0]
+
+            desktop.delete()
+
+        except Exception:
+            logger.error(traceback.format_exc())

@@ -2,18 +2,17 @@
 # This is where all the routes are defined.
 # -----------------------------------------------
 
-from flask import jsonify, render_template, Blueprint, g, request, abort, redirect
+from flask import render_template, Blueprint, g, request, abort, redirect
 from project.services.authentication_service import AuthenticationService
 from project.services.desktop_service import DesktopService
-from project.services.television_service import TelevisionService
 from project.services.tablet_service import TabletService
 from project.services.monitor_service import MonitorService
 from project.services.laptop_service import LaptopService
 from project import logger
 from project.models.auth_model import User
-from project.gateaways.auth_gateaway import UserGateaway
 from flask_login import login_required, current_user, login_user, logout_user
 from project.services.inventory_service import InventoryService
+from project.orm import Mapper
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -31,48 +30,18 @@ def index():
     return render_template('index.html')
 
 
-@website_blueprint.route('/add-inventory/desktop/<string:model>', methods=['POST'])
+@website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_desktop_inventory(model):
+def add_desktop_inventory(electronic, model):
     InventoryService.add_item_to_inventory(model)
-    return redirect('/desktop')
+    return redirect('/' + electronic)
 
 
-@website_blueprint.route('/add-inventory/television/<string:model>', methods=['POST'])
+@website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_television_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/television')
-
-
-@website_blueprint.route('/add-inventory/monitor/<string:model>', methods=['POST'])
-@login_required
-def add_monitor_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/monitor')
-
-
-@website_blueprint.route('/add-inventory/tablet/<string:model>', methods=['POST'])
-@login_required
-def add_tablet_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/tablet')
-
-
-@website_blueprint.route('/add-inventory/laptop/<string:model>', methods=['POST'])
-@login_required
-def add_laptop_inventory(model):
-    InventoryService.add_item_to_inventory(model)
-    return redirect('/laptop')
-
-@website_blueprint.route('/delete-item/<string:model>', methods=['POST'])
-@login_required
-def delete_item_from_inventory(model):
-    models = model.split(":")
-    modelId=models[0]
-    type= models[1]
-    InventoryService.delete_item_from_inventory(modelId)
-    return redirect('/'+ type)
+def delete_item_from_inventory(electronic, model):
+    InventoryService.delete_item_from_inventory(model)
+    return redirect('/' + electronic)
 
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
@@ -186,28 +155,6 @@ def monitor():
     return render_template('monitor.html', user=g.user, monitors=MonitorService.get_all_monitors())
 
 
-@website_blueprint.route('/television', methods=['GET', 'POST'])
-@login_required
-def television():
-    if request.method == 'POST':
-
-        price = request.form.get('price')
-        weight = request.form.get('weight')
-        brand = request.form.get('brand')
-        dimensions = request.form.get('tv_dimensions')
-        tvtype = request.form.get('tv_type')
-
-        if price and weight and brand and dimensions:
-            television = TelevisionService.create_television(brand, price, weight, tvtype, dimensions)
-
-            if television:
-                return redirect('/television')
-            else:
-                logger.error('couldnt create tv item')
-
-    return render_template('television.html', user=g.user, televisions=TelevisionService.get_all_televisions())
-
-
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
@@ -249,7 +196,7 @@ def login():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    rows = UserGateaway.query_filtered_by(email=email)
+    rows = Mapper.query('users', email=email)
     user = AuthenticationService.get_user_from_rows(rows)
 
     if not user or not user.verify_password(password):

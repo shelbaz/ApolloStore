@@ -1,14 +1,10 @@
 
-from flask import g
 from project import logger
-from project.models import connect_to_db
 from project.models.inventory_model import Inventory
-from project.gateaways import delete_item
-from project.gateaways.inventory_gateaway import InventoryGateaway
 from project.identityMap import IdentityMap
-from re import match
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class InventoryService():
@@ -20,19 +16,14 @@ class InventoryService():
     def add_item_to_inventory(model):
         try:
             inventory = Inventory(id=str(uuid4()), model=model)
-            InventoryGateaway.insert_into_db(inventory)
+            inventory.insert()
             InventoryService.identityMap.set(inventory.id, inventory)
             logger.info('Added %s to the inventory successfully!' % (model,))
 
             return inventory
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
-
-    def delete_item_from_inventory(model):
-        rows = InventoryGateaway.query_filtered_by(model=model)
-        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
-        delete_item(id=inventory.id)
 
     # Returns all inventory items from rows taken from db
     @staticmethod
@@ -56,3 +47,10 @@ class InventoryService():
                 return None
         else:
             return None
+
+    @staticmethod
+    def delete_item_from_inventory(model):
+        rows = Mapper.query('inventories', model=model)
+        inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
+        inventory.delete()
+        

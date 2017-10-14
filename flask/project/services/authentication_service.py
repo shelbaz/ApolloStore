@@ -1,32 +1,31 @@
-from flask import g
-from flask_httpauth import HTTPBasicAuth, HTTPTokenAuth
+
 from project import logger, login_manager
 from project.models.auth_model import User
-from project.gateaways.auth_gateaway import UserGateaway
 from re import match
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class AuthenticationService():
-    # Creates a user that is valid
 
+    # Creates a user that is valid
     @staticmethod
     def create_user(first_name, last_name, address, email, password, phone, admin):
         try:
             if AuthenticationService.validate_email(email):
                 if AuthenticationService.validate_name(first_name) and AuthenticationService.validate_name(last_name):
                     # if validate_password(password):
-                    if UserGateaway.query_filtered_by(email=email) is None:
+                    if Mapper.query('users', email=email) is None:
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
                         user.hash_password(password)
-                        UserGateaway.insert_into_db(user)
+                        user.insert()
 
                         logger.info('User with email %s successfully created' % (email,))
 
                         return user
 
-        except Exception as e:
+        except Exception:
             logger.error(traceback.format_exc())
 
     @staticmethod
@@ -73,7 +72,7 @@ class AuthenticationService():
     def load_user(user_id):
 
         rows = []
-        rows = UserGateaway.query_filtered_by(id=user_id)
+        rows = Mapper.query('users', id=user_id)
         users = []
 
         for row in rows:
