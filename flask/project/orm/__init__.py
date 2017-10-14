@@ -1,5 +1,5 @@
 
-from project.gateways import insert_into_db, query_filtered_by, delete_from_db
+from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table
 
 
 class Mapper(object):
@@ -29,3 +29,11 @@ class Mapper(object):
         key = self._constraints['PRIMARY KEY'].strip('(').strip(')')
         dic = {key: getattr(self, key)}
         delete_from_db(self._name, **dic)
+
+    @staticmethod
+    def create_table(table):
+        create_table(table.name, table.attributes, table.constraints)
+
+    @staticmethod
+    def drop_table(table):
+        drop_table(table.name)

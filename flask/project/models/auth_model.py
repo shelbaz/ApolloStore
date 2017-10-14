@@ -24,14 +24,6 @@ class User(Mapper):
         'UNIQUE': '(email)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('users', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('users')
-
     # Constructor that creates a new user
     def __init__(self, id, first_name, last_name, address, email, phone, admin):
 

@@ -25,14 +25,6 @@ class Desktop(Item, Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('desktops', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('desktops')
-
     # Constructor that creates a new desktop
     def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
 

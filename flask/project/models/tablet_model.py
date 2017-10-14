@@ -29,14 +29,6 @@ class Tablet(Item, Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('tablets', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('tablets')
-
     # Constructor that creates a new tablet
     def __init__(self, model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
 

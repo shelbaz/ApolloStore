@@ -21,14 +21,6 @@ class Cart(Mapper):
         'FOREIGN KEY (user_id)': 'REFERENCES users (id)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('carts', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('carts')
-
     # Constructor that creates a new cart
     def __init__(self, id, inventory_id, user_id, added_time):
 

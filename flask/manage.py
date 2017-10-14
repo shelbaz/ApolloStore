@@ -95,8 +95,12 @@ def create():
 
 @manager.command
 def drop():
-    from project.gateways import drop_tables
-    drop_tables()
+    import traceback
+    try:
+        from project.gateways import drop_tables
+        drop_tables()
+    except Exception:
+        logger.error(traceback.format_exc())
 
 
 # Starts the Flask app.

@@ -61,18 +61,14 @@ def query_filtered_by(*tables, **conditions):
         filters.append(str(key) + '=\'' + str(value) + '\'')
 
     filters = ' AND '.join(filters)
-    print(filters, flush=True)
 
     # Joins the tables if multiple are given
     tables = ' NATURAL JOIN '.join(tables)
-    print(tables, flush=True)
 
     if filters:
         query = 'SELECT * FROM %s WHERE %s;' % (tables, filters)
     else:
         query = 'SELECT * FROM %s;' % tables
-
-    print(query, flush=True)
 
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
@@ -114,7 +110,7 @@ def delete_from_db(*tables, **conditions):
                 cursor.execute(query)
 
 
-def create_table(name, attributes, constraints, *enum):
+def create_table(name, attributes, constraints):
     # Using the 'with' statement automatically commits and closes database connections
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
@@ -122,21 +118,7 @@ def create_table(name, attributes, constraints, *enum):
             # Searches if there is already a table with the same name
             cursor.execute('SELECT * FROM information_schema.tables WHERE table_name=\'%s\'' % name)
 
-            query = ''
-
-            # Adds ENUM type if existent
-            if enum:
-                for key, value in enum[0].items():
-                    query += """
-                            DO $$
-                            BEGIN
-                                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname='%s') THEN
-                                    CREATE TYPE %s AS ENUM %s;
-                                END IF;
-                            END$$;
-                            """ % (key, key, value)
-
-            query += 'CREATE TABLE %s (' % name
+            query = 'CREATE TABLE %s (' % name
 
             # Adds attributes
             for key, value in attributes.items():
@@ -177,19 +159,20 @@ from project.models.tablet_model import Tablet
 from project.models.monitor_model import Monitor
 from project.models.laptop_model import Laptop
 from project.models.desktop_model import Desktop
+from project.orm import Mapper
 
 
 # Calls the class functions that create the tables of the corresponding models
 def create_tables():
     try:
-        User.create_table()
-        Item.create_table()
-        Inventory.create_table()
-        Cart.create_table()
-        Tablet.create_table()
-        Monitor.create_table()
-        Laptop.create_table()
-        Desktop.create_table()
+        Mapper.create_table(User)
+        Mapper.create_table(Item)
+        Mapper.create_table(Inventory)
+        Mapper.create_table(Cart)
+        Mapper.create_table(Tablet)
+        Mapper.create_table(Monitor)
+        Mapper.create_table(Laptop)
+        Mapper.create_table(Desktop)
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
         time.sleep(5)
@@ -199,14 +182,14 @@ def create_tables():
 # Calls the class functions that drop the tables of the corresponding models
 def drop_tables():
     try:
-        Tablet.drop_table()
-        Monitor.drop_table()
-        Laptop.drop_table()
-        Desktop.drop_table()
-        Cart.drop_table()
-        Inventory.drop_table()
-        Item.drop_table()
-        User.drop_table()
+        Mapper.drop_table(Tablet)
+        Mapper.drop_table(Monitor)
+        Mapper.drop_table(Laptop)
+        Mapper.drop_table(Desktop)
+        Mapper.drop_table(Cart)
+        Mapper.drop_table(Inventory)
+        Mapper.drop_table(Item)
+        Mapper.drop_table(User)
     except Exception:
         # Tries dropping the tables again if an exception is raised
         time.sleep(5)

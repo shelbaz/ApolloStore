@@ -21,14 +21,6 @@ class Monitor(Item, Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('monitors', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('monitors')
-
     # Constructor that creates a new monitor
     def __init__(self, model, brand, price, weight, dimensions):
 

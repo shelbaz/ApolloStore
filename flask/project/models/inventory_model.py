@@ -17,14 +17,6 @@ class Inventory(Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('inventories', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('inventories')
-
     # Constructor that creates inventory
     def __init__(self, id, model):
 

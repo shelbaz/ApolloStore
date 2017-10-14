@@ -29,14 +29,6 @@ class Laptop(Item, Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    @staticmethod
-    def create_table():
-        create_table('laptops', __class__.attributes, __class__.constraints)
-
-    @staticmethod
-    def drop_table():
-        drop_table('laptops')
-
     # Constructor that creates a new laptop
     def __init__(self, model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
 
