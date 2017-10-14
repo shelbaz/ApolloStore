@@ -209,6 +209,7 @@ def login():
 
     return redirect('/dashboard')
 
+
 # Logs the user out
 @website_blueprint.route('/logout')
 def logout():
