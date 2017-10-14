@@ -12,12 +12,10 @@
 
 
 import unittest
-import json
 from tests.base_authentication import BaseTestCase
-from project.services.authentication import validate_email, validate_name, validate_password, create_user
+from project.services.authentication_service import  AuthenticationService
 from project.models.auth_model import User
-from tests.helpers import make_auth_header
-from flask import g
+from project.orm import Mapper
 
 
 # This class inherits from the base class in 'base_authentication.py', in order to
@@ -25,32 +23,32 @@ from flask import g
 class TestAuthentication(BaseTestCase):
     def test_validate_email(self):
         with self.client:
-            self.assertTrue(validate_email('soen343@gmail.com'))
-            self.assertFalse(validate_email(''))
-            self.assertFalse(validate_email('soen343@'))
-            self.assertFalse(validate_email('soen343@@'))
+            self.assertTrue(AuthenticationService.validate_email('soen343@gmail.com'))
+            self.assertFalse(AuthenticationService.validate_email(''))
+            self.assertFalse(AuthenticationService.validate_email('soen343@'))
+            self.assertFalse(AuthenticationService.validate_email('soen343@@'))
 
     def test_validate_name(self):
         with self.client:
-            self.assertFalse(validate_name(''))
+            self.assertFalse(AuthenticationService.validate_name(''))
             self.assertFalse(
-                validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
-            self.assertFalse(validate_name('23232'))
-            self.assertFalse(validate_name('muku1234'))
-            self.assertTrue(validate_name('corey'))
-            self.assertTrue(validate_name('COREY'))
-            self.assertTrue(validate_name('Murey'))
+                AuthenticationService.validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
+            self.assertFalse(AuthenticationService.validate_name('23232'))
+            self.assertFalse(AuthenticationService.validate_name('muku1234'))
+            self.assertTrue(AuthenticationService.validate_name('corey'))
+            self.assertTrue(AuthenticationService.validate_name('COREY'))
+            self.assertTrue(AuthenticationService.validate_name('Murey'))
 
     def test_validate_password(self):
         with self.client:
-            self.assertFalse(validate_password('abcd12'))
-            self.assertFalse(validate_password('1234567890123456789011'))
-            self.assertFalse(validate_password('Abc 12'))
-            self.assertTrue(validate_password('Murey2017'))
+            self.assertFalse(AuthenticationService.validate_password('abcd12'))
+            self.assertFalse(AuthenticationService.validate_password('1234567890123456789011'))
+            self.assertFalse(AuthenticationService.validate_password('Abc 12'))
+            self.assertTrue(AuthenticationService.validate_password('Murey2017'))
 
     def test_validate_create_user(self):
         with self.client:
-            user = create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111', '5141234567', False)
+            user = AuthenticationService.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111', '5141234567', False)
 
             self.assertEqual('Test', user.first_name)
             self.assertEqual('Tester', user.last_name)
@@ -67,9 +65,10 @@ class TestAuthentication(BaseTestCase):
                                 address='123213432g',
                                 phone='34543534',
                                 admin=True)
-            response = self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
+            self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
-            user = User.query_filtered_by(email=request_data['email'])
+            rows = Mapper.query('users', email=request_data['email'])
+            user= AuthenticationService.get_user_from_rows(rows)
 
             self.assertTrue(user)
 

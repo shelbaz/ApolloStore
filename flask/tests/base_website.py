@@ -9,7 +9,6 @@
 
 from flask_testing import TestCase
 from project import create_app, logger
-import os
 import logging
 
 

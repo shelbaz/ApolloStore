@@ -1,101 +1,45 @@
 
 from project.models.item_model import Item
-from project.models import connect_to_db
-import psycopg2
+from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
+from project.orm import Mapper
 
 
-class Desktop(Item):
+class Desktop(Item, Mapper):
 
-    # Class function that creates the 'desktops' table
-    @staticmethod
-    def create_table():
-        # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
+    name = 'desktops'
 
-                # Searches if there is already a table named 'desktops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
+    attributes = {
+        'model': 'UUID',
+        'brand': 'varchar(64)',
+        'price': 'decimal',
+        'weight': 'decimal',
+        'processor': 'varchar(64)',
+        'ram_size': 'integer',
+        'cpu_cores': 'integer',
+        'hd_size': 'integer',
+        'dimensions': 'varchar(64)',
+    }
 
-                # Creates table 'desktops' if it doesn't exist
-                if not bool(cursor.rowcount):
-                    cursor.execute(
-                        """
-                        CREATE TABLE desktops (
-                          model UUID PRIMARY KEY,
-                          processor varchar(64),
-                          ram_size integer,
-                          cpu_cores integer,
-                          hd_size integer,
-                          dimensions varchar(64),
-                          FOREIGN KEY (model) REFERENCES items (model)
-                        );
-                        """
-                    )
-
-    # Class function that deletes the 'desktops' table
-    @staticmethod
-    def drop_table():
-        # Using the 'with' statement automatically commits and closes database connections
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
-                # Searches if there is already a table named 'desktops'
-                cursor.execute("select * from information_schema.tables where table_name=%s", ('desktops',))
-
-                # Deletes table 'desktops' if it exists
-                if bool(cursor.rowcount):
-                    cursor.execute('DROP TABLE desktops;')
+    constraints = {
+        'PRIMARY KEY': '(model)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)'
+    }
 
     # Constructor that creates a new desktop
     def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
 
+        Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
+
         # Creates the Item object
-        super().__init__(model, brand, price, weight)
+        self._item = Item(model)
 
         # Initialize object attributes
         self.model = model
+        self.brand = brand
+        self.price = price
+        self.weight = weight
         self.processor = processor
         self.ram_size = ram_size
         self.cpu_cores = cpu_cores
         self.hd_size = hd_size
         self.dimensions = dimensions
-
-    # Adds the desktop to the database
-    def insert_into_db(self):
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
-                super().insert_into_db()
-                cursor.execute(
-                    """INSERT INTO desktops (model, processor, ram_size, cpu_cores, hd_size, dimensions) VALUES ('%s', '%s', %s, %s, %s, '%s');"""
-                    % (self.model, self.processor, str(self.ram_size), str(self.cpu_cores), str(self.hd_size), self.dimensions))
-
-    @staticmethod
-    # Queries the desktops table with the filters given as parameters (only equality filters)
-    def query_filtered_by(**kwargs):
-
-        filters = []
-
-        for key, value in kwargs.items():
-            filters.append(str(key) + '=\'' + str(value) + '\'')
-
-        filters = ' AND '.join(filters)
-
-        if filters:
-            query = 'SELECT * FROM items NATURAL JOIN desktops WHERE %s;' % (filters,)
-        else:
-            query = 'SELECT * FROM items NATURAL JOIN desktops;'
-
-        with connect_to_db() as connection:
-            with connection.cursor() as cursor:
-                cursor.execute(query)
-                rows = cursor.fetchall()
-
-        desktops = []
-
-        for row in rows:
-            desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
-            desktops.append(desktop)
-
-        if desktops:
-            return desktops
-        else:
-            return None
