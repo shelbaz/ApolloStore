@@ -4,6 +4,7 @@ from project.models.inventory_model import Inventory
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class InventoryService():
@@ -49,7 +50,7 @@ class InventoryService():
 
     @staticmethod
     def delete_item_from_inventory(model):
-        rows = Inventory.query(model=model)
+        rows = Mapper.query('inventories', model=model)
         inventory = InventoryService.get_inventory_items_from_rows(rows)[0]
         inventory.delete()
         

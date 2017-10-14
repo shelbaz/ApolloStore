@@ -6,6 +6,7 @@ from project.services.electronic_service import ElectronicService
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class DesktopService():
@@ -33,7 +34,7 @@ class DesktopService():
     @staticmethod
     def get_all_desktops():
         try:
-            rows = Desktop.query()
+            rows = Mapper.query('items', 'desktops')
             desktops = DesktopService.get_desktops_from_rows(rows)
             desktops_with_count = []
 
@@ -74,7 +75,7 @@ class DesktopService():
     @staticmethod
     def delete_model(model):
         try:
-            rows = Desktop.query(model=model)
+            rows = Mapper.query('items', 'desktops', model=model)
             desktop = DesktopService.get_desktops_from_rows(rows)[0]
 
             desktop.delete()

@@ -5,9 +5,9 @@ from project.services.desktop_service import DesktopService
 from project.services.laptop_service import LaptopService
 from project.services.monitor_service import MonitorService
 from project.services.tablet_service import TabletService
-from project.services.television_service import TelevisionService
 from project.services.inventory_service import InventoryService
 from project.models.inventory_model import Inventory
+from project.orm import Mapper
 
 
 # This class inherits from the base class in 'base_create_objects.py', in order to
@@ -21,7 +21,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(desktop.model)
 
             InventoryService.delete_item_from_inventory(desktop.model)
-            rows = Inventory.query(model=desktop.model)
+            rows = Mapper.query('inventories', model=desktop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -33,7 +33,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(laptop.model)
 
             InventoryService.delete_item_from_inventory(laptop.model)
-            rows = Inventory.query(model=laptop.model)
+            rows = Mapper.query('inventories', model=laptop.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -44,7 +44,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(monitor.model)
 
             InventoryService.delete_item_from_inventory(monitor.model)
-            rows = Inventory.query(model=monitor.model)
+            rows = Mapper.query('inventories', model=monitor.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 
@@ -56,18 +56,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryService.add_item_to_inventory(tablet.model)
 
             InventoryService.delete_item_from_inventory(tablet.model)
-            rows = Inventory.query(model=tablet.model)
-            items = InventoryService.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
-
-    def test_delete_television(self):
-        with self.client:
-            television = TelevisionService.create_television('Panasonic', 3000, 15, 'Smart', '40x50')
-            InventoryService.add_item_to_inventory(television.model)
-            InventoryService.add_item_to_inventory(television.model)
-
-            InventoryService.delete_item_from_inventory(television.model)
-            rows = Inventory.query(model=television.model)
+            rows = Mapper.query('inventories', model=tablet.model)
             items = InventoryService.get_inventory_items_from_rows(rows)
             self.assertEqual(1, len(items))
 

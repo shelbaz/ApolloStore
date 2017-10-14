@@ -1,8 +1,11 @@
 
 from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
+from project.orm import Mapper
 
 
-class Cart(object):
+class Cart(Mapper):
+
+    name = 'carts'
 
     attributes = {
         'id': 'UUID',
@@ -29,18 +32,10 @@ class Cart(object):
     # Constructor that creates a new cart
     def __init__(self, id, inventory_id, user_id, added_time):
 
+        super().__init__(__class__.name, __class__.attributes, __class__.constraints)
+
         # Initialize the object's attributes
         self.id = id
         self.inventory_id = inventory_id
         self.user_id = user_id
         self.added_time = added_time
-
-    @staticmethod
-    def query(**conditions):
-        return query_filtered_by('carts', **conditions)
-
-    def insert(self):
-        insert_into_db('carts', __class__.attributes, self)
-
-    def delete(self):
-        delete_from_db('carts', id=self.id)

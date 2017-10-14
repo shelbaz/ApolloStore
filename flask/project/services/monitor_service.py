@@ -6,6 +6,7 @@ from project.services.electronic_service import ElectronicService
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class MonitorService():
@@ -32,7 +33,7 @@ class MonitorService():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = Monitor.query()
+            rows = Mapper.query('items', 'monitors')
             monitors = MonitorService.get_monitors_from_rows(rows)
             monitors_with_count = []
 
@@ -71,7 +72,7 @@ class MonitorService():
     @staticmethod
     def delete_model(model):
         try:
-            rows = Monitor.query(model=model)
+            rows = Mapper.query('items', 'monitors', model=model)
             monitor = MonitorService.get_monitors_from_rows(rows)[0]
 
             monitor.delete()

@@ -15,6 +15,7 @@ import unittest
 from tests.base_authentication import BaseTestCase
 from project.services.authentication_service import  AuthenticationService
 from project.models.auth_model import User
+from project.orm import Mapper
 
 
 # This class inherits from the base class in 'base_authentication.py', in order to
@@ -66,7 +67,7 @@ class TestAuthentication(BaseTestCase):
                                 admin=True)
             self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
-            rows = User.query(email=request_data['email'])
+            rows = Mapper.query('users', email=request_data['email'])
             user= AuthenticationService.get_user_from_rows(rows)
 
             self.assertTrue(user)

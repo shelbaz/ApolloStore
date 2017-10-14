@@ -6,6 +6,7 @@ from project.identityMap import IdentityMap
 from project.gateways import get_inventory_count
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class TabletService():
@@ -32,7 +33,7 @@ class TabletService():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = Tablet.query()
+            rows = Mapper.query('items', 'tablets')
             tablets = TabletService.get_tablets_from_rows(rows)
             tablets_with_count = []
 
@@ -73,7 +74,7 @@ class TabletService():
     @staticmethod
     def delete_model(model):
         try:
-            rows = Tablet.query(model=model)
+            rows = Mapper.query('items', 'tablets', model=model)
             tablet = TabletService.get_tablets_from_rows(rows)[0]
 
             tablet.delete()

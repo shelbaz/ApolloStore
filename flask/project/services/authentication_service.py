@@ -4,6 +4,7 @@ from project.models.auth_model import User
 from re import match
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class AuthenticationService():
@@ -15,7 +16,7 @@ class AuthenticationService():
             if AuthenticationService.validate_email(email):
                 if AuthenticationService.validate_name(first_name) and AuthenticationService.validate_name(last_name):
                     # if validate_password(password):
-                    if User.query(email=email) is None:
+                    if Mapper.query('users', email=email) is None:
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
                         user.hash_password(password)
                         user.insert()
@@ -71,7 +72,7 @@ class AuthenticationService():
     def load_user(user_id):
 
         rows = []
-        rows = User.query(id=user_id)
+        rows = Mapper.query('users', id=user_id)
         users = []
 
         for row in rows:

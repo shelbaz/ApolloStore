@@ -1,8 +1,11 @@
 
 from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
+from project.orm import Mapper
 
 
-class Inventory(object):
+class Inventory(Mapper):
+
+    name = 'inventories'
 
     attributes = {
         'id': 'UUID',
@@ -25,16 +28,8 @@ class Inventory(object):
     # Constructor that creates inventory
     def __init__(self, id, model):
 
+        super().__init__(__class__.name, __class__.attributes, __class__.constraints)
+
         # Initialize object attributes
         self.id = id
         self.model = model
-
-    @staticmethod
-    def query(**conditions):
-        return query_filtered_by('inventories', **conditions)
-
-    def insert(self):
-        insert_into_db('inventories', __class__.attributes, self)
-
-    def delete(self):
-        delete_from_db('inventories', id=self.id)

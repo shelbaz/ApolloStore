@@ -61,14 +61,18 @@ def query_filtered_by(*tables, **conditions):
         filters.append(str(key) + '=\'' + str(value) + '\'')
 
     filters = ' AND '.join(filters)
+    print(filters, flush=True)
 
     # Joins the tables if multiple are given
     tables = ' NATURAL JOIN '.join(tables)
+    print(tables, flush=True)
 
     if filters:
         query = 'SELECT * FROM %s WHERE %s;' % (tables, filters)
     else:
         query = 'SELECT * FROM %s;' % tables
+
+    print(query, flush=True)
 
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
@@ -169,7 +173,6 @@ from project.models.auth_model import User
 from project.models.item_model import Item
 from project.models.inventory_model import Inventory
 from project.models.cart_model import Cart
-from project.models.television_model import Television
 from project.models.tablet_model import Tablet
 from project.models.monitor_model import Monitor
 from project.models.laptop_model import Laptop
@@ -183,7 +186,6 @@ def create_tables():
         Item.create_table()
         Inventory.create_table()
         Cart.create_table()
-        Television.create_table()
         Tablet.create_table()
         Monitor.create_table()
         Laptop.create_table()
@@ -197,7 +199,6 @@ def create_tables():
 # Calls the class functions that drop the tables of the corresponding models
 def drop_tables():
     try:
-        Television.drop_table()
         Tablet.drop_table()
         Monitor.drop_table()
         Laptop.drop_table()

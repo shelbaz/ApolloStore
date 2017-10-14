@@ -6,6 +6,7 @@ from project.identityMap import IdentityMap
 from project.services.electronic_service import ElectronicService
 from uuid import uuid4
 import traceback
+from project.orm import Mapper
 
 
 class LaptopService():
@@ -34,7 +35,7 @@ class LaptopService():
     @staticmethod
     def get_all_laptops():
         try:
-            rows = Laptop.query()
+            rows = Mapper.query('items', 'laptops')
             laptops = LaptopService.get_laptops_from_rows(rows)
             laptops_with_count = []
 
@@ -75,7 +76,7 @@ class LaptopService():
     @staticmethod
     def delete_model(model):
         try:
-            rows = Laptop.query(model=model)
+            rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopService.get_laptops_from_rows(rows)[0]
 
             laptop.delete()

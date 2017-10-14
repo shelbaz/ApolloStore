@@ -1,9 +1,12 @@
 
 from passlib.apps import custom_app_context as pwd_context
 from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
+from project.orm import Mapper
 
 
-class User():
+class User(Mapper):
+
+    name = 'users'
 
     attributes = {
         'id': 'UUID',
@@ -32,6 +35,8 @@ class User():
     # Constructor that creates a new user
     def __init__(self, id, first_name, last_name, address, email, phone, admin):
 
+        super().__init__(__class__.name, __class__.attributes, __class__.constraints)
+
         # Initializes object attributes
         self.id = id
         self.first_name = first_name
@@ -40,16 +45,6 @@ class User():
         self.email = email
         self.phone = phone
         self.admin = admin
-
-    @staticmethod
-    def query(**conditions):
-        return query_filtered_by('users', **conditions)
-
-    def insert(self):
-        insert_into_db('users', __class__.attributes, self)
-
-    def delete(self):
-        delete_from_db('users', id=self.id)
 
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):
