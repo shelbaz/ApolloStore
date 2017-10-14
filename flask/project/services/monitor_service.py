@@ -29,6 +29,25 @@ class MonitorService():
         except Exception:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def update_monitor(model, brand, price, weight, dimensions):
+        try:
+            rows = MonitorGateaway.query_filtered_by(model=model)
+            monitor1 = MonitorService.get_monitors_from_rows(rows)[0]
+            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight):
+                monitor2 = Monitor(model=str(uuid4()), brand=brand, price=price, weight=weight, dimensions=dimensions)
+                MonitorGateaway.remove_from_db(monitor1)
+                ItemGateaway.remove_from_db(monitor1)
+                ItemGateaway.insert_into_db(monitor2)
+                MonitorGateaway.insert_into_db(monitor2)
+                MonitorService.identityMap.set(monitor2.model, monitor2)
+
+                logger.info('Monitor updated successfully!')
+
+                return monitor2
+        except Exception as e:
+            logger.error(traceback.format_exc())
+
     # Queries the list of all monitors and their count
     @staticmethod
     def get_all_monitors():
