@@ -83,7 +83,8 @@ function getSelected() {
                     {% for tablet in tablets: %}
                     <tr>
                         <td></td>
-                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{tablet[0].model}}');">+</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{tablet[0].model}}');">+</button>
+                        <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{tablet[0].model}}');">-</button></td>
                         <td>{{tablet[1]}}</td>
                         <td>{{tablet[0].model}}</td>
                         <td>{{tablet[0].price}}</td>
@@ -134,6 +135,17 @@ function getSelected() {
                 document.body.appendChild(form)
                 form.submit();
                 console.log('submitted');
+            }
+        </script>
+
+         <script>
+            function delete_from_inventory(model) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/remove-inventory/tablet/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
             }
         </script>
 
