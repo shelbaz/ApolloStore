@@ -1,20 +1,20 @@
 
 from project import logger, login_manager
-from project.models.auth_model import User
+from project.models.auth import User
 from re import match
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
 
 
-class AuthenticationService():
+class AuthenticationController():
 
     # Creates a user that is valid
     @staticmethod
     def create_user(first_name, last_name, address, email, password, phone, admin):
         try:
-            if AuthenticationService.validate_email(email):
-                if AuthenticationService.validate_name(first_name) and AuthenticationService.validate_name(last_name):
+            if AuthenticationController.validate_email(email):
+                if AuthenticationController.validate_name(first_name) and AuthenticationController.validate_name(last_name):
                     # if validate_password(password):
                     if Mapper.query('users', email=email) is None:
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)

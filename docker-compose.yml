@@ -10,7 +10,7 @@
 # this out: http://do.co/1I8tUVm
 #
 # You may be wondering why we use Docker. When you have bigger projects
-# that require multiple services like the actual web app, the web server,
+# that require multiple controllers like the actual web app, the web server,
 # a database and more, you would need to install it separately. This not
 # only takes time, but you would have to reconfigure it every single time
 # you install it on a new machine. What Docker does is automate all this

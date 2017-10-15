@@ -13,17 +13,17 @@ Your home to purchasing electronics online!
     │   ├── project
     │   │   ├── __init__.py
     │   │   ├── models
-    │   │   │   ├── auth_model.py
-    │   │   │   ├── cart_model.py
-    │   │   │   ├── desktop_model.py
+    │   │   │   ├── auth.py
+    │   │   │   ├── cart.py
+    │   │   │   ├── desktop.py
     │   │   │   ├── __init__.py
-    │   │   │   ├── inventory_model.py
-    │   │   │   ├── item_model.py
-    │   │   │   ├── laptop_model.py
-    │   │   │   ├── monitor_model.py
-    │   │   │   ├── tablet_model.py
-    │   │   │   └── television_model.py
-    │   │   ├── services
+    │   │   │   ├── inventory.py
+    │   │   │   ├── item.py
+    │   │   │   ├── laptop.py
+    │   │   │   ├── monitor.py
+    │   │   │   ├── tablet.py
+    │   │   │   └── television.py
+    │   │   ├── controllers
     │   │   │   ├── authentication.py
     │   │   │   ├── electronics.py
     │   │   │   └── __init__.py
@@ -47,7 +47,7 @@ Your home to purchasing electronics online!
     │       ├── test_authentication.py
     │       ├── test_configs.py
     │       ├── test_create_objects.py
-    │       ├── test_view_models.py
+    │       ├── test_views.py
     │       └── test_website.py
     ├── nginx
     │   ├── app.conf

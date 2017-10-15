@@ -1,15 +1,15 @@
 
 from project import logger
-from project.models.laptop_model import Laptop
+from project.models.laptop import Laptop
 from project.gateways import get_inventory_count
 from project.identityMap import IdentityMap
-from project.services.electronic_service import ElectronicService
+from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
 
 
-class LaptopService():
+class LaptopController():
 
     identityMap = IdentityMap()
 
@@ -17,12 +17,12 @@ class LaptopService():
     @staticmethod
     def create_laptop(brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
         try:
-            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
+            if ElectronicController.validate_price(price) and ElectronicController.validate_weight(weight) and ElectronicController.validate_ram_size(ram_size) and ElectronicController.validate_cpu_cores(cpu_cores) and ElectronicController.validate_hd_size(hd_size):
 
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
                 laptop.insert()
-                LaptopService.identityMap.set(laptop.model, laptop)
+                LaptopController.identityMap.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
 
@@ -32,31 +32,15 @@ class LaptopService():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def update_laptop(model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
-        try:
-            rows = LaptopGateaway.query_filtered_by(model=model)
-            laptop1 = LaptopService.get_laptops_from_rows(rows)[0]
-            if ElectronicService.validate_price(price) and ElectronicService.validate_weight(weight) and ElectronicService.validate_ram_size(ram_size) and ElectronicService.validate_cpu_cores(cpu_cores) and ElectronicService.validate_hd_size(hd_size):
-                laptop2 = Laptop(model=model, brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
-                                cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
-                LaptopGateaway.remove_from_db(laptop1)
-                ItemGateaway.remove_from_db(laptop1)
-                ItemGateaway.insert_into_db(laptop2)
-                LaptopGateaway.insert_into_db(laptop2)
-                LaptopService.identityMap.set(laptop2.model, laptop2)
-
-                logger.info('Laptop updated successfully!')
-
-                return laptop2
-        except Exception as e:
-            logger.error(traceback.format_exc())
+    def update_laptop(laptop, **conditions):
+        laptop.update(**conditions)
 
     # Queries the list of all laptops and their count
     @staticmethod
     def get_all_laptops():
         try:
             rows = Mapper.query('items', 'laptops')
-            laptops = LaptopService.get_laptops_from_rows(rows)
+            laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
@@ -77,12 +61,12 @@ class LaptopService():
         if rows:
             for row in rows:
                 #check identity map
-                if LaptopService.identityMap.hasId(row[0]):
-                    laptop = LaptopService.identityMap.getObject(row[0])
+                if LaptopController.identityMap.hasId(row[0]):
+                    laptop = LaptopController.identityMap.getObject(row[0])
                 else:
                     laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
                                 row[11], row[12])
-                    LaptopService.identityMap.set(laptop.model, laptop)
+                    LaptopController.identityMap.set(laptop.model, laptop)
                     
                 laptops.append(laptop)
 
@@ -97,7 +81,7 @@ class LaptopService():
     def delete_model(model):
         try:
             rows = Mapper.query('items', 'laptops', model=model)
-            laptop = LaptopService.get_laptops_from_rows(rows)[0]
+            laptop = LaptopController.get_laptops_from_rows(rows)[0]
 
             laptop.delete()
 

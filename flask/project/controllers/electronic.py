@@ -2,7 +2,7 @@
 from project.identityMap import IdentityMap
 
 
-class ElectronicService():
+class ElectronicController():
 
     identityMap = IdentityMap()
 
