@@ -31,7 +31,9 @@ class DesktopController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def update_desktop(desktop, **conditions):
+    def update_desktop(model, **conditions):
+        rows = Mapper.query('desktops', model=model)
+        desktop = DesktopController.get_desktops_from_rows(rows)[0]
         desktop.update(**conditions)
 
     # Queries the list of all desktops and their count

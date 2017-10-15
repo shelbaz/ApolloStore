@@ -32,7 +32,9 @@ class LaptopController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def update_laptop(laptop, **conditions):
+    def update_laptop(model, **conditions):
+        rows = Mapper.query('laptops', model=model)
+        laptop = LaptopController.get_laptops_from_rows(rows)[0]
         laptop.update(**conditions)
 
     # Queries the list of all laptops and their count
