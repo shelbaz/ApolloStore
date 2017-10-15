@@ -30,7 +30,9 @@ class MonitorController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def update_monitor(monitor, **conditions):
+    def update_monitor(model, **conditions):
+        rows = Mapper.query('monitors', model=model)
+        monitor = MonitorController.get_monitors_from_rows(rows)[0]
         monitor.update(**conditions)
 
     # Queries the list of all monitors and their count

@@ -19,7 +19,7 @@ class TestUpdateObjects(BaseTestCase):
         with self.client:
             desktop1 = DesktopController.create_desktop('Asus', 500, 100, 'intel', 32, 4, 20, '20x20')
             desktop2 = DesktopController.create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
-            DesktopController.update_desktop(desktop1,brand='Apple', price=600, weight=100, processor='intel', ram_size=32, cpu_cores=4, hd_size=20, dimensions='20x20' )
+            DesktopController.update_desktop(desktop1.model,brand='Apple', price=600, weight=100, processor='intel', ram_size=32, cpu_cores=4, hd_size=20, dimensions='20x20' )
             rows = Mapper.query('desktops',model=desktop1.model)
             desktop= DesktopController.get_desktops_from_rows(rows)[0]
 
@@ -32,7 +32,7 @@ class TestUpdateObjects(BaseTestCase):
         with self.client:
             laptop1 = LaptopController.create_laptop('LG', 600, 200, '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
             laptop2 = LaptopController.create_laptop('Asus', 600, 200, '32x32', 'intel', 64, 2, 40, 'Long lasting battery', 'Windows 10', False, True)
-            LaptopController.update_laptop(laptop1, brand='Apple', price=1200, weight=400, display_size='30x30', processor='intel',
+            LaptopController.update_laptop(laptop1.model, brand='Apple', price=1200, weight=400, display_size='30x30', processor='intel',
                                         ram_size=64, cpu_cores=2, hd_size=40, battery_info='Long lasting battery', os='Windows 10',
                                         touchscreen=False, camera=True)
 
@@ -49,7 +49,7 @@ class TestUpdateObjects(BaseTestCase):
         with self.client:
             monitor1 = MonitorController.create_monitor('Asus', 300, 5, '25x30')
             monitor2 = MonitorController.create_monitor('Apple', 300, 5, '25x30')
-            MonitorController.update_monitor(monitor1, brand='LG', price=500, weight=50, dimensions='30x30')
+            MonitorController.update_monitor(monitor1.model, brand='LG', price=500, weight=50, dimensions='30x30')
             rows= Mapper.query('monitors', model=monitor1.model)
             monitor= MonitorController.get_monitors_from_rows(rows)[0]
 
@@ -63,7 +63,7 @@ class TestUpdateObjects(BaseTestCase):
         with self.client:
             tablet1 = TabletController.create_tablet('Microsoft', 1200, 1.2, '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
             tablet2 = TabletController.create_tablet('Samsung', 1200, 1.2, '10x12', '10x12', 'intel', 8, 2, 250, 'Long lasting battery', 'Windows 10', 'Good camera')
-            TabletController.update_tablet(tablet1, brand='Apple', price=1800, weight=10, display_size='12x12', dimensions='10x10',
+            TabletController.update_tablet(tablet1.model, brand='Apple', price=1800, weight=10, display_size='12x12', dimensions='10x10',
                                         processor='AMD', ram_size=16, cpu_cores=4, hd_size=350, battery='Short lasting battery',
                                         os='Windows 11', camera_info='Meh camera')
             rows = Mapper.query('tablets', model=tablet1.model)

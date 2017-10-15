@@ -30,7 +30,9 @@ class TabletController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def update_tablet(tablet, **conditions):
+    def update_tablet(model, **conditions):
+        rows = Mapper.query('tablets', model=model)
+        tablet = TabletController.get_tablets_from_rows(rows)[0]
         tablet.update(**conditions)
 
     # Queries the list of all tablets and their count
