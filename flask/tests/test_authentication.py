@@ -13,8 +13,8 @@
 
 import unittest
 from tests.base_authentication import BaseTestCase
-from project.services.authentication_service import  AuthenticationService
-from project.models.auth_model import User
+from project.controllers.authentication import  AuthenticationController
+from project.models.auth import User
 from project.orm import Mapper
 
 
@@ -23,32 +23,32 @@ from project.orm import Mapper
 class TestAuthentication(BaseTestCase):
     def test_validate_email(self):
         with self.client:
-            self.assertTrue(AuthenticationService.validate_email('soen343@gmail.com'))
-            self.assertFalse(AuthenticationService.validate_email(''))
-            self.assertFalse(AuthenticationService.validate_email('soen343@'))
-            self.assertFalse(AuthenticationService.validate_email('soen343@@'))
+            self.assertTrue(AuthenticationController.validate_email('soen343@gmail.com'))
+            self.assertFalse(AuthenticationController.validate_email(''))
+            self.assertFalse(AuthenticationController.validate_email('soen343@'))
+            self.assertFalse(AuthenticationController.validate_email('soen343@@'))
 
     def test_validate_name(self):
         with self.client:
-            self.assertFalse(AuthenticationService.validate_name(''))
+            self.assertFalse(AuthenticationController.validate_name(''))
             self.assertFalse(
-                AuthenticationService.validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
-            self.assertFalse(AuthenticationService.validate_name('23232'))
-            self.assertFalse(AuthenticationService.validate_name('muku1234'))
-            self.assertTrue(AuthenticationService.validate_name('corey'))
-            self.assertTrue(AuthenticationService.validate_name('COREY'))
-            self.assertTrue(AuthenticationService.validate_name('Murey'))
+                AuthenticationController.validate_name('abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'))
+            self.assertFalse(AuthenticationController.validate_name('23232'))
+            self.assertFalse(AuthenticationController.validate_name('muku1234'))
+            self.assertTrue(AuthenticationController.validate_name('corey'))
+            self.assertTrue(AuthenticationController.validate_name('COREY'))
+            self.assertTrue(AuthenticationController.validate_name('Murey'))
 
     def test_validate_password(self):
         with self.client:
-            self.assertFalse(AuthenticationService.validate_password('abcd12'))
-            self.assertFalse(AuthenticationService.validate_password('1234567890123456789011'))
-            self.assertFalse(AuthenticationService.validate_password('Abc 12'))
-            self.assertTrue(AuthenticationService.validate_password('Murey2017'))
+            self.assertFalse(AuthenticationController.validate_password('abcd12'))
+            self.assertFalse(AuthenticationController.validate_password('1234567890123456789011'))
+            self.assertFalse(AuthenticationController.validate_password('Abc 12'))
+            self.assertTrue(AuthenticationController.validate_password('Murey2017'))
 
     def test_validate_create_user(self):
         with self.client:
-            user = AuthenticationService.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111', '5141234567', False)
+            user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111', '5141234567', False)
 
             self.assertEqual('Test', user.first_name)
             self.assertEqual('Tester', user.last_name)
@@ -68,7 +68,7 @@ class TestAuthentication(BaseTestCase):
             self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
 
             rows = Mapper.query('users', email=request_data['email'])
-            user= AuthenticationService.get_user_from_rows(rows)
+            user= AuthenticationController.get_user_from_rows(rows)
 
             self.assertTrue(user)
 
