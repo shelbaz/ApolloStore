@@ -154,14 +154,18 @@ function getSelected() {
                 oFormObject.elements["edit-hdsize"].value = document.getElementById(model + "-hdsize").innerHTML;
                 oFormObject.elements["edit-batteryinfo"].value = document.getElementById(model + "-batteryinfo").innerHTML;
                 oFormObject.elements["edit-os"].value = document.getElementById(model + "-os").innerHTML;
-                if(document.getElementById(model + "-touchscreen").value  == true) {
+                if(document.getElementById(model + "-touchscreen").innerHTML  == "True") {
                     oFormObject.elements["edit-touchscreen"].checked = true;
                 }
-                if(document.getElementById(model + "-touchscreen").value == false){
+                if(document.getElementById(model + "-touchscreen").innerHTML == "False"){
                     oFormObject.elements["edit-touchscreen"].checked = false;
-
                 }
-                oFormObject.elements["edit-camera"].value = document.getElementById(model + "-camera").innerHTML;
+                if(document.getElementById(model + "-camera").innerHTML  == "True") {
+                    oFormObject.elements["edit-camera"].checked = true;
+                }
+                if(document.getElementById(model + "-camera").innerHTML == "False"){
+                    oFormObject.elements["edit-camera"].checked = false;
+                }
                 console.log(oFormObject.elements["edit-displaysize"].value)
             }
         </script>
