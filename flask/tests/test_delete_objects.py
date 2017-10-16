@@ -6,7 +6,6 @@ from project.controllers.laptop import LaptopController
 from project.controllers.monitor import MonitorController
 from project.controllers.tablet import TabletController
 from project.controllers.inventory import InventoryController
-from project.models.inventory import Inventory
 from project.orm import Mapper
 
 

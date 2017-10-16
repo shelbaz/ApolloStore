@@ -7,7 +7,6 @@ import traceback
 from project import logger
 
 
-
 # Creates a connection to the PostgreSQL using the test database if an argument is passed, and using the dev database if none is passed
 def connect_to_db():
     if current_app.config['TESTING']:
@@ -110,6 +109,7 @@ def delete_from_db(*tables, **conditions):
             with connection.cursor() as cursor:
                 cursor.execute(query)
 
+
 def update_db(table, attributes, obj):
     types_with_no_quotes = ['integer', 'decimal', 'boolean']
 
@@ -125,10 +125,12 @@ def update_db(table, attributes, obj):
         if value in types_with_no_quotes:
             query += str(key) + '='+ str(getattr(obj, key))
         else:
-            query += str(key) + '=\'' + str(getattr(obj,key)) + '\''
+            query += str(key) + '=\'' + str(getattr(obj, key)) + '\''
 
     where_condition = 'model=\'' + str(obj.model) + '\''
+
     query+= ' WHERE %s' % where_condition + ';'
+
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)

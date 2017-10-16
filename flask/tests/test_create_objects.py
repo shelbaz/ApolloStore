@@ -10,7 +10,6 @@
 # in a separate terminal window.
 # -------------------------------------------------------------------------------
 
-
 import unittest
 from tests.base_create_objects import BaseTestCase
 from project.controllers.electronic import ElectronicController

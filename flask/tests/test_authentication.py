@@ -10,11 +10,9 @@
 # in a separate terminal window.
 # -------------------------------------------------------------------------------
 
-
 import unittest
 from tests.base_authentication import BaseTestCase
 from project.controllers.authentication import  AuthenticationController
-from project.models.auth import User
 from project.orm import Mapper
 
 
@@ -71,7 +69,6 @@ class TestAuthentication(BaseTestCase):
             user= AuthenticationController.get_user_from_rows(rows)
 
             self.assertTrue(user)
-
 
 # Runs the tests.
 if __name__ == '__main__':

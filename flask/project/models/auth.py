@@ -1,6 +1,5 @@
 
 from passlib.apps import custom_app_context as pwd_context
-from project.gateways import create_table, drop_table, query_filtered_by, insert_into_db, delete_from_db
 from project.orm import Mapper
 
 

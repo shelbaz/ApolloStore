@@ -4,11 +4,10 @@ from project.gateways import insert_into_db, query_filtered_by, delete_from_db, 
 
 class Mapper(object):
 
-    def __init__(self, name, attributes, constraints, *extra):
+    def __init__(self, name, attributes, constraints):
         self._name = name
         self._attributes = attributes
         self._constraints = constraints
-        self._extra = extra
 
     def insert(self):
         if '_item' in dir(self):
@@ -19,11 +18,10 @@ class Mapper(object):
     def query(*table, **conditions):
         return query_filtered_by(*table, **conditions)
 
-    def update(self, **conditions):
-        for key,value in conditions.items():
+    def update(self, **attributes):
+        for key, value in attributes.items():
             setattr(self, key, value)
         update_db(self._name, self._attributes, self)
-
 
     def delete(self):
         if '_item' in dir(self):
