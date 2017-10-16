@@ -61,6 +61,7 @@ function getSelected() {
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Edit</th>
                         <th>Add</th>
                         <th>Count</th>
                         <th>Model</th>
@@ -83,22 +84,23 @@ function getSelected() {
                     {% for laptop in laptops: %}
                     <tr>
                         <td></td>
+                        <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{laptop[0].model}}');">EDIT</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{laptop[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{laptop[0].model}}');">-</button></td>
                         <td>{{laptop[1]}}</td>
-                        <td>{{laptop[0].model}}</td>
-                        <td>{{laptop[0].price}}</td>
-                        <td>{{laptop[0].weight}}</td>
-                        <td>{{laptop[0].brand}}</td>
-                        <td>{{laptop[0].display_size}}</td>
-                        <td>{{laptop[0].processor}}</td>
-                        <td>{{laptop[0].ram_size}}</td>
-                        <td>{{laptop[0].cpu_cores}}</td>
-                        <td>{{laptop[0].hd_size}}</td>
-                        <td>{{laptop[0].battery_info}}</td>
-                        <td>{{laptop[0].os}}</td>
-                        <td>{{laptop[0].touchscreen}}</td>
-                        <td>{{laptop[0].camera}}</td>
+                        <td id="{{laptop[0].model}}">{{laptop[0].model}}</td>
+                        <td id="{{laptop[0].model}}-price">{{laptop[0].price}}</td>
+                        <td id="{{laptop[0].model}}-weight">{{laptop[0].weight}}</td>
+                        <td id="{{laptop[0].model}}-brand">{{laptop[0].brand}}</td>
+                        <td id="{{laptop[0].model}}-displaysize">{{laptop[0].display_size}}</td>
+                        <td id="{{laptop[0].model}}-processor">{{laptop[0].processor}}</td>
+                        <td id="{{laptop[0].model}}-ramsize">{{laptop[0].ram_size}}</td>
+                        <td id="{{laptop[0].model}}-cpucores">{{laptop[0].cpu_cores}}</td>
+                        <td id="{{laptop[0].model}}-hdsize">{{laptop[0].hd_size}}</td>
+                        <td id="{{laptop[0].model}}-batteryinfo">{{laptop[0].battery_info}}</td>
+                        <td id="{{laptop[0].model}}-os">{{laptop[0].os}}</td>
+                        <td id="{{laptop[0].model}}-touchscreen">{{laptop[0].touchscreen}}</td>
+                        <td id="{{laptop[0].model}}-camera">{{laptop[0].camera}}</td>
                     </tr>
                     {% endfor %}
                 {% else: %}
@@ -138,6 +140,31 @@ function getSelected() {
             }
         </script>
 
+        <script>
+            function fill_edit_form(model) {
+                oFormObject = document.forms['myform_id'];
+                oFormObject.elements["model"].value = model;
+                oFormObject.elements["edit-price"].value = document.getElementById(model + "-price").innerHTML;
+                oFormObject.elements["edit-weight"].value = document.getElementById(model + "-weight").innerHTML;
+                oFormObject.elements["edit-brand"].value = document.getElementById(model + "-brand").innerHTML;
+                oFormObject.elements["edit-displaysize"].value = document.getElementById(model + "-displaysize").innerHTML;
+                oFormObject.elements["edit-processor"].value = document.getElementById(model + "-processor").innerHTML;
+                oFormObject.elements["edit-ramsize"].value = document.getElementById(model + "-ramsize").innerHTML;
+                oFormObject.elements["edit-cpucores"].value = document.getElementById(model + "-cpucores").innerHTML;
+                oFormObject.elements["edit-hdsize"].value = document.getElementById(model + "-hdsize").innerHTML;
+                oFormObject.elements["edit-batteryinfo"].value = document.getElementById(model + "-batteryinfo").innerHTML;
+                oFormObject.elements["edit-os"].value = document.getElementById(model + "-os").innerHTML;
+                if(document.getElementById(model + "-touchscreen").value  == true) {
+                    oFormObject.elements["edit-touchscreen"].checked = true;
+                }
+                if(document.getElementById(model + "-touchscreen").value == false){
+                    oFormObject.elements["edit-touchscreen"].checked = false;
+
+                }
+                oFormObject.elements["edit-camera"].value = document.getElementById(model + "-camera").innerHTML;
+                console.log(oFormObject.elements["edit-displaysize"].value)
+            }
+        </script>
          <script>
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
@@ -199,7 +226,7 @@ function getSelected() {
 <!-- End of Delete Modal -->
 
 <!-- Edit Modal -->
-<div class="modal fade" id="done" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
         <!-- Modal Header -->
@@ -217,26 +244,59 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" method="post">
+        <form id="myform_id" role="form" action="/edit-laptop" method="post">
             <div class="form-group">
-                <label for="pid">Item ID: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ ID"/>
-            </div>
+                <label for="model">Model: </label>
+                <input id = "model" type="text" name="model"
+                       class="form-control"/></div>
             <div class="form-group">
-                <label for="pid">Model: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Model"/>
-                <label for="pid">Price: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Price"/>
-                <label for="pid">Weight: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Weight"/>
-                <label for="pid">Brand: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Brand"/>
-            </div>
+                <label for="edit-price">Price: </label>
+                <input id="edit-price" type="text" class="form-control"
+                       name="price" /></div>
+            <div class="form-group">
+                <label for="edit-weight">Weight: </label>
+                <input id="edit-weight" type="text" class="form-control"
+                       name="weight" /> </div>
+            <div class="form-group">
+                <label for="edit-brand">Brand: </label>
+                <input id="edit-brand" type="text" class="form-control"
+                       name="brand" /> </div>
+            <div class="form-group">
+                <label for="edit-displaysize">Display Size: </label>
+                <input id="edit-displaysize" type="text" class="form-control"
+                       name="laptop_display_size" /> </div>
+            <div class="form-group">
+                <label for="edit-processor">Processor: </label>
+                <input id="edit-processor" type="text" class="form-control"
+                       name="processor" /> </div>
+            <div class="form-group">
+                <label for="edit-ramsize">Ram Size: </label>
+                <input id="edit-ramsize" type="text" class="form-control"
+                       name="ram_size" /> </div>
+            <div class="form-group">
+                <label for="edit-cpucores">CPU Cores: </label>
+                <input id="edit-cpucores" type="text" class="form-control"
+                       name="cpu_cores" /> </div>
+            <div class="form-group">
+                <label for="edit-hdsize">HD Size: </label>
+                <input id="edit-hdsize" type="text" class="form-control"
+                       name="hd_size"/> </div>
+            <div class="form-group">
+                <label for="edit-batteryinfo">Battery Info: </label>
+                <input id="edit-batteryinfo" type="text" class="form-control"
+                       name="battery_info" /> </div>
+            <div class="form-group">
+                <label for="edit-os">Operating System: </label>
+                <input id="edit-os" type="text" class="form-control"
+                       name="operating_system" /> </div>
+            <div class="form-group">
+                <label for="edit-touchscreen">Touchscreen</label>
+                <input type="checkbox" name = "touchscreen" class="form-control"
+                id="edit-touchscreen" /></div>
+            <div class="form-group">
+                <label for="edit-camera">Camera</label>
+                <input type="checkbox" name = "camera" class="form-control"
+                id="edit-camera" /></div>
             <br>
 
             <button type="submit" class="btn btn-default">Submit</button>
@@ -299,7 +359,7 @@ function getSelected() {
             id="brand" placeholder="Enter Brand"/>
         </div>
         <div class="form-group">
-            <label for="display_size">Enter Display Size</label>
+            <label for="laptop_display_size">Enter Display Size</label>
             <input type="text" name = "laptop_display_size" class="form-control"
             id="laptop_display_size" placeholder="Enter Display Size"/>
         </div>
@@ -324,12 +384,12 @@ function getSelected() {
             id="hd_size" placeholder="Enter HD Size"/>
         </div>
             <div class="form-group">
-            <label for="dimensions">Enter Battery Info</label>
+            <label for="battery">Enter Battery Info</label>
             <input type="text" name = "battery" class="form-control"
             id="battery" placeholder="Enter Battery"/>
         </div>
                     <div class="form-group">
-            <label for="dimensions">Enter OS</label>
+            <label for="operating_system">Enter OS</label>
             <input type="text" name = "operating_system" class="form-control"
             id="operating_system" placeholder="Enter OS"/>
         </div>

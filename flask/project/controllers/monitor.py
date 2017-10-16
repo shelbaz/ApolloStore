@@ -34,6 +34,7 @@ class MonitorController():
         rows = Mapper.query('monitors', model=model)
         monitor = MonitorController.get_monitors_from_rows(rows)[0]
         monitor.update(**conditions)
+        return monitor
 
     # Queries the list of all monitors and their count
     @staticmethod

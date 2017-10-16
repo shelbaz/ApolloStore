@@ -35,6 +35,7 @@ class DesktopController():
         rows = Mapper.query('desktops', model=model)
         desktop = DesktopController.get_desktops_from_rows(rows)[0]
         desktop.update(**conditions)
+        return desktop
 
     # Queries the list of all desktops and their count
     @staticmethod
