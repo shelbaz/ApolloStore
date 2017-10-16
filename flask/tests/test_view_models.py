@@ -10,20 +10,12 @@
 # in a separate terminal window.
 # -------------------------------------------------------------------------------
 
-
 import unittest
 from tests.base_viewmodels import BaseTestCase
 from project.controllers.desktop import DesktopController
 from project.controllers.tablet import TabletController
 from project.controllers.monitor import MonitorController
 from project.controllers.laptop import LaptopController
-from project.models.desktop import Desktop
-from project.models.laptop import Laptop
-from project.models.monitor import Monitor
-from project.models.tablet import Tablet
-from project.models.inventory import Inventory
-from project.controllers.inventory import InventoryController
-from project.gateways import get_inventory_count
 from project.orm import Mapper
 
 
