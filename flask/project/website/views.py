@@ -193,6 +193,34 @@ def tablet():
     return render_template('tablet.html', user=g.user, tablets=TabletController.get_all_tablets())
 
 
+@website_blueprint.route('/edit-tablet', methods=['POST'])
+@login_required
+def edit_tablet():
+    model = request.form.get('model')
+    price = request.form.get('price')
+    weight = request.form.get('weight')
+    brand = request.form.get('brand')
+    processor = request.form.get('processor')
+    ramsize = request.form.get('ram_size')
+    cpucores = request.form.get('cpu_cores')
+    hdsize = request.form.get('hd_size')
+    operatingsystem = request.form.get('operating_system')
+    displaysize = request.form.get('tablet_display_size')
+    camera = request.form.get('camera')
+    battery = request.form.get('battery')
+    dimensions = request.form.get('dimensions')
+
+    if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+        tablet = TabletController.update_tablet(model, brand=brand , price=price, weight=weight, display_size=displaysize,
+                                                dimensions=dimensions, processor=processor, ram_size=ramsize,
+                                                cpu_cores=cpucores, hd_size=hdsize, battery=battery, os=operatingsystem,
+                                                camera_info=camera)
+        if tablet:
+            return redirect('/tablet')
+        else:
+            logger.error('couldnt create tablet item')
+
+
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 @login_required
 def monitor():
