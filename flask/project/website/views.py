@@ -65,6 +65,29 @@ def desktop():
     return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
 
+@website_blueprint.route('/edit-desktop', methods=['POST'])
+@login_required
+def edit_desktop():
+    model = request.form.get('model')
+    price = request.form.get('price')
+    weight = request.form.get('weight')
+    brand = request.form.get('brand')
+    processor = request.form.get('processor')
+    ramsize = request.form.get('ram_size')
+    cpucores = request.form.get('cpu_cores')
+    hdsize = request.form.get('hd_size')
+    dimensions = request.form.get('desktopdimensions')
+
+    if model and price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
+        desktop = DesktopController.update_desktop(model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
+        if desktop:
+            return redirect('/desktop')
+        else:
+            logger.error('could not update desktop item')
+
+    # return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
+
+
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
 @login_required
 def laptop():
@@ -102,6 +125,45 @@ def laptop():
     return render_template('laptop.html', user=g.user, laptops=LaptopController.get_all_laptops())
 
 
+@website_blueprint.route('/edit-laptop', methods=['POST'])
+@login_required
+def edit_laptop():
+
+    model = request.form.get('model')
+    price = request.form.get('price')
+    weight = request.form.get('weight')
+    brand = request.form.get('brand')
+    displaysize = request.form.get('laptop_display_size')
+    processor = request.form.get('processor')
+    ramsize = request.form.get('ram_size')
+    cpucores = request.form.get('cpu_cores')
+    hdsize = request.form.get('hd_size')
+    battery = request.form.get('battery_info')
+    operatingsystem = request.form.get('operating_system')
+    touchscreen = request.form.get('touchscreen')
+    camera = request.form.get('camera')
+    if touchscreen:
+        touchscreen = True
+    else:
+        touchscreen = False
+    if camera:
+        camera = True
+    else:
+        camera = False
+
+    if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+        laptop = LaptopController.update_laptop(model, brand=brand, price=price, weight=weight, display_size =displaysize,
+                                                processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize,
+                                                battery_info=battery, os=operatingsystem, touchscreen=touchscreen,
+                                                camera=camera)
+
+        if laptop:
+            return redirect('/laptop')
+        else:
+            logger.error('could not update laptop item')
+
+
+
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
 @login_required
 def tablet():
@@ -131,6 +193,34 @@ def tablet():
     return render_template('tablet.html', user=g.user, tablets=TabletController.get_all_tablets())
 
 
+@website_blueprint.route('/edit-tablet', methods=['POST'])
+@login_required
+def edit_tablet():
+    model = request.form.get('model')
+    price = request.form.get('price')
+    weight = request.form.get('weight')
+    brand = request.form.get('brand')
+    processor = request.form.get('processor')
+    ramsize = request.form.get('ram_size')
+    cpucores = request.form.get('cpu_cores')
+    hdsize = request.form.get('hd_size')
+    operatingsystem = request.form.get('operating_system')
+    displaysize = request.form.get('tablet_display_size')
+    camera = request.form.get('camera')
+    battery = request.form.get('battery')
+    dimensions = request.form.get('dimensions')
+
+    if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
+        tablet = TabletController.update_tablet(model, brand=brand , price=price, weight=weight, display_size=displaysize,
+                                                dimensions=dimensions, processor=processor, ram_size=ramsize,
+                                                cpu_cores=cpucores, hd_size=hdsize, battery=battery, os=operatingsystem,
+                                                camera_info=camera)
+        if tablet:
+            return redirect('/tablet')
+        else:
+            logger.error('couldnt create tablet item')
+
+
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 @login_required
 def monitor():
@@ -150,6 +240,24 @@ def monitor():
                 logger.error('couldnt create monitor item')
 
     return render_template('monitor.html', user=g.user, monitors=MonitorController.get_all_monitors())
+
+
+@website_blueprint.route('/edit-monitor', methods=['POST'])
+@login_required
+def edit_monitor():
+
+    model = request.form.get('model')
+    price = request.form.get('price')
+    weight = request.form.get('weight')
+    brand = request.form.get('brand')
+    dimensions = request.form.get('monitor_dimensions')
+    if model and price and weight and brand and dimensions:
+        monitor = MonitorController.update_monitor(model, brand=brand, price=price, weight=weight, dimensions=dimensions)
+        if monitor:
+            return redirect('/monitor')
+        else:
+            logger.error('couldnt create monitor item')
+
 
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])

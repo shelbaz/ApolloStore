@@ -59,6 +59,7 @@
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Edit</th>
                         <th>Add</th>
                         <th>Count</th>                        
                         <th>Model</th>
@@ -77,18 +78,19 @@
                     {% for desktop in desktops: %}
                     <tr>
                         <td></td>
+                        <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{desktop[0].model}}');">EDIT</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{desktop[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{desktop[0].model}}');">-</button></td>
                         <td>{{desktop[1]}}</td>
-                        <td>{{desktop[0].model}}</td>
-                        <td>{{desktop[0].price}}</td>
-                        <td>{{desktop[0].weight}}</td>
-                        <td>{{desktop[0].brand}}</td>
-                        <td>{{desktop[0].processor}}</td>
-                        <td>{{desktop[0].ram_size}}</td>
-                        <td>{{desktop[0].cpu_cores}}</td>
-                        <td>{{desktop[0].hd_size}}</td>
-                        <td>{{desktop[0].dimensions}}</td>
+                        <td id="{{desktop[0].model}}">{{desktop[0].model}}</td>
+                        <td id="{{desktop[0].model}}-price">{{desktop[0].price}}</td>
+                        <td id="{{desktop[0].model}}-weight">{{desktop[0].weight}}</td>
+                        <td id="{{desktop[0].model}}-brand">{{desktop[0].brand}}</td>
+                        <td id="{{desktop[0].model}}-processor">{{desktop[0].processor}}</td>
+                        <td id="{{desktop[0].model}}-ramsize">{{desktop[0].ram_size}}</td>
+                        <td id="{{desktop[0].model}}-cpucores">{{desktop[0].cpu_cores}}</td>
+                        <td id="{{desktop[0].model}}-hdsize">{{desktop[0].hd_size}}</td>
+                        <td id="{{desktop[0].model}}-dimensions">{{desktop[0].dimensions}}</td>
                     </tr>
 
                     {% endfor %}
@@ -121,18 +123,34 @@
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
+                 console.log('submitted');
              }
         </script>
 
         <script>
-             function delete_from_inventory(model) {
-                 var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/remove-inventory/desktop/' + model);
-                 form.style.display = 'hidden';
-                 document.body.appendChild(form);
-                 form.submit();
-             }
+            function fill_edit_form(model) {
+                oFormObject = document.forms['myform_id'];
+                oFormObject.elements["model"].value = model;
+                oFormObject.elements["edit-price"].value = document.getElementById(model + "-price").innerHTML;
+                oFormObject.elements["edit-weight"].value = document.getElementById(model + "-weight").innerHTML;
+                oFormObject.elements["edit-brand"].value = document.getElementById(model + "-brand").innerHTML;
+                oFormObject.elements["edit-processor"].value = document.getElementById(model + "-processor").innerHTML;
+                oFormObject.elements["edit_ram_size"].value = document.getElementById(model + "-ramsize").innerHTML;
+                oFormObject.elements["edit_cpu_cores"].value = document.getElementById(model + "-cpucores").innerHTML;
+                oFormObject.elements["edit_hd_size"].value = document.getElementById(model + "-hdsize").innerHTML;
+                oFormObject.elements["edit_desktopdimensions"].value = document.getElementById(model + "-dimensions").innerHTML;
+}
+        </script>
+
+        <script>
+            function delete_from_inventory(model) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/remove-inventory/desktop/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+            }
         </script>
 
         <div class="col-md-8" >
@@ -185,7 +203,7 @@
 <!-- End of Delete Modal --> 
 
 <!-- Edit Modal --> 
-<div class="modal fade" id="done" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
         <!-- Modal Header -->
@@ -196,36 +214,53 @@
             <span class="sr-only">Close</span>
         </button>
         <h4 class="modal-title" id="done">
-            Please say which item ID you want to change:
+            Please enter the new values for your chosen field:
         </h4>
     </div>
 
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" action="/desktop" method="post">
+        <form id="myform_id" role="form" action="/edit-desktop" method="post">
             <div class="form-group">
-                <label for="pid">Item ID: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ ID"/>
-            </div>
+                <label for="model">Model: </label>
+                <input id = "model" type="text" name="model"
+                       class="form-control"/></div>
             <div class="form-group">
-                <label for="pid">Model: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Model"/>
-                <label for="pid">Price: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Price"/>
-                <label for="pid">Weight: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Weight"/>
-                <label for="pid">Brand: </label>
-                <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Brand"/>            
-            </div>
+                <label for="edit-price">Price: </label>
+                <input id="edit-price" type="text" class="form-control"
+                       name="price" /></div>
+            <div class="form-group">
+                <label for="edit-weight">Weight: </label>
+                <input id="edit-weight" type="text" class="form-control"
+                       name="weight" /> </div>
+            <div class="form-group">
+                <label for="edit-brand">Brand: </label>
+                <input id="edit-brand" type="text" class="form-control"
+                       name="brand" /> </div>
+            <div class="form-group">
+                <label for="edit-processor">Processor: </label>
+                <input id="edit-processor" type="text" class="form-control"
+                       name="processor" /> </div>
+            <div class="form-group">
+                <label for="edit_ram_size">Ram Size: </label>
+                <input id="edit_ram_size" type="text" class="form-control"
+                       name="ram_size" /> </div>
+            <div class="form-group">
+                <label for="edit_cpu_cores">CPU Cores: </label>
+                <input id="edit_cpu_cores" type="text" class="form-control"
+                       name="cpu_cores" /> </div>
+            <div class="form-group">
+                <label for="edit_hd_size">HD Size: </label>
+                <input id="edit_hd_size" type="text" class="form-control"
+                       name="hd_size"/> </div>
+            <div class="form-group">
+                <label for="edit_desktopdimensions">Dimensions: </label>
+                <input id="edit_desktopdimensions" type="text" class="form-control"
+                       name="desktopdimensions" /> </div>
             <br>
 
-            <button type="submit" class="btn btn-default">Submit</button>
+            <button type="submit" class="btn btn-default" >Submit</button>
         </form>
 
 

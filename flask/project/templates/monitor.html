@@ -61,6 +61,7 @@ function getSelected() {
                 <thead>
                     <tr>
                         <th></th>
+                        <th>Edit</th>
                         <th>Add</th>
                         <th>Count</th>
                         <th>Model</th>
@@ -75,14 +76,15 @@ function getSelected() {
                     {% for monitor in monitors: %}
                     <tr>
                         <td></td>
+                        <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{monitor[0].model}}');">EDIT</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{monitor[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{monitor[0].model}}');">-</button></td>
                         <td>{{monitor[1]}}</td>
-                        <td>{{monitor[0].model}}</td>
-                        <td>{{monitor[0].price}}</td>
-                        <td>{{monitor[0].weight}}</td>
-                        <td>{{monitor[0].brand}}</td>
-                        <td>{{monitor[0].dimensions}}</td>
+                        <td id="{{monitor[0].model}}">{{monitor[0].model}}</td>
+                        <td id="{{monitor[0].model}}-price">{{monitor[0].price}}</td>
+                        <td id="{{monitor[0].model}}-weight">{{monitor[0].weight}}</td>
+                        <td id="{{monitor[0].model}}-brand">{{monitor[0].brand}}</td>
+                        <td id="{{monitor[0].model}}-dimensions">{{monitor[0].dimensions}}</td>
                     </tr>
                     {% endfor %}
                 {% else: %}
@@ -114,6 +116,16 @@ function getSelected() {
              }
         </script>
 
+        <script>
+            function fill_edit_form(model) {
+                oFormObject = document.forms['myform_id'];
+                oFormObject.elements["model"].value = model;
+                oFormObject.elements["edit-price"].value = document.getElementById(model + "-price").innerHTML;
+                oFormObject.elements["edit-weight"].value = document.getElementById(model + "-weight").innerHTML;
+                oFormObject.elements["edit-brand"].value = document.getElementById(model + "-brand").innerHTML;
+                oFormObject.elements["edit-dimensions"].value = document.getElementById(model + "-dimensions").innerHTML;
+}
+        </script>
          <script>
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
@@ -175,7 +187,7 @@ function getSelected() {
 <!-- End of Delete Modal -->
 
 <!-- Edit Modal -->
-<div class="modal fade" id="done" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
+<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
 <div class="modal-dialog">
     <div class="modal-content">
         <!-- Modal Header -->
@@ -193,25 +205,23 @@ function getSelected() {
     <!-- Modal Body -->
     <div class="modal-body">
 
-        <form role="form" action="/monitor" method="post">
+        <form id="myform_id" role="form" action="/edit-monitor" method="post">
             <div class="form-group">
-                <label for="pid">Item ID: </label>
+                <label for="model">Model: </label>
                 <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ ID"/>
-            </div>
-            <div class="form-group">
-                <label for="pid">Model: </label>
+                id="model" name="model" placeholder="Model"/>
+                <label for="edit-price">Price: </label>
                 <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Model"/>
-                <label for="pid">Price: </label>
+                id="edit-price" name="price" placeholder="Price"/>
+                <label for="edit-weight">Weight: </label>
                 <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Price"/>
-                <label for="pid">Weight: </label>
+                id="edit-weight" name="weight" placeholder="Weight"/>
+                <label for="edit-brand">Brand: </label>
                 <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Weight"/>
-                <label for="pid">Brand: </label>
+                id="edit-brand" name="brand" placeholder="Brand"/>
+                <label for="edit-dimensions">Dimensions: </label>
                 <input type="text" class="form-control"
-                id="pid" name="pid" placeholder="Type/ Brand"/>
+                id="edit-dimensions" name="monitor_dimensions" placeholder="Brand"/>
             </div>
             <br>
 

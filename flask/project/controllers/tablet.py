@@ -34,6 +34,7 @@ class TabletController():
         rows = Mapper.query('tablets', model=model)
         tablet = TabletController.get_tablets_from_rows(rows)[0]
         tablet.update(**conditions)
+        return tablet
 
     # Queries the list of all tablets and their count
     @staticmethod
