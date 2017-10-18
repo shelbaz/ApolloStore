@@ -110,6 +110,32 @@ def delete_from_db(*tables, **conditions):
                 cursor.execute(query)
 
 
+def update_db(table, attributes, obj):
+    types_with_no_quotes = ['integer', 'decimal', 'boolean']
+
+    query = 'UPDATE %s SET ' % table
+
+    currently_first_attribute = True
+
+    for key, value in attributes.items():
+        if currently_first_attribute:
+            currently_first_attribute = False
+        else:
+            query += ', '
+        if value in types_with_no_quotes:
+            query += str(key) + '='+ str(getattr(obj, key))
+        else:
+            query += str(key) + '=\'' + str(getattr(obj, key)) + '\''
+
+    where_condition = 'model=\'' + str(obj.model) + '\''
+
+    query+= ' WHERE %s' % where_condition + ';'
+
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+
+
 def create_table(name, attributes, constraints):
     # Using the 'with' statement automatically commits and closes database connections
     with connect_to_db() as connection:
@@ -151,14 +177,14 @@ def drop_table(name):
             if bool(cursor.rowcount):
                 cursor.execute('DROP TABLE %s;' % name)
 
-from project.models.auth_model import User
-from project.models.item_model import Item
-from project.models.inventory_model import Inventory
-from project.models.cart_model import Cart
-from project.models.tablet_model import Tablet
-from project.models.monitor_model import Monitor
-from project.models.laptop_model import Laptop
-from project.models.desktop_model import Desktop
+from project.models.auth import User
+from project.models.item import Item
+from project.models.inventory import Inventory
+from project.models.cart import Cart
+from project.models.tablet import Tablet
+from project.models.monitor import Monitor
+from project.models.laptop import Laptop
+from project.models.desktop import Desktop
 from project.orm import Mapper
 
 

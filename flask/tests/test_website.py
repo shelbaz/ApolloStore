@@ -10,7 +10,6 @@
 # in a separate terminal window.
 # -------------------------------------------------------------------------------
 
-
 import unittest
 from tests.base_website import BaseTestCase
 

@@ -5,17 +5,14 @@
 # from here.
 # ------------------------------------------------------------------
 
-
 from flask import Flask
 import os
 import logging
 from flask_login import LoginManager
 
-
 # Defines the format of the logging to include the time and to use the INFO logging level or worse.
 logging.basicConfig(format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 login_manager = LoginManager()
 
@@ -37,6 +34,9 @@ def create_app():
     #
     # Instead, blueprints are used. If you want to read more about it, visit:
     # http://flask.pocoo.org/docs/0.12/blueprints/
+    from project.website.auth import auth_blueprint
+    app.register_blueprint(auth_blueprint)
+
     from project.website.views import website_blueprint
     app.register_blueprint(website_blueprint)
 
