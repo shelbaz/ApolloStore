@@ -16,7 +16,7 @@ def before_request():
     g.user = current_user
 
 
-# Registers a new user
+# Registers a new client
 @auth_blueprint.route('/register', methods=['POST'])
 def register():
     first_name = request.form.get('firstName')
@@ -25,8 +25,7 @@ def register():
     email = request.form.get('email')
     password = request.form.get('password')
     phone = request.form.get('phone')
-    # admin = request.form.get('admin')
-    admin = True
+    admin = False
 
     if first_name and last_name and address and email and password and phone and (admin is not None):
 
@@ -61,8 +60,10 @@ def login():
     login_user(g.user)
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
+    if g.user.admin:
+        return redirect('/dashboard')
+    return redirect('/home')
 
-    return redirect('/dashboard')
 
 
 # Logs the user out
