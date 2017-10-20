@@ -68,6 +68,11 @@ def desktop():
 
         return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
+@website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
+@login_required
+def desktop_client():
+    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops())
+
 
 @website_blueprint.route('/edit-desktop', methods=['POST'])
 @login_required
@@ -129,6 +134,12 @@ def laptop():
                     logger.error('couldnt create laptop item')
 
         return render_template('laptop.html', user=g.user, laptops=LaptopController.get_all_laptops())
+
+@website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
+@login_required
+def laptop_client():
+    return render_template('laptop-client.html', user=g.user, laptops=LaptopController.get_all_laptops())
+
 
 
 @website_blueprint.route('/edit-laptop', methods=['POST'])
@@ -199,6 +210,12 @@ def tablet():
         return render_template('tablet.html', user=g.user, tablets=TabletController.get_all_tablets())
 
 
+@website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
+@login_required
+def tablet_client():
+    return render_template('tablet-client.html', user=g.user, tablets=TabletController.get_all_tablets())
+
+
 @website_blueprint.route('/edit-tablet', methods=['POST'])
 @login_required
 def edit_tablet():
@@ -248,6 +265,12 @@ def monitor():
                     logger.error('couldnt create monitor item')
 
         return render_template('monitor.html', user=g.user, monitors=MonitorController.get_all_monitors())
+
+
+@website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
+@login_required
+def monitor_client():
+    return render_template('monitor-client.html', user=g.user, monitors=MonitorController.get_all_monitors())
 
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
