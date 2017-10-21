@@ -83,7 +83,6 @@
                     </div>
                     <div class="col-md-6 product_content">
                       <!-- PRODUCT ID -->
-                        <h4>Product Id: <span>12345</span></h4>
                         <div class="rating">
                             <span class="glyphicon glyphicon-star"></span>
                             <span class="glyphicon glyphicon-star"></span>
@@ -93,16 +92,16 @@
                             (10 reviews)
                         </div>
                         <!-- PRODUCT IMAGE -->
-                        <p> 
-                         Weight: <div id="itemweight">  </div> 
-                         Brand: <div id="itembrand">   </div> 
-                         Processor: <div id="itemprocessor">   </div> 
-                         RAM: <div id="itemramsize">   </div> 
-                         CPU cores: <div id="itemcpucores">   </div> 
-                         HD Size: <div id="itemhdsize">   </div> 
-                         Dimensions: <div id="itemdimensions">   </div> 
+                        <p>
+                            <p><b>Weight:</b> <span id="itemweight"></span></p>
+                            <p><b>Brand:</b> <span id="itembrand"></span></p>
+                            <p><b>Processor:</b> <span id="itemprocessor"></span></p>
+                            <p><b>RAM:</b> <span id="itemramsize"></span></p>
+                            <p><b>CPU cores:</b> <span id="itemcpucores"></span></p>
+                            <p><b>HD Size:</b> <span id="itemhdsize"></span></p>
+                            <p><b>Dimensions:</b> <span id="itemdimensions"></span></p>
                         </p>
-                        <h3><span class="glyphicon glyphicon-usd"></span><div id="itemprice"> </div>
+                        <h3><span class="glyphicon glyphicon-usd"></span><span id="itemprice"> </span>
                             <div class="col-md-4 col-sm-12">
                                 <select class="form-control" name="select">
                                     <option value="" selected="">QTY</option>
@@ -156,12 +155,6 @@ all.addEventListener('click', function() {
 } 
 
 </script>
-
-
-
-
-
-
 
 {% endblock %}
 
