@@ -6,25 +6,41 @@
 
 
 
-<!-- Desktop Section -->
+<!-- Laptop Section -->
 <div class='header'>
   <h1>Laptops</h1>
-
   <span class='show-all' id='show-all'>
     Show all
     <span class='show-all-count' id='show-all-count'></span>
   </span>
 </div>
 
+{% if laptops: %}
+<div class='items' id='items'>
+    {% for laptop in laptops: %}
 
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{laptop[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{laptop[0].model}}</h2>
+    <p class='item-description'> Brand: {{laptop[0].brand}} <br/> Price: {{laptop[0].price}}
+    </p>
+  </div>
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
+
+
+
+{% endif %}
 
 
 

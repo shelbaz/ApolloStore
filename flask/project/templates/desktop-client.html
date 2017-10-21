@@ -18,33 +18,53 @@
     <span class='show-all-count' id='show-all-count'></span>
   </span>
 </div>
+<script>
+ itemVar = {} ;  
+</script>
+
+{% if desktops: %}
+<div class='items' id='items'>
+    {% for desktop in desktops: %}
+
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{desktop[0].model}}" onclick="fill_form('{{desktop[0].model}}');">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title' >{{desktop[0].model}}</h2>
+    <p class='item-description'> Brand: {{desktop[0].brand}} <br/> Price: {{desktop[0].price}}
+    </p>
+  </div>
+
+  <script>
+
+    itemVar["{{desktop[0].model}}"] = {};
+    itemVar["{{desktop[0].model}}"].price = "{{desktop[0].price}}";
+    itemVar["{{desktop[0].model}}"].weight = "{{desktop[0].weight}}";
+    itemVar["{{desktop[0].model}}"].brand = "{{desktop[0].brand}}";
+    itemVar["{{desktop[0].model}}"].processor = "{{desktop[0].processor}}";
+    itemVar["{{desktop[0].model}}"].ramsize = "{{desktop[0].ram_size}}";
+    itemVar["{{desktop[0].model}}"].cpucores = "{{desktop[0].cpu_cores}}";
+    itemVar["{{desktop[0].model}}"].hdsize = "{{desktop[0].hd_size}}";
+    itemVar["{{desktop[0].model}}"].dimensions = "{{desktop[0].dimensions}}";
 
 
+
+  </script>  
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
 
 
 
-<script>
-  var all = document.getElementById('show-all');
-var items = document.getElementById('items');
+{% endif %}
 
-var count = items.children.length;
-var counter = document.getElementById('show-all-count');
-
-counter.innerText = ' (' + count + ')';
-
-all.addEventListener('click', function() {
-  this.classList.toggle('active');
-  items.classList.toggle('items-columns');
-});
-</script>
 
 
 
@@ -53,7 +73,7 @@ all.addEventListener('click', function() {
         <div class="modal-content">
             <div class="modal-header">
                 <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                <h3 class="modal-title">Test item</h3>
+                <h3 class="modal-title" id="modelheader">Test item</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -73,8 +93,16 @@ all.addEventListener('click', function() {
                             (10 reviews)
                         </div>
                         <!-- PRODUCT IMAGE -->
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        <h3 class="cost"><span class="glyphicon glyphicon-usd"></span> 75.00 each
+                        <p> 
+                         Weight: <div id="itemweight">  </div> 
+                         Brand: <div id="itembrand">   </div> 
+                         Processor: <div id="itemprocessor">   </div> 
+                         RAM: <div id="itemramsize">   </div> 
+                         CPU cores: <div id="itemcpucores">   </div> 
+                         HD Size: <div id="itemhdsize">   </div> 
+                         Dimensions: <div id="itemdimensions">   </div> 
+                        </p>
+                        <h3><span class="glyphicon glyphicon-usd"></span><div id="itemprice"> </div>
                             <div class="col-md-4 col-sm-12">
                                 <select class="form-control" name="select">
                                     <option value="" selected="">QTY</option>
@@ -98,6 +126,36 @@ all.addEventListener('click', function() {
 
 
 
+<script>
+  var all = document.getElementById('show-all');
+var items = document.getElementById('items');
+
+var count = items.children.length;
+var counter = document.getElementById('show-all-count');
+
+counter.innerText = ' (' + count + ')';
+
+all.addEventListener('click', function() {
+  this.classList.toggle('active');
+  items.classList.toggle('items-columns');
+});
+</script>
+
+<script>
+    function fill_form(model) {
+        document.getElementById('modelheader').innerHTML = model;
+        document.getElementById('itemweight').innerHTML = itemVar[model].weight;
+        document.getElementById('itembrand').innerHTML = itemVar[model].brand;
+        document.getElementById('itemramsize').innerHTML = itemVar[model].ramsize;
+        document.getElementById('itemprice').innerHTML = itemVar[model].price;
+        document.getElementById('itemhdsize').innerHTML = itemVar[model].hdsize;
+        document.getElementById('itemdimensions').innerHTML = itemVar[model].dimensions;
+        document.getElementById('itemcpucores').innerHTML = itemVar[model].cpucores;
+        document.getElementById('itemprocessor').innerHTML = itemVar[model].processor;
+
+} 
+
+</script>
 
 
 

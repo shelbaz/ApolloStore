@@ -6,7 +6,7 @@
 
 
 
-<!-- Desktop Section -->
+<!-- tablet Section -->
 <div class='header'>
   <h1>Tablets</h1>
 
@@ -16,15 +16,32 @@
   </span>
 </div>
 
+{% if tablets: %}
+<div class='items' id='items'>
+    {% for tablet in tablets: %}
 
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{tablet[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{tablet[0].model}}</h2>
+    <p class='item-description'> Brand: {{tablet[0].brand}} <br/> Price: {{tablet[0].price}}
+    </p>
+  </div>
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
+
+
+
+{% endif %}
 
 
 

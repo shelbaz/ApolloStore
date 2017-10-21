@@ -17,14 +17,33 @@
 </div>
 
 
+{% if desktops: %}
+<div class='items' id='items'>
+    {% for desktop in desktops: %}
+
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{desktop[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{desktop[0].model}}</h2>
+    <p class='item-description'> Brand: {{desktop[0].brand}} <br/> Price: {{desktop[0].price}}
+    </p>
+  </div>
+
+
+    {% endfor %}
+    </div>
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
+
+
+
+{% endif %}
 
 
 
@@ -38,20 +57,37 @@
 </div>
 
 
+{% if laptops: %}
+<div class='items' id='items'>
+    {% for laptop in laptops: %}
 
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{laptop[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{laptop[0].model}}</h2>
+    <p class='item-description'> Brand: {{laptop[0].brand}} <br/> Price: {{laptop[0].price}}
+    </p>
+  </div>
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
 
 
-<!-- Monitor Section -->
+
+{% endif %}
+
+<!-- monitor Section -->
 <div class='header'>
-  <h1>Monitor</h1>
+  <h1>Monitors</h1>
+
   <span class='show-all' id='show-all'>
     Show all
     <span class='show-all-count' id='show-all-count'></span>
@@ -59,20 +95,39 @@
 </div>
 
 
+{% if monitors: %}
+<div class='items' id='items'>
+    {% for monitor in monitors: %}
 
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{monitor[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{monitor[0].model}}</h2>
+    <p class='item-description'> Brand: {{monitor[0].brand}} <br/> Price: {{monitor[0].price}}
+    </p>
+  </div>
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
 
 
-<!-- Tablet Section -->
+
+{% endif %}
+
+
+
+<!-- tablet Section -->
 <div class='header'>
-  <h1>Tablet</h1>
+  <h1>Tablets</h1>
+
   <span class='show-all' id='show-all'>
     Show all
     <span class='show-all-count' id='show-all-count'></span>
@@ -80,14 +135,32 @@
 </div>
 
 
+{% if tablets: %}
+<div class='items' id='items'>
+    {% for tablet in tablets: %}
+
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{tablet[0].model}}">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>{{tablet[0].model}}</h2>
+    <p class='item-description'> Brand: {{tablet[0].brand}} <br/> Price: {{tablet[0].price}}
+    </p>
+  </div>
+
+    {% endfor %}
+ </div>   
+{% else: %}
 <div class='items' id='items'>
   <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
     <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Such awesome description
+    <p class='item-description'> Brand: 
     </p>
   </a>
 </div>
+
+
+
+{% endif %}
 
 
 <script>

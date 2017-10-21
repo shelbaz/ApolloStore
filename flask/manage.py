@@ -103,6 +103,53 @@ def drop():
         logger.error(traceback.format_exc())
 
 
+@manager.command
+def create_admins():
+    import traceback
+    try:
+        from project.controllers.authentication import AuthenticationController
+        AuthenticationController.create_user('Teacher', 'something', '4378473 north', 'teacher@test.com', 'test', '3736363663', 'True')
+        AuthenticationController.create_user('TA', 'something', '437843 north', 'ta@test.com', 'test', '337737373', 'True')
+        AuthenticationController.create_user('shawn', 'elbaz', '4847 north', 'shawn@shawn.com', 'lol', '4747747474', 'False')
+        AuthenticationController.create_user('shawn', 'elbaz', '4847 north', 'shawn@test.com', 'lol', '4747747474', 'True')
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
+@manager.command
+def create_items():
+    import traceback
+    try:
+        from project.controllers.desktop import DesktopController
+        from project.controllers.laptop import LaptopController
+        from project.controllers.monitor import MonitorController
+        from project.controllers.tablet import TabletController
+        LaptopController.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
+        LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+        LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+        
+        TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+        TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+        TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+
+
+        MonitorController.create_monitor('Asus', 600, 10, '125x100')
+        MonitorController.create_monitor('Dell', 600, 10, '150x100')
+        MonitorController.create_monitor('Asus', 600, 10, '170x100')
+
+        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
 # Starts the Flask app.
 if __name__ == '__main__':
     manager.run()
