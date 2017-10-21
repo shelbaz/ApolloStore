@@ -1,0 +1,167 @@
+{% extends "header.html" %}
+
+{% block body %}
+<h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
+
+
+<style>
+
+
+</style>
+
+<!-- Desktop Section -->
+<div class='header'>
+  <h1>Desktops</h1>
+
+  <span class='show-all' id='show-all'>
+    Show all
+    <span class='show-all-count' id='show-all-count'></span>
+  </span>
+</div>
+<script>
+ itemVar = {} ;  
+</script>
+
+{% if desktops: %}
+<div class='items' id='items'>
+    {% for desktop in desktops: %}
+
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{desktop[0].model}}" onclick="fill_form('{{desktop[0].model}}');">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title' >{{desktop[0].model}}</h2>
+    <p class='item-description'> Brand: {{desktop[0].brand}} <br/> Price: {{desktop[0].price}}
+    </p>
+  </div>
+
+  <script>
+
+    itemVar["{{desktop[0].model}}"] = {};
+    itemVar["{{desktop[0].model}}"].price = "{{desktop[0].price}}";
+    itemVar["{{desktop[0].model}}"].weight = "{{desktop[0].weight}}";
+    itemVar["{{desktop[0].model}}"].brand = "{{desktop[0].brand}}";
+    itemVar["{{desktop[0].model}}"].processor = "{{desktop[0].processor}}";
+    itemVar["{{desktop[0].model}}"].ramsize = "{{desktop[0].ram_size}}";
+    itemVar["{{desktop[0].model}}"].cpucores = "{{desktop[0].cpu_cores}}";
+    itemVar["{{desktop[0].model}}"].hdsize = "{{desktop[0].hd_size}}";
+    itemVar["{{desktop[0].model}}"].dimensions = "{{desktop[0].dimensions}}";
+
+
+
+  </script>  
+
+    {% endfor %}
+ </div>   
+{% else: %}
+<div class='items' id='items'>
+  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>Test item</h2>
+    <p class='item-description'> Brand: 
+    </p>
+  </a>
+</div>
+
+
+
+{% endif %}
+
+
+
+
+<div class="modal fade product_view" id="myModalNorm" id="myModalNorm" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title" id="modelheader">Test item</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                  <!-- PRODUCT IMAGE -->
+                    <div class="col-md-6 product_img">
+                        <img src="http://img.bbystatic.com/BestBuy_US/images/products/5613/5613060_sd.jpg" class="img-responsive">
+                    </div>
+                    <div class="col-md-6 product_content">
+                      <!-- PRODUCT ID -->
+                        <h4>Product Id: <span>12345</span></h4>
+                        <div class="rating">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            (10 reviews)
+                        </div>
+                        <!-- PRODUCT IMAGE -->
+                        <p> 
+                         Weight: <div id="itemweight">  </div> 
+                         Brand: <div id="itembrand">   </div> 
+                         Processor: <div id="itemprocessor">   </div> 
+                         RAM: <div id="itemramsize">   </div> 
+                         CPU cores: <div id="itemcpucores">   </div> 
+                         HD Size: <div id="itemhdsize">   </div> 
+                         Dimensions: <div id="itemdimensions">   </div> 
+                        </p>
+                        <h3><span class="glyphicon glyphicon-usd"></span><div id="itemprice"> </div>
+                            <div class="col-md-4 col-sm-12">
+                                <select class="form-control" name="select">
+                                    <option value="" selected="">QTY</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div> </h3>
+                            <!-- end col -->
+                        <div class="space-ten"></div>
+                        <div class="btn-ground">
+                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+  var all = document.getElementById('show-all');
+var items = document.getElementById('items');
+
+var count = items.children.length;
+var counter = document.getElementById('show-all-count');
+
+counter.innerText = ' (' + count + ')';
+
+all.addEventListener('click', function() {
+  this.classList.toggle('active');
+  items.classList.toggle('items-columns');
+});
+</script>
+
+<script>
+    function fill_form(model) {
+        document.getElementById('modelheader').innerHTML = model;
+        document.getElementById('itemweight').innerHTML = itemVar[model].weight;
+        document.getElementById('itembrand').innerHTML = itemVar[model].brand;
+        document.getElementById('itemramsize').innerHTML = itemVar[model].ramsize;
+        document.getElementById('itemprice').innerHTML = itemVar[model].price;
+        document.getElementById('itemhdsize').innerHTML = itemVar[model].hdsize;
+        document.getElementById('itemdimensions').innerHTML = itemVar[model].dimensions;
+        document.getElementById('itemcpucores').innerHTML = itemVar[model].cpucores;
+        document.getElementById('itemprocessor').innerHTML = itemVar[model].processor;
+
+} 
+
+</script>
+
+
+
+
+
+
+
+{% endblock %}
+
