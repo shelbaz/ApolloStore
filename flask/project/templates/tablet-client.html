@@ -44,9 +44,9 @@
     itemVar["{{tablet[0].model}}"].cpucores = "{{tablet[0].cpu_cores}}";
     itemVar["{{tablet[0].model}}"].hdsize = "{{tablet[0].hd_size}}";
     itemVar["{{tablet[0].model}}"].displaysize = "{{tablet[0].display_size}}";
-	itemVar["{{tablet[0].model}}"].battery = "{{tablet[0].battery_info}}";
+	itemVar["{{tablet[0].model}}"].battery = "{{tablet[0].battery}}";
 	itemVar["{{tablet[0].model}}"].os = "{{tablet[0].os}}";
-	itemVar["{{tablet[0].model}}"].camera = "{{tablet[0].camera}}";
+	itemVar["{{tablet[0].model}}"].camera = "{{tablet[0].camera_info}}";
 
   </script>
 
@@ -158,8 +158,7 @@ all.addEventListener('click', function() {
         document.getElementById('itembattery').innerHTML = itemVar[model].battery;
 		document.getElementById('itemos').innerHTML = itemVar[model].os;
 		document.getElementById('itemcamera').innerHTML = itemVar[model].camera;
-
-
+		document.getElementById('itemdisplay').innerHTML = itemVar[model].displaysize;
 }
 
 </script>
