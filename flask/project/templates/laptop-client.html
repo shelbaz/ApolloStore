@@ -1,0 +1,180 @@
+{% extends "header.html" %}
+
+{% block body %}
+<h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
+
+
+<div class="options">
+<select class="selectpicker" align="right">
+  <option>Sort by</option>
+  <option>Sort by Price</option>
+  <option>Sort by Name</option>
+  <option>Sort by Type</option>
+</select>
+</div>
+
+<style>
+select.selectpicker {
+    float:right
+}
+</style>
+
+<!-- Laptop Section -->
+<div class='header'>
+  <h1>Laptops</h1>
+
+  <span class='show-all' id='show-all'>
+    Show all
+    <span class='show-all-count' id='show-all-count'></span>
+  </span>
+</div>
+<script>
+ itemVar = {} ;
+</script>
+
+{% if laptops: %}
+<div class='items' id='items'>
+    {% for laptop in laptops: %}
+
+  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{laptop[0].model}}" onclick="fill_form('{{laptop[0].model}}');">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title' >{{laptop[0].model}}</h2>
+    <p class='item-description'> Brand: {{laptop[0].brand}} <br/> Price: {{laptop[0].price}}
+    </p>
+  </div>
+
+  <script>
+
+    itemVar["{{laptop[0].model}}"] = {};
+    itemVar["{{laptop[0].model}}"].price = "{{laptop[0].price}}";
+    itemVar["{{laptop[0].model}}"].weight = "{{laptop[0].weight}}";
+    itemVar["{{laptop[0].model}}"].brand = "{{laptop[0].brand}}";
+    itemVar["{{laptop[0].model}}"].processor = "{{laptop[0].processor}}";
+    itemVar["{{laptop[0].model}}"].ramsize = "{{laptop[0].ram_size}}";
+    itemVar["{{laptop[0].model}}"].cpucores = "{{laptop[0].cpu_cores}}";
+    itemVar["{{laptop[0].model}}"].hdsize = "{{laptop[0].hd_size}}";
+    itemVar["{{laptop[0].model}}"].displaysize = "{{laptop[0].display_size}}";
+	itemVar["{{laptop[0].model}}"].battery = "{{laptop[0].battery_info}}";
+	itemVar["{{laptop[0].model}}"].os = "{{laptop[0].os}}";
+	itemVar["{{laptop[0].model}}"].touchscreen = "{{laptop[0].touchscreen}}";
+	itemVar["{{laptop[0].model}}"].camera = "{{laptop[0].camera}}";
+
+  </script>
+
+    {% endfor %}
+ </div>
+{% else: %}
+<div class='items' id='items'>
+  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>Test item</h2>
+    <p class='item-description'> Brand:
+    </p>
+  </a>
+</div>
+
+
+
+{% endif %}
+
+
+
+
+<div class="modal fade product_view" id="myModalNorm" id="myModalNorm" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                <h3 class="modal-title" id="modelheader">Test item</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                  <!-- PRODUCT IMAGE -->
+                    <div class="col-md-6 product_img">
+                        <img src="http://img.bbystatic.com/BestBuy_US/images/products/5613/5613060_sd.jpg" class="img-responsive">
+                    </div>
+                    <div class="col-md-6 product_content">
+                      <!-- PRODUCT RATING -->
+                        <div class="rating">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            (10 reviews)
+                        </div>
+                        <!-- PRODUCT IMAGE -->
+                        <div>
+                            <p><b>Weight: </b> <span id="itemweight"></span></p>
+                            <p><b>Brand: </b> <span id="itembrand"></span></p>
+                            <p><b>Processor: </b> <span id="itemprocessor"></span></p>
+                            <p><b>RAM: </b> <span id="itemramsize"></span></p>
+                            <p><b>CPU cores: </b> <span id="itemcpucores"></span></p>
+                            <p><b>HD Size: </b> <span id="itemhdsize"></span></p>
+                            <p><b>Display Size: </b><span id="itemdisplay"></span></p>
+                            <p><b>Battery Information: </b><span id="itembattery"></span></p>
+                            <p><b>Operating System: </b><span id="itemos"></span></p>
+                            <p><b>Touchscreen: </b><span id="itemtouchscreen"></span></p>
+                            <p><b>Camera: </b><span id="itemcamera"></span></p>
+                        </div>
+                        <h3><span class="glyphicon glyphicon-usd"></span><span id="itemprice"></span>
+                            <div class="col-md-4 col-sm-12">
+                                <select class="form-control" name="select">
+                                    <option value="" selected="">QTY</option>
+                                    <option value="">1</option>
+                                    <option value="">2</option>
+                                    <option value="">3</option>
+                                </select>
+                            </div></h3>
+
+                            <!-- end col -->
+                        <div class="space-ten"></div>
+                        <div class="btn-ground">
+                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+  var all = document.getElementById('show-all');
+var items = document.getElementById('items');
+
+var count = items.children.length;
+var counter = document.getElementById('show-all-count');
+
+counter.innerText = ' (' + count + ')';
+
+all.addEventListener('click', function() {
+  this.classList.toggle('active');
+  items.classList.toggle('items-columns');
+});
+</script>
+
+<script>
+    function fill_form(model) {
+        document.getElementById('modelheader').innerHTML = model;
+        document.getElementById('itemweight').innerHTML = itemVar[model].weight;
+        document.getElementById('itembrand').innerHTML = itemVar[model].brand;
+        document.getElementById('itemramsize').innerHTML = itemVar[model].ramsize;
+        document.getElementById('itemprice').innerHTML = itemVar[model].price;
+        document.getElementById('itemhdsize').innerHTML = itemVar[model].hdsize;
+        document.getElementById('itemcpucores').innerHTML = itemVar[model].cpucores;
+        document.getElementById('itemprocessor').innerHTML = itemVar[model].processor;
+        document.getElementById('itembattery').innerHTML = itemVar[model].battery;
+		document.getElementById('itemos').innerHTML = itemVar[model].os;
+		document.getElementById('itemcamera').innerHTML = itemVar[model].camera;
+		document.getElementById('itemtouchscreen').innerHTML = itemVar[model].touchscreen;
+
+}
+
+</script>
+
+{% endblock %}
+
