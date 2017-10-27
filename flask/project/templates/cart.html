@@ -1,0 +1,197 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+
+
+<script type="text/javascript">
+    var myTable;
+    $(document).ready(function() {
+       myTable = $('#projTable').DataTable( {
+        columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0
+        } ],
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        },
+        order: [[ 1, 'asc' ]]
+
+    } );
+    });
+</script>
+
+
+<script>
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var selectedId = myTable.rows('.selected').data()[0][3];
+        console.log(selectedId);
+        delete_from_inventory(selectedId);
+    }
+</script>
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="section">
+
+        <div class="col-md-12 text-left">
+            <h1>List of Items in Cart</h1>
+            <table id="projTable" class="table table-responsive table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Edit Qty</th>
+                        <th>Remove item</th>
+                        <th>Count</th>                        
+                        <th>Model</th>
+                        <th>Price</th>
+                        <th>Weight</th>
+                        <th>Brand</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if items: %}
+                    {% for item in items: %}
+                    <tr>
+                        <td></td>
+                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{item[0].model}}');">+</button>
+                        <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{item[0].model}}');">-</button></td>
+                        <td>{{item[1]}}</td>
+                        <td id="{{item[0].model}}">{{item[0].model}}</td>
+                        <td id="{{item[0].model}}-price">{{item[0].price}}</td>
+                        <td id="{{item[0].model}}-weight">{{item[0].weight}}</td>
+                        <td id="{{item[0].model}}-brand">{{item[0].brand}}</td>
+                    </tr>
+
+                    {% endfor %}
+                {% else: %}
+                        <tr>
+                            <td></td>
+                            <td>  <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">+</button></td>
+                            <td><button type="button" class="btn btn-default btn-sm" onclick="">-</button></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>      
+                        </tr>
+                {% endif %}
+                </tbody>
+            </table>    
+            
+<p> </p>
+  <p align="right"> The Sum Total of your Cart is : $ </p>          
+        </div>
+
+        <script>
+             function add_to_inventory(model) {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/add-inventory/desktop/' + model);
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form);
+                 form.submit();
+                 console.log('submitted');
+             }
+        </script>
+
+
+        <script>
+            function delete_from_inventory(model) {
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/remove-inventory/desktop/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+            }
+        </script>
+
+        <div class="col-md-8" >
+            <p> </p>
+
+<!-- Delete Modal --> 
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" 
+            aria-labelledby="delete" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <button type="button" class="close" 
+                        data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Close</span>
+                    </button>
+                    <h4 class="modal-title" id="delete">
+                        Please enter the ID of the item to delete:
+                    </h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <form role="form" action="/desktop" method="post">
+                        <div class="form-group">
+                        <label for="delete">Item ID: </label>
+                            <input type="text" class="form-control"
+                            id="delete" name="delete" placeholder="Item/ ID"/>
+                        </div>
+                        <br>
+
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+
+
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                    data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Delete Modal --> 
+
+
+
+  <!-- Quantity Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Edit Quantity</h4>
+        </div>
+        <form>
+        <div class="modal-body">
+          Quantity: <input type="text" class="form-control bfh-number" id="quantity">
+        </div>
+        </form>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock %}
+
+

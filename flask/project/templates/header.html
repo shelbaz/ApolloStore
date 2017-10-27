@@ -13,7 +13,8 @@
 
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{{url_for('static', filename='css/custom.min.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='css/items.css')}}" rel="stylesheet">
+
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!-- Custom CSS -->
     <style>
@@ -52,6 +53,7 @@
                         {% endif %}
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
+                    {% if user.admin %}
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
                             <li>
@@ -71,14 +73,40 @@
                             </li>
                         </ul>
                     </div>
+                {% else: %}
+
+                <!-- This is the nav for users to direct to product views -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a href="/home">Home</a>
+                            </li>
+                            <li>
+                                <a href="/desktop-client">Desktop</a>
+                            </li>
+                            <li>
+                                <a href="/laptop-client">Laptop</a>
+                            </li>
+                            <li>
+                                <a href="/monitor-client">Monitor</a>
+                            </li>
+                            <li>
+                                <a href="/tablet-client">Tablet</a>
+                            </li>
+                            <li>
+                            <a href="/cart">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
+                            </a>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
                     <!-- /.navbar-collapse -->
                 </div>
                 <!-- /.container -->
             </nav>
 
 
-            <!-- jQuery Version 1.11.1 -->
-            <script src="{{url_for('static', filename='js/jquery.js')}}"></script>
 
             <!-- Bootstrap Core JavaScript -->
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
