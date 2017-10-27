@@ -272,6 +272,11 @@ def monitor():
 def monitor_client():
     return render_template('monitor-client.html', user=g.user, monitors=MonitorController.get_all_monitors())
 
+@website_blueprint.route('/cart', methods=['GET', 'POST'])
+@login_required
+def cart():
+    return render_template('cart.html', user=g.user)
+
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required

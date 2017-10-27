@@ -1,230 +1,90 @@
 {% extends "header.html" %}
 
 {% block body %}
-<h1>Welcome to Apollo Store, {{user.first_name}}!</h1>
 
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/items.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+</head>
+<h1 class="title" style="text-align: center">Welcome to Apollo Store, {{user.first_name}}!</h1>
+<div class="container-x">
+  <div id="myCarousel" class="carousel slide" style="width: 100%;" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+    </ol>
+    <div class="carousel-container">
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
 
-
-<!-- Desktop Section -->
-<div class='header'>
-  <h1>Desktops</h1>
-
-  <span class='show-all' id='show-all'>
-    Show all
-    <span class='show-all-count' id='show-all-count'></span>
-  </span>
-</div>
-
-
-{% if desktops: %}
-<div class='items' id='items'>
-    {% for desktop in desktops: %}
-
-  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{desktop[0].model}}">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>{{desktop[0].model}}</h2>
-    <p class='item-description'> Brand: {{desktop[0].brand}} <br/> Price: {{desktop[0].price}}
-    </p>
-  </div>
-
-
-    {% endfor %}
-    </div>
-{% else: %}
-<div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
-</div>
-
-
-
-{% endif %}
-
-
-
-<!-- Laptop Section -->
-<div class='header'>
-  <h1>Laptops</h1>
-  <span class='show-all' id='show-all'>
-    Show all
-    <span class='show-all-count' id='show-all-count'></span>
-  </span>
-</div>
-
-
-{% if laptops: %}
-<div class='items' id='items'>
-    {% for laptop in laptops: %}
-
-  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{laptop[0].model}}">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>{{laptop[0].model}}</h2>
-    <p class='item-description'> Brand: {{laptop[0].brand}} <br/> Price: {{laptop[0].price}}
-    </p>
-  </div>
-
-    {% endfor %}
- </div>   
-{% else: %}
-<div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
-</div>
-
-
-
-{% endif %}
-
-<!-- monitor Section -->
-<div class='header'>
-  <h1>Monitors</h1>
-
-  <span class='show-all' id='show-all'>
-    Show all
-    <span class='show-all-count' id='show-all-count'></span>
-  </span>
-</div>
-
-
-{% if monitors: %}
-<div class='items' id='items'>
-    {% for monitor in monitors: %}
-
-  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{monitor[0].model}}">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>{{monitor[0].model}}</h2>
-    <p class='item-description'> Brand: {{monitor[0].brand}} <br/> Price: {{monitor[0].price}}
-    </p>
-  </div>
-
-    {% endfor %}
- </div>   
-{% else: %}
-<div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
-</div>
-
-
-
-{% endif %}
-
-
-
-<!-- tablet Section -->
-<div class='header'>
-  <h1>Tablets</h1>
-
-  <span class='show-all' id='show-all'>
-    Show all
-    <span class='show-all-count' id='show-all-count'></span>
-  </span>
-</div>
-
-
-{% if tablets: %}
-<div class='items' id='items'>
-    {% for tablet in tablets: %}
-
-  <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{tablet[0].model}}">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>{{tablet[0].model}}</h2>
-    <p class='item-description'> Brand: {{tablet[0].brand}} <br/> Price: {{tablet[0].price}}
-    </p>
-  </div>
-
-    {% endfor %}
- </div>   
-{% else: %}
-<div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
-</div>
-
-
-
-{% endif %}
-
-
-<script>
-  var all = document.getElementById('show-all');
-var items = document.getElementById('items');
-
-var count = items.children.length;
-var counter = document.getElementById('show-all-count');
-
-counter.innerText = ' (' + count + ')';
-
-all.addEventListener('click', function() {
-  this.classList.toggle('active');
-  items.classList.toggle('items-columns');
-});
-</script>
-
-
-
-<div class="modal fade product_view" id="myModalNorm" id="myModalNorm" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="#" data-dismiss="modal" class="class pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                <h3 class="modal-title">Test item</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                  <!-- PRODUCT IMAGE -->
-                    <div class="col-md-6 product_img">
-                        <img src="http://img.bbystatic.com/BestBuy_US/images/products/5613/5613060_sd.jpg" class="img-responsive">
-                    </div>
-                    <div class="col-md-6 product_content">
-                      <!-- PRODUCT ID -->
-                        <h4>Product Id: <span>12345</span></h4>
-                        <div class="rating">
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            <span class="glyphicon glyphicon-star"></span>
-                            (10 reviews)
-                        </div>
-                        <!-- PRODUCT IMAGE -->
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                        <h3 class="cost"><span class="glyphicon glyphicon-usd"></span> 75.00 each
-                            <div class="col-md-4 col-sm-12">
-                                <select class="form-control" name="select">
-                                    <option value="" selected="">QTY</option>
-                                    <option value="">1</option>
-                                    <option value="">2</option>
-                                    <option value="">3</option>
-                                </select>
-                            </div> </h3>
-                            <!-- end col -->
-                        <div class="space-ten"></div>
-                        <div class="btn-ground">
-                            <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="item active">
+          <div class="container" style="width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+            <a href="/desktop-client">
+        <img class = "fill" src="/static/img/desktop.jpg" alt="Desktops">
+        <div class="carousel-caption">
+          <h3>Desktops</h3>
+          <p>Power your machines away!</p>
         </div>
+            </a>
+        </div>
+      </div>
+
+      <div class="item">
+          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+            <a href="laptop-client">
+        <img class = "fill" src="/static/img/laptop.jpg" alt="Laptops">
+        <div class="carousel-caption">
+          <h3>Laptops</h3>
+          <p>For portable and practical use!</p>
+        </div>
+            </a>
+        </div>
+      </div>
+
+      <div class="item">
+          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+            <a href="monitor-client">
+        <img class = "fill" src="/static/img/monitor.jpg" alt="Monitors">
+        <div class="carousel-caption">
+          <h3>Monitors</h3>
+          <p>Your lens to the net!</p>
+        </div>
+            </a>
+        </div>
+      </div>
+
+      <div class="item">
+          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+            <a href="tablet-client">
+        <img class = "fill" src="/static/img/tablets.jpg" alt="Tablets">
+        <div class="carousel-caption">
+          <h3>Tablets</h3>
+          <p>Everything you wanted on the go!</p>
+        </div>
+            </a>
+        </div>
+      </div>
     </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 </div>
 
 
