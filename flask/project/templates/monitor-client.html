@@ -3,10 +3,19 @@
 {% block body %}
 <h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
 
+<div class="options">
+<select class="selectpicker" align="right">
+  <option>Sort by</option>
+  <option>Sort by Price</option>
+  <option>Sort by Name</option>
+  <option>Sort by Type</option>
+</select>
+</div>
 
 <style>
-
-
+select.selectpicker {
+    float:right
+}
 </style>
 
 <!-- Monitor Section -->
