@@ -73,6 +73,10 @@ def desktop():
 def desktop_client():
     return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
+@website_blueprint.route('/desktop-client/<string:attr>', methods=['GET', 'POST'])
+@login_required
+def desktop_client_order(attr):
+    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops_order(attr))
 
 @website_blueprint.route('/edit-desktop', methods=['POST'])
 @login_required

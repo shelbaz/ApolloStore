@@ -1,5 +1,5 @@
 
-from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db
+from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db, query_filtered_by_order
 
 
 class Mapper(object):
@@ -17,6 +17,10 @@ class Mapper(object):
     @staticmethod
     def query(*table, **conditions):
         return query_filtered_by(*table, **conditions)
+
+    @staticmethod
+    def order_by(attribute, *table):
+        return query_filtered_by_order(attribute,*table)
 
     def update(self, **attributes):
         for key, value in attributes.items():

@@ -55,6 +55,20 @@ class DesktopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+    @staticmethod
+    def get_all_desktops_order(attr):
+        try:
+            rows = Mapper.order_by(attr, 'items', 'desktops')
+            desktops = DesktopController.get_desktops_from_rows(rows)
+            desktops_with_count = []
+
+            if desktops:
+                return desktops
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all desktops from rows taken from db
     @staticmethod
     def get_desktops_from_rows(rows):

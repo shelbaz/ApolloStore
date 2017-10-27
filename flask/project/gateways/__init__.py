@@ -80,6 +80,22 @@ def query_filtered_by(*tables, **conditions):
     else:
         return None
 
+def query_filtered_by_order(attribute,*tables):
+
+    # Joins the tables if multiple are given
+    tables = ' NATURAL JOIN '.join(tables)
+
+    query = 'SELECT * FROM %s ORDER BY %s;' % (tables,attribute)
+    print(query, flush=True)
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+    if rows:
+        return rows
+    else:
+        return None
 
 def get_inventory_count(table, model):
     try:

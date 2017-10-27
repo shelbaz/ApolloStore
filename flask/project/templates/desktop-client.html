@@ -3,16 +3,16 @@
 {% block body %}
 <h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
 
-
-
-<div class="options">
-<select class="selectpicker" align="right">
-  <option>Sort by</option>
-  <option>Sort by Price</option>
-  <option>Sort by Name</option>
-  <option>Sort by Type</option>
-</select>
-</div>
+    <div class="form-group">
+        <select name="selectdd" id="selectdd" class="selectpicker" align="right" onchange="filter(this.value)">
+          <option>Sort by</option>
+          <option value="price">Sort by Price</option>
+          <option value="brand">Sort by Brand</option>
+          <option value="type">Sort by Type</option>
+        </select>
+    <br>
+    <!--<button type="submit" onclick="filter(this.value);" class="btn btn-default">Submit</button>-->
+    </div>
 
 <style>
 select.selectpicker {
@@ -41,12 +41,18 @@ select.selectpicker {
          <span id="count"><strong>10</strong></span>
          <span id="edward">available in <strong>All</strong></span></span>
      </div>
-
 <script>
-    function filter(value) {
-        document.getElementById('filter-header').innerHTML = "Filter By Brand: available in " + value;
+    function filter(attr) {
+        document.getElementById('filter-header').innerHTML = "Filter By Brand: available in " + attr;
+        var form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/desktop-client/' + attr);
+        form.style.display = 'hidden';
+        document.body.appendChild(form);
+        form.submit();
     }
 </script>
+
 
     <div class="coll-filter" id="filters" selected="selected">
         <input type="button" class="btn btn-black btn-sm btn-filter" value="All" id="b1" onclick="filter(this.value);"/>
@@ -58,10 +64,6 @@ select.selectpicker {
 <hr />
 <div class='items' id='items'>
     {% for desktop in desktops: %}
-    {% desktops = desktop.objects.all().order_by('brand', 'price') %}
-
-    <!--{% for brand in desktop[0].brand: %}-->
-    <!--{% if brand is equalto 'Apple' %}-->
 
   <div class='item' data-toggle="modal" data-target="#myModalNorm" id="{{desktop[0].model}}" onclick="fill_form('{{desktop[0].model}}');">
     <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
