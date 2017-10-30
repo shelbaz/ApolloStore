@@ -24,7 +24,7 @@ select.selectpicker {
 <!-- Desktop Section -->
 <div class='header'>
   <h1>Desktops</h1>
-
+  <input type="text" id="searchInput" onkeyup="search()" placeholder="Search">
   <span class='show-all' id='show-all'>
     Show all
     <span class='show-all-count' id='show-all-count'></span>
@@ -185,6 +185,31 @@ select.selectpicker {
 
 } 
 
+</script>
+
+<script>
+
+    function search() {
+        var input = document.getElementById('searchInput');
+        var filter = input.value.toUpperCase();
+        var items =  document.getElementById('items').children;
+        var count = 0; 
+
+        for (var id in itemVar) {
+            item = JSON.stringify(Object.values(itemVar[id]));
+
+            console.log(item);
+
+            if (item.toUpperCase().indexOf(filter) > -1) {
+                document.getElementById(id).style.display = "";
+                count++;
+            } else {
+                document.getElementById(id).style.display = "none";
+            }
+        }
+
+        document.getElementById('show-all-count').innerText = ' (' + count + ')';
+    }
 </script>
 
 {% endblock %}
