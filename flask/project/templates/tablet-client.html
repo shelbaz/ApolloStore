@@ -141,18 +141,16 @@ select.selectpicker {
 
 
 <script>
-  var all = document.getElementById('show-all');
-var items = document.getElementById('items');
+    var all = document.getElementById('show-all');
+    var itemCount = document.getElementsByClassName('item').length;
+    var counter = document.getElementById('show-all-count');
 
-var count = items.children.length;
-var counter = document.getElementById('show-all-count');
+    counter.innerText = ' (' + itemCount + ')';
 
-counter.innerText = ' (' + count + ')';
-
-all.addEventListener('click', function() {
-  this.classList.toggle('active');
-  items.classList.toggle('items-columns');
-});
+    all.addEventListener('click', function() {
+        this.classList.toggle('active');
+        items.classList.toggle('items-columns');
+    });
 </script>
 
 <script>

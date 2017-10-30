@@ -160,16 +160,14 @@ select.selectpicker {
 
 <script>
     var all = document.getElementById('show-all');
-    var items = document.getElementById('items');
-
-    var count = items.children.length;
+    var itemCount = document.getElementsByClassName('item').length;
     var counter = document.getElementById('show-all-count');
 
-    counter.innerText = ' (' + count + ')';
+    counter.innerText = ' (' + itemCount + ')';
 
     all.addEventListener('click', function() {
-      this.classList.toggle('active');
-      items.classList.toggle('items-columns');
+        this.classList.toggle('active');
+        items.classList.toggle('items-columns');
     });
 </script>
 
