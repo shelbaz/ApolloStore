@@ -51,6 +51,12 @@ class InventoryController():
     @staticmethod
     def delete_item_from_inventory(model):
         rows = Mapper.query('inventories', model=model)
-        inventory = InventoryController.get_inventory_items_from_rows(rows)[0]
-        inventory.delete()
+        if rows:
+            inventory = InventoryController.get_inventory_items_from_rows(rows)[0]
+            if inventory:
+                inventory.delete()
+            else:
+                logger.error("No more of type item in inventory")
+        else:
+            logger.error("No items.")
         
