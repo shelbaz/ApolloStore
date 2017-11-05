@@ -185,6 +185,7 @@ from project.models.tablet import Tablet
 from project.models.monitor import Monitor
 from project.models.laptop import Laptop
 from project.models.desktop import Desktop
+from project.models.transaction import Transaction
 from project.orm import Mapper
 
 
@@ -199,6 +200,7 @@ def create_tables():
         Mapper.create_table(Monitor)
         Mapper.create_table(Laptop)
         Mapper.create_table(Desktop)
+        Mapper.create_table(Transaction)
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
         time.sleep(5)
@@ -215,6 +217,7 @@ def drop_tables():
         Mapper.drop_table(Cart)
         Mapper.drop_table(Inventory)
         Mapper.drop_table(Item)
+        Mapper.drop_table(Transaction)
         Mapper.drop_table(User)
     except Exception:
         # Tries dropping the tables again if an exception is raised

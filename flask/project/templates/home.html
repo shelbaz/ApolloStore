@@ -12,6 +12,8 @@
 
 </head>
 <h1 class="title" style="text-align: center">Welcome to Apollo Store, {{user.first_name}}!</h1>
+ <p id="demo"> blahhh
+      </p>
 <div class="container-x">
   <div id="myCarousel" class="carousel slide" style="width: 100%;" data-ride="carousel">
     <!-- Indicators -->
@@ -24,7 +26,6 @@
     <div class="carousel-container">
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-
       <div class="item active">
           <div class="container" style="width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
             <a href="/desktop-client">
@@ -88,6 +89,34 @@
 </div>
 
 
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date().getTime();
+countDownDate.setMinutes(countDownDate.getMinutes()+7);
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get todays date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now an the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("demo").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
 
 
 
