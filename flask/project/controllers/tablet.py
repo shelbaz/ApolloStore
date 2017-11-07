@@ -61,7 +61,7 @@ class TabletController():
         if rows:
             for row in rows:
                 #check identity map
-                if identity_map.hasId(row[0]):
+                if identity_map.getObject(row[0]):
                     tablet = identity_map.getObject(row[0])
                 else:
                     tablet = Tablet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],

@@ -61,7 +61,7 @@ class DesktopController():
             desktops = []
             for row in rows:
                 #check identity map
-                if identity_map.hasId(row[0]):
+                if identity_map.getObject(row[0]):
                     logger.debug("found object in identity map")
                     desktop = identity_map.getObject(row[0])
                 else: 

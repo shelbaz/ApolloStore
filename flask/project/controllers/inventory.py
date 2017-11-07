@@ -33,7 +33,7 @@ class InventoryController():
 
             for row in rows:
                 #check identity map
-                if identity_map.hasId(row[0]):
+                if identity_map.getObject(row[0]):
                     inventory = identity_map.getObject(row[0])
                 else:
                     inventory = Inventory(row[0], row[1])

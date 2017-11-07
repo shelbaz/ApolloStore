@@ -10,7 +10,6 @@ from project import identity_map
 
 class MonitorController():
 
-    
     # Creates a monitor that is valid
     @staticmethod
     def create_monitor(brand, price, weight, dimensions):
@@ -59,7 +58,7 @@ class MonitorController():
             monitors = []
             for row in rows:
                 #check identity map
-                if identity_map.hasId(row[0]):
+                if identity_map.getObject(row[0]):
                     monitor = identity_map.getObject(row[0])
                 else:
                     monitor = Monitor(row[0], row[1], row[2], row[3], row[4])
