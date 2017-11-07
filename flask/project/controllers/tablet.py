@@ -81,6 +81,7 @@ class TabletController():
     @staticmethod
     def delete_model(model):
         try:
+            TabletController.identityMap.delete(model)
             rows = Mapper.query('items', 'tablets', model=model)
             tablet = TabletController.get_tablets_from_rows(rows)[0]
 

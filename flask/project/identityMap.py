@@ -1,4 +1,7 @@
+
+
 class IdentityMap():
+
     def __init__(self):
         self.dict = {}
         
@@ -11,3 +14,6 @@ class IdentityMap():
     def getObject(self, id):
         if self.hasId(id):
             return self.dict[id]
+
+    def delete(self, id):
+        del self.dict[id]

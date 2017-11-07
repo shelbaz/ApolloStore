@@ -82,6 +82,7 @@ class DesktopController():
     @staticmethod
     def delete_model(model):
         try:
+            DesktopController.identityMap.delete(model)
             rows = Mapper.query('items', 'desktops', model=model)
             desktop = DesktopController.get_desktops_from_rows(rows)[0]
 

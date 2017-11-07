@@ -79,6 +79,7 @@ class MonitorController():
     @staticmethod
     def delete_model(model):
         try:
+            MonitorController.identityMap.delete(model)
             rows = Mapper.query('items', 'monitors', model=model)
             monitor = MonitorController.get_monitors_from_rows(rows)[0]
 

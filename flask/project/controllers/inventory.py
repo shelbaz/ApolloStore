@@ -52,7 +52,9 @@ class InventoryController():
     def delete_item_from_inventory(model):
         rows = Mapper.query('inventories', model=model)
         if rows:
-            inventory = InventoryController.get_inventory_items_from_rows(rows)[0]
+            inventory_items = InventoryController.get_inventory_items_from_rows(rows)
+            inventory = inventory_items[0]
+            InventoryController.identityMap.delete(inventory.id)
             if inventory:
                 inventory.delete()
             else:

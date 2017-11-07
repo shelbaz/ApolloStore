@@ -60,15 +60,23 @@ class LaptopController():
     @staticmethod
     def get_laptops_from_rows(rows):
         laptops = []
-
+        print(rows, flush=True)
         if rows:
             for row in rows:
                 #check identity map
                 if LaptopController.identityMap.hasId(row[0]):
                     laptop = LaptopController.identityMap.getObject(row[0])
                 else:
-                    laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
-                                row[11], row[12])
+                    
+                    attributes = {}
+                    index = 0
+
+                    for key in Laptop.attributes.keys():
+                        attributes[key] = row[index]
+                        index += 1
+
+                    laptop = Laptop(**attributes)
+
                     LaptopController.identityMap.set(laptop.model, laptop)
                     
                 laptops.append(laptop)
@@ -83,6 +91,7 @@ class LaptopController():
     @staticmethod
     def delete_model(model):
         try:
+            LaptopController.identityMap.delete(model)
             rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopController.get_laptops_from_rows(rows)[0]
 
