@@ -16,6 +16,8 @@ logger = logging.getLogger(__name__)
 
 login_manager = LoginManager()
 
+from project.identityMap import IdentityMap
+identity_map = IdentityMap()
 
 # Defines the application factory. Every time this function is called, a new application
 # instance is created. The reason why an application factory is needed is because we

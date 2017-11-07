@@ -2,16 +2,15 @@
 from project import logger
 from project.models.laptop import Laptop
 from project.gateways import get_inventory_count
-from project.identityMap import IdentityMap
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
-
+from project import identity_map
 
 class LaptopController():
 
-    identityMap = IdentityMap()
+ 
 
     # Creates a laptop that is valid
     @staticmethod
@@ -22,7 +21,7 @@ class LaptopController():
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
                 laptop.insert()
-                LaptopController.identityMap.set(laptop.model, laptop)
+                identity_map.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
 
@@ -64,8 +63,8 @@ class LaptopController():
         if rows:
             for row in rows:
                 #check identity map
-                if LaptopController.identityMap.hasId(row[0]):
-                    laptop = LaptopController.identityMap.getObject(row[0])
+                if identity_map.hasId(row[0]):
+                    laptop = identity_map.getObject(row[0])
                 else:
                     
                     attributes = {}
@@ -77,7 +76,7 @@ class LaptopController():
 
                     laptop = Laptop(**attributes)
 
-                    LaptopController.identityMap.set(laptop.model, laptop)
+                    identity_map.set(laptop.model, laptop)
                     
                 laptops.append(laptop)
 
@@ -91,7 +90,7 @@ class LaptopController():
     @staticmethod
     def delete_model(model):
         try:
-            LaptopController.identityMap.delete(model)
+            identity_map.delete(model)
             rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopController.get_laptops_from_rows(rows)[0]
 
