@@ -12,9 +12,9 @@
     <title>SOEN343 PROJECT</title>
 
     <!-- Bootstrap Core CSS -->
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{url_for('static', filename='css/items.css')}}" rel="stylesheet">
-
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <!-- Custom CSS -->
     <style>
@@ -74,7 +74,6 @@
                         </ul>
                     </div>
                 {% else: %}
-
                 <!-- This is the nav for users to direct to product views -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
@@ -97,6 +96,9 @@
                             <a href="/cart">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
                             </a>
+                            </li>
+                            <li>
+                                <a href="/returns">Returns</a>
                             </li>
                         </ul>
                     </div>
