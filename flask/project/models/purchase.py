@@ -2,7 +2,7 @@
 from project.orm import Mapper
 
 
-class Purchases(Mapper):
+class Purchase(Mapper):
 
     name = 'purchases'
 
@@ -16,7 +16,7 @@ class Purchases(Mapper):
     constraints = {
         'PRIMARY KEY': '(id)',
         'FOREIGN KEY (user_id)': 'REFERENCES users (id)',
-        'FOREIGN KEY (modelID)': 'REFERENCES inventories (model)'
+        'FOREIGN KEY (model_id)': 'REFERENCES items (model)'
     }
 
     # Constructor that creates a new cart

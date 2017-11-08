@@ -216,8 +216,8 @@ def drop_tables():
         Mapper.drop_table(Desktop)
         Mapper.drop_table(Cart)
         Mapper.drop_table(Inventory)
-        Mapper.drop_table(Item)
         Mapper.drop_table(Purchase)
+        Mapper.drop_table(Item)
         Mapper.drop_table(User)
     except Exception:
         # Tries dropping the tables again if an exception is raised
