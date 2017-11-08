@@ -52,4 +52,3 @@ class Aspect(object):
                 else:
                     return False
         return new_func
-        

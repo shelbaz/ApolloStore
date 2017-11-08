@@ -22,7 +22,6 @@ identity_map = IdentityMap()
 
 celery = Celery(__name__, broker=os.getenv('CELERY_BROKER_URL'))
 
-
 # Defines the application factory. Every time this function is called, a new application
 # instance is created. The reason why an application factory is needed is because we
 # need to use different configurations for running our tests.

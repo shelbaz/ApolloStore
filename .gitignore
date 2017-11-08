@@ -11,3 +11,4 @@ celerybeat-schedule
 flask/celeryd.pid
 flask/supervisord.log
 flask/supervisord.pid
+flask/celerybeat.pid
