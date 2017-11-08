@@ -1,7 +1,7 @@
 
 from project.models.item import Item
 from project.orm import Mapper
-
+from project import identity_map
 
 class Desktop(Item, Mapper):
 
