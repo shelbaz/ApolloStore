@@ -8,7 +8,8 @@ class Inventory(Mapper):
 
     attributes = {
         'id': 'UUID',
-        'model': 'UUID'
+        'model': 'UUID',
+        'locked': 'boolean'
     }
 
     constraints = {
@@ -24,3 +25,4 @@ class Inventory(Mapper):
         # Initialize object attributes
         self.id = id
         self.model = model
+        self.locked = False
