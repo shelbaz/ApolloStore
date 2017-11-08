@@ -8,3 +8,5 @@ flask-script==2.0.5
 passlib==1.7.1
 flask_httpauth==3.2.3
 flask-login
+celery
+redis

@@ -6,3 +6,8 @@
 flask/htmlcov/
 .coverage
 flask/htmlcov/
+*.log
+celerybeat-schedule
+flask/celeryd.pid
+flask/supervisord.log
+flask/supervisord.pid
