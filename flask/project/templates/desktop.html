@@ -33,9 +33,9 @@
 <script>
     function getSelected() {
         console.log(myTable.rows('.selected').data()[0]);
-        var selectedId = myTable.rows('.selected').data()[0][3];
-        console.log(selectedId);
-        delete_from_inventory(selectedId);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
     }
 </script>
 

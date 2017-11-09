@@ -9,7 +9,7 @@ class Cart(Mapper):
     attributes = {
         'id': 'UUID',
         'inventory_id': 'UUID',
-        'model': 'UDID',
+        'model': 'UUID',
         'user_id': 'UUID',
         'added_time': 'timestamp'
     }
@@ -18,7 +18,7 @@ class Cart(Mapper):
         'PRIMARY KEY': '(id)',
         'UNIQUE': '(inventory_id)',
         'FOREIGN KEY (inventory_id)': 'REFERENCES inventories (id)',
-        'FOREIGN KEY (model)': 'REFERENCES inventories (model)',
+        'FOREIGN KEY (model)': 'REFERENCES items (model)',
         'FOREIGN KEY (user_id)': 'REFERENCES users (id)'
     }
 

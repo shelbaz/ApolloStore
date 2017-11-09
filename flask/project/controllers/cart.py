@@ -2,6 +2,7 @@
 from project import logger
 from project.models.cart import Cart
 from project.models.inventory import Inventory
+from project.controllers.inventory import InventoryController
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
@@ -20,6 +21,8 @@ class CartController():
             currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime()) 
             cart = Cart(id=str(uuid4()), model=model, inventory_id= inventory_id, user_id = user_id, added_time= currentDateTime)
             cart.insert()
+            ## Lock item when added to cart
+            InventoryController.update_inventory(model=model, inventory_id= inventory_id, locked=True)
             identity_map.set(cart.id, cart)
             logger.info('Added %s to the cart successfully!' % (model,))
 

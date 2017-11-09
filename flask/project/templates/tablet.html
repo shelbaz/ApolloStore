@@ -31,14 +31,12 @@
 
 
 <script>
-function getSelected() {
-   var selectedIds = myTable.columns().checkboxes.selected()[0];
-   console.log(selectedIds)
-
-   selectedIds.forEach(function(selectedId) {
-       // Do something
-   });
-}
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
+    }
 </script>
 
 

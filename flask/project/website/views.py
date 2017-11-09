@@ -31,17 +31,18 @@ def index():
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_desktop_inventory(electronic, model):
-    if g.user.admin:
-        InventoryController.add_item_to_inventory(model)
-        return redirect('/' + electronic)
+def add_to_inventory(electronic, model):
+        InventoryController.add_item_to_inventory(model, electronic)
+        return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def delete_item_from_inventory(electronic, model):
+    print('electronic'+ electronic)
+    print('model'+ model)
     InventoryController.delete_item_from_inventory(model)
-    return redirect('/' + electronic)
+    return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])

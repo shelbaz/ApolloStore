@@ -104,7 +104,7 @@ def drop():
 
 
 @manager.command
-def create_admins():
+def create_users():
     import traceback
     try:
         from project.controllers.authentication import AuthenticationController
@@ -164,8 +164,8 @@ def create_items():
         invModels.append(DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100'))
         invModels.append(DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100'))
 
-        for item in invModels:
-            InventoryController.add_item_to_inventory(item.model)
+        for item in invModels: 
+            InventoryController.add_item_to_inventory(item.model, item.__class__.__name__)
 
     except Exception:
         logger.error(traceback.format_exc())
