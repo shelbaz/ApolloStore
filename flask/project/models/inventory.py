@@ -18,10 +18,6 @@ class Inventory(Mapper):
         'FOREIGN KEY (model)': 'REFERENCES items (model)'
     }
 
-    # enums = (
-    #     {'types': '(\'Desktop\', \'Laptop\', \'Monitor\', \'Tablet\')'}
-    # )
-
     # Constructor that creates inventory
     def __init__(self, id, model, type):
 

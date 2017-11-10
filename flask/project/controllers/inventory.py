@@ -16,7 +16,7 @@ class InventoryController():
     @staticmethod
     def add_item_to_inventory(model, type):
         try:
-            inventory = Inventory(id=str(uuid4()), model=model, type=type)
+            inventory = Inventory(id=str(uuid4()), model=model, type=type) 
             inventory.insert()
             identity_map.set(inventory.id, inventory)
             logger.info('Added %s to the inventory successfully!' % (model,))
@@ -32,12 +32,12 @@ class InventoryController():
         if rows:
             inventories = []
             for row in rows:
-                print('rowlol'+ row[0])
-                #check identity map
                 if identity_map.getObject(row[0]):
                     inventory = identity_map.getObject(row[0])
                 else:
-                    inventory = Inventory(row[0], row[1], row[2], row[3])
+                    # for row in rows:
+                        # print(row, flush=True)
+                    inventory = Inventory(row[0], row[1], row[2])
                     identity_map.set(inventory.id, inventory)
 
                 inventories.append(inventory)
@@ -82,7 +82,6 @@ class InventoryController():
     # Deletes an item from the inventory after checkout
     @staticmethod
     def delete_item_from_inventory(model):
-        print('model'+ model)
         rows = Mapper.query('inventories', model=model)
         if rows:
             inventory_items = InventoryController.get_inventory_items_from_rows(rows)

@@ -39,8 +39,6 @@ def add_to_inventory(electronic, model):
 @website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def delete_item_from_inventory(electronic, model):
-    print('electronic'+ electronic)
-    print('model'+ model)
     InventoryController.delete_item_from_inventory(model)
     return redirect('/' + electronic.lower())
 

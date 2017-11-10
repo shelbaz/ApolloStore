@@ -12,8 +12,6 @@ from project import identity_map
 
 class CartController():
 
-    identityMap = IdentityMap()
-
     # Adds an item of a specific model number to the cart
     @staticmethod
     def add_item_to_cart(model, inventory_id, user_id):
@@ -23,7 +21,7 @@ class CartController():
             cart.insert()
             ## Lock item when added to cart
             InventoryController.update_inventory(model=model, inventory_id= inventory_id, locked=True)
-            identity_map.set(cart.id, cart)
+            IdentityMap.set(cart.id, cart)
             logger.info('Added %s to the cart successfully!' % (model,))
 
             return cart

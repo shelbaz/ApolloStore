@@ -59,7 +59,6 @@ class LaptopController():
     @staticmethod
     def get_laptops_from_rows(rows):
         laptops = []
-        print(rows, flush=True)
         if rows:
             for row in rows:
                 #check identity map
