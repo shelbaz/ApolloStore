@@ -5,7 +5,7 @@ from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
-
+from project import identity_map
 
 class InventoryController():
 
@@ -17,7 +17,7 @@ class InventoryController():
         try:
             inventory = Inventory(id=str(uuid4()), model=model)
             inventory.insert()
-            InventoryController.identityMap.set(inventory.id, inventory)
+            identity_map.set(inventory.id, inventory)
             logger.info('Added %s to the inventory successfully!' % (model,))
 
             return inventory
@@ -33,11 +33,11 @@ class InventoryController():
 
             for row in rows:
                 #check identity map
-                if InventoryController.identityMap.hasId(row[0]):
-                    inventory = InventoryController.identityMap.getObject(row[0])
+                if identity_map.getObject(row[0]):
+                    inventory = identity_map.getObject(row[0])
                 else:
                     inventory = Inventory(row[0], row[1])
-                    InventoryController.identityMap.set(inventory.id, inventory)
+                    identity_map.set(inventory.id, inventory)
 
                 inventories.append(inventory)
 
@@ -51,6 +51,14 @@ class InventoryController():
     @staticmethod
     def delete_item_from_inventory(model):
         rows = Mapper.query('inventories', model=model)
-        inventory = InventoryController.get_inventory_items_from_rows(rows)[0]
-        inventory.delete()
+        if rows:
+            inventory_items = InventoryController.get_inventory_items_from_rows(rows)
+            inventory = inventory_items[0]
+            identity_map.delete(inventory.id)
+            if inventory:
+                inventory.delete()
+            else:
+                logger.error("No more of type item in inventory")
+        else:
+            logger.error("No items.")
         

@@ -12,6 +12,8 @@ import os
 
 class BaseConfig:
     SECRET_KEY = os.getenv('SECRET_KEY')
+    CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
+    RESULT_BACKEND = os.getenv('CELERY_BROKER_URL')
     DEBUG = False
     TESTING = False
 

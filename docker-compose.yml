@@ -49,11 +49,11 @@ services:
         - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/db_dev
         - DATABASE_TEST_URL=postgresql://postgres:postgres@postgres:5432/db_test
         - SECRET_KEY=soen343secretkey123
+        - CELERY_BROKER_URL=redis://:password@redis:6379/0
       depends_on:
         - postgres
       links:
         - postgres
-      command: gunicorn --worker-class eventlet -w 1 -b 0.0.0.0:8000 manage:app
 
     nginx:
       build: ./nginx
@@ -68,8 +68,18 @@ services:
       depends_on:
         - flask
 
+    redis:
+      build: ./redis
+      container_name: redis
+      networks:
+        - net
+      restart: always
+      volumes:
+        - broker:/data
+
 volumes:
   postgres:
+  broker:
 
 networks:
   net:
