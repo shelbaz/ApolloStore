@@ -75,8 +75,30 @@ def desktop_client():
     desktops=DesktopController.get_all_desktops()
     
     # do all the group by for the filter selects here
+    # filters -> brand, processor, ram_size, cpu_core
+    filters = {
+        'brand': [],
+        'processor': [],
+        'ram_size': [],
+        'cpu_cores': []
+    }
 
-    return render_template('desktop-client.html', user=g.user, desktops=desktops)
+    for desktop in desktops:
+        if desktop[0]['brand'] not in filters['brand']: 
+            filters['brand'].append(desktop[0]['brand'])
+
+        if desktop[0]['processor'] not in filters['processor']: 
+            filters['processor'].append(desktop[0]['processor'])
+
+        if desktop[0]['ram_size'] not in filters['ram_size']: 
+            filters['ram_size'].append(desktop[0]['ram_size'])
+
+        if desktop[0]['cpu_cores'] not in filters['cpu_cores']: 
+            filters['cpu_cores'].append(desktop[0]['cpu_cores'])
+        
+
+    logger.info(filters)
+    return render_template('desktop-client.html', user=g.user, filters=filters)
 
 @website_blueprint.route('/desktop-client/table', methods=['GET'])
 def desktop_client_table():    

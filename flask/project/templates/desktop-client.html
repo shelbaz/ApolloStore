@@ -68,9 +68,20 @@
     }
 </script>
 
+
 <div class="container">
-    Brand: <input id="brand-filter" type="text" value=""> 
-    Processor: <input id="processor-filter" type="text" value=""> 
+    Brand:  <select id="brand-filter">
+                <option value="">None</option>
+                {% for brand in filters.brand %}
+                    <option value="{{brand}}">{{brand}}</option>
+                {% endfor %}
+            </select>
+    Processor:  <select id="processor-filter">
+                    <option value="">None</option>
+                    {% for processor in filters.processor %}
+                        <option value="{{processor}}">{{processor}}</option>
+                    {% endfor %}
+                </select>
     <button id="filter-submit">Search</button>
 </div>
 <div id="itemContainer" class="container">
@@ -105,7 +116,6 @@
       width: 25%;
       padding: 10px;
       box-sizing: border-box;
-      height: 500px;
     }
 
     .product-subcontainer {
@@ -114,7 +124,12 @@
         height: 100%;
         /*border: solid 2px black;*/
         background-color: white;    
-        padding: 10px;
+        padding: 20px;
+    }
+
+    .product-container .price {
+        font-weight: bold;
+        font-size: 18px !important;
     }
 
     @media (max-width: 992px) {
