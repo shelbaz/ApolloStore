@@ -67,26 +67,6 @@
         ].join("\n");
     }
 </script>
-
-
-<div class="container">
-    Brand:  <select id="brand-filter">
-                <option value="">None</option>
-                {% for brand in filters.brand %}
-                    <option value="{{brand}}">{{brand}}</option>
-                {% endfor %}
-            </select>
-    Processor:  <select id="processor-filter">
-                    <option value="">None</option>
-                    {% for processor in filters.processor %}
-                        <option value="{{processor}}">{{processor}}</option>
-                    {% endfor %}
-                </select>
-    <button id="filter-submit">Search</button>
-</div>
-<div id="itemContainer" class="container">
-    <!-- all the items get appended in this container -->
-</div>
 <style>
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
@@ -139,10 +119,23 @@
     }
 
 </style>
-
-
-
-
-
+<div class="container">
+    Brand:  <select id="brand-filter">
+                <option value="">None</option>
+                {% for brand in filters.brand %}
+                    <option value="{{brand}}">{{brand}}</option>
+                {% endfor %}
+            </select>
+    Processor:  <select id="processor-filter">
+                    <option value="">None</option>
+                    {% for processor in filters.processor %}
+                        <option value="{{processor}}">{{processor}}</option>
+                    {% endfor %}
+                </select>
+    <button id="filter-submit">Search</button>
+</div>
+<div id="itemContainer" class="container">
+    <!-- all the items get appended in this container -->
+</div>
 {% endblock %}
 
