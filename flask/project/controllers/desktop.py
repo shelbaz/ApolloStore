@@ -6,6 +6,7 @@ from project.controllers.electronic import ElectronicController
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
+import json
 from project.orm import Mapper
 
 
@@ -39,16 +40,24 @@ class DesktopController():
 
     # Queries the list of all desktops and their count
     @staticmethod
-    def get_all_desktops():
+    def get_all_desktops(*filters):
         try:
-            rows = Mapper.query('items', 'desktops')
+            logger.error("filters ")
+            logger.error(filters)
+            logger.error(filters == ())
+            if filters == ():
+                rows = Mapper.query('items', 'desktops')
+            else:
+                rows = Mapper.query('items', 'desktops', **filters[0])
+    
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
             if desktops:
                 for desktop in desktops:
                     count = get_inventory_count('desktops', desktop.model)
-                    desktops_with_count.append([desktop, count])
+                    desktops_with_count.append([desktop.serialize(), count])
+
                 return desktops_with_count
             else:
                 return None

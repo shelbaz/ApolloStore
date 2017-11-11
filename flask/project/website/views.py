@@ -10,6 +10,7 @@ from project.controllers.laptop import LaptopController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
+import json
 
 website_blueprint = Blueprint('website_blueprint', __name__)
 
@@ -71,7 +72,17 @@ def desktop():
 @website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
 @login_required
 def desktop_client():
-    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops())
+    desktops=DesktopController.get_all_desktops()
+    
+    # do all the group by for the filter selects here
+
+    return render_template('desktop-client.html', user=g.user, desktops=desktops)
+
+@website_blueprint.route('/desktop-client/table', methods=['GET'])
+def desktop_client_table():    
+    return json.dumps({
+        'data': DesktopController.get_all_desktops(request.args.to_dict())
+    })
 
 @website_blueprint.route('/desktop-client/<string:attr>', methods=['GET', 'POST'])
 @login_required

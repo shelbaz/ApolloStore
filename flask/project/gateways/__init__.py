@@ -54,13 +54,14 @@ def insert_into_db(table, attributes, obj):
 
 
 def query_filtered_by(*tables, **conditions):
-
     filters = []
 
     for key, value in conditions.items():
+        logger.info("type ----")
+        logger.info(type(value))
         filters.append(str(key) + '=\'' + str(value) + '\'')
 
-    filters = ' AND '.join(filters)
+    filters = ' AND '.join(filters) 
 
     # Joins the tables if multiple are given
     tables = ' NATURAL JOIN '.join(tables)
@@ -70,6 +71,8 @@ def query_filtered_by(*tables, **conditions):
     else:
         query = 'SELECT * FROM %s;' % tables
 
+    logger.info(query)
+
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -78,10 +81,9 @@ def query_filtered_by(*tables, **conditions):
     if rows:
         return rows
     else:
-        return None
+        return None     
 
 def query_filtered_by_order(attribute,*tables):
-
     # Joins the tables if multiple are given
     tables = ' NATURAL JOIN '.join(tables)
 

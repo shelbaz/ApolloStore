@@ -102,7 +102,6 @@ def drop():
     except Exception:
         logger.error(traceback.format_exc())
 
-
 @manager.command
 def create_admins():
     import traceback
@@ -136,7 +135,7 @@ def create_items():
         MonitorController.create_monitor('Asus', 600, 10, '125x100')
         MonitorController.create_monitor('Dell', 600, 10, '150x100')
         MonitorController.create_monitor('Asus', 600, 10, '170x100')
-
+        
         DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
         DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
         DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
