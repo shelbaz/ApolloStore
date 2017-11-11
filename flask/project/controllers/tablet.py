@@ -53,6 +53,24 @@ class TabletController():
         except Exception:
             logger.error(traceback.format_exc())
 
+        # Queries the list of all tablets and their count
+    @staticmethod
+    def get_all_unlocked_tablets():
+        try:
+            rows = Mapper.query('items', 'tablets', 'inventories', locked=False)
+            tablets = TabletController.get_tablets_from_rows(rows)
+            tablets_with_count = []
+
+            if tablets:
+                for tablet in tablets:
+                    count = get_inventory_count('tablets', tablet.model)
+                    tablets_with_count.append([tablet, count])
+                return tablets_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all tablets from rows taken from db
     @staticmethod
     def get_tablets_from_rows(rows):

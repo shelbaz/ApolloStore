@@ -130,7 +130,7 @@
             function add_to_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/add-inventory/laptop/' + model);
+                form.setAttribute('action', '/add-inventory/Laptop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form)
                 form.submit();
@@ -170,7 +170,7 @@
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/laptop/' + model);
+                form.setAttribute('action', '/remove-inventory/Laptop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();

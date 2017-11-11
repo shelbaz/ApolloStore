@@ -153,24 +153,7 @@ select.selectpicker {
         items.classList.toggle('items-columns');
     });
 </script>
-<script>
 
-function add_to_cart(model, qty){ 
-var allItems = JSON.parse(localStorage.getItem('itemsArray')) || [];
-
-var newItem = 
-{
- 'model': model,
- 'quantity': qty
-};
-
- allItems.push(newItem);
-
- localStorage.setItem('itemsArray', JSON.stringify(allItems));
-    
-}         
-
-</script>
 <script>
     function fill_form(model) {
         document.getElementById('modelheader').innerHTML = model;

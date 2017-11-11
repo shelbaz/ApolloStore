@@ -51,6 +51,25 @@ class MonitorController():
         except Exception:
             logger.error(traceback.format_exc())
 
+
+    # Queries the list of all monitors and their count
+    @staticmethod
+    def get_all_unlocked_monitors():
+        try:
+            rows = Mapper.query('items', 'monitors', 'inventories', locked=False)
+            monitors = MonitorController.get_monitors_from_rows(rows)
+            monitors_with_count = []
+
+            if monitors:
+                for monitor in monitors:
+                    count = get_inventory_count('monitors', monitor.model)
+                    monitors_with_count.append([monitor, count])
+                return monitors_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all monitors from rows taken from db
     @staticmethod
     def get_monitors_from_rows(rows):

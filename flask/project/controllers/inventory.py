@@ -35,8 +35,6 @@ class InventoryController():
                 if identity_map.getObject(row[0]):
                     inventory = identity_map.getObject(row[0])
                 else:
-                    # for row in rows:
-                        # print(row, flush=True)
                     inventory = Inventory(row[0], row[1], row[2])
                     identity_map.set(inventory.id, inventory)
 
