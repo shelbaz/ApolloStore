@@ -16,6 +16,9 @@ from project.controllers.desktop import DesktopController
 from project.controllers.tablet import TabletController
 from project.controllers.monitor import MonitorController
 from project.controllers.laptop import LaptopController
+from project.controllers.inventory import InventoryController
+from project.controllers.cart import CartController
+from project.controllers.authentication import AuthenticationController
 from project.orm import Mapper
 
 
@@ -50,6 +53,22 @@ class TestViewModels(BaseTestCase):
             result2 = TabletController.get_tablets_from_rows(rows2)
             self.assertEqual(len(result1), 2)
             self.assertEqual(result2, None)
+
+    # Test to see if the query function works for the Tablet class
+    def test_should_return_query_results_for_inventory(self):
+        with self.client:
+            t1 = TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                           'Windows 10', 'nice')
+            TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                           'Windows 10', 'nice')
+            TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                           'Windows 10', 'nice')
+            InventoryController.add_item_to_inventory(t1.model, 'tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'tablet')
+            user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111',
+                                                        '5141234567', False)
+            cart = CartController.add_item_to_cart(t1.model, user.id)
+
 
     # Test to see if the query function works for the Desktop class
     def test_should_return_query_results_for_desktop(self):

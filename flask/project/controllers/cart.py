@@ -14,17 +14,26 @@ class CartController():
 
     # Adds an item of a specific model number to the cart
     @staticmethod
-    def add_item_to_cart(model, inventory_id, user_id):
+    def add_item_to_cart(model, user_id):
         try:
-            currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime()) 
-            cart = Cart(id=str(uuid4()), model=model, inventory_id= inventory_id, user_id = user_id, added_time= currentDateTime)
-            cart.insert()
-            ## Lock item when added to cart
-            InventoryController.update_inventory(model=model, inventory_id= inventory_id, locked=True)
-            IdentityMap.set(cart.id, cart)
-            logger.info('Added %s to the cart successfully!' % (model,))
+            rows = Mapper.query('inventories', model=model)
+            inventory_items = InventoryController.get_inventory_items_from_rows(rows)
 
-            return cart
+            for inv in inventory_items:
+                if(not inv.locked):
+                    inventory_item = inv
+
+            currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+
+            if(inventory_item):
+                cart = Cart(id=str(uuid4()), model=model, inventory_id= inventory_item.id, user_id = user_id, added_time= currentDateTime)
+                cart.insert()
+                # Lock item when added to cart
+                InventoryController.update_inventory(model, inventory_item.id, locked=True, type=inventory_item.type)
+                identity_map.set(cart.id, cart)
+                logger.info('Added %s to the cart successfully!' % (model,))
+
+                return cart
 
         except Exception:
             logger.error(traceback.format_exc())
@@ -40,14 +49,21 @@ class CartController():
                 identity_map.delete(cart.id)
                 if cart:
                     cart.delete()
-                    InventoryController.update_inventory(model=model, inventory_id= inventory_id, locked=False)
+                    InventoryController.update_inventory(model=model, inventory_id=inventory_id, locked=False)
                 else:
                     logger.error("No more items in cart")
             else:
                 logger.error("No items matching that query.")
 
         except Exception:
-                logger.error(traceback.format_exc())
+            logger.error(traceback.format_exc())
+
+    @staticmethod
+    def get_cart_items(user_id):
+        rows = Mapper.query('carts', user_id=user_id)
+        carts = CartController.get_cart_items_from_rows(rows)
+        return carts
+
 
     # Returns all inventory items from rows taken from db
     @staticmethod

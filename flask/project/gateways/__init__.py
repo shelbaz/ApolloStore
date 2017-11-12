@@ -112,7 +112,12 @@ def delete_from_db(*tables, **conditions):
 
 def update_db(table, attributes, obj):
     types_with_no_quotes = ['integer', 'decimal', 'boolean']
-
+    if(table == 'inventories'):
+        whereStatement = 'id'
+        id = obj.id
+    else:
+        whereStatement = 'model'
+        id=obj.model
     query = 'UPDATE %s SET ' % table
 
     currently_first_attribute = True
@@ -127,10 +132,9 @@ def update_db(table, attributes, obj):
         else:
             query += str(key) + '=\'' + str(getattr(obj, key)) + '\''
 
-    where_condition = 'model=\'' + str(obj.model) + '\''
+    where_condition = whereStatement + '=\'' + str(id) + '\''
 
     query+= ' WHERE %s' % where_condition + ';'
-
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)

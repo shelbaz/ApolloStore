@@ -277,13 +277,13 @@ def monitor_client():
 @website_blueprint.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
-    return render_template('cart.html', user=g.user)
+    return render_template('cart.html', user=g.user, items=CartController.get_cart_items(g.user.id))
 
-@website_blueprint.route('/add-to-cart/<string:model>/<string:inventory_id>', methods=['POST'])
+@website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['POST'])
 @login_required
-def add_to_cart(model, inventory_id, user_id):
-        CartController.add_item_to_cart(model, inventory_id, g.user.id)
-        return redirect('/')
+def add_to_cart(model,item):
+        CartController.add_item_to_cart(model, g.user.id)
+        return redirect('/' + item)
 
 
 @website_blueprint.route('/remove-from-cart/<string:electronic>/<string:model>', methods=['POST'])
