@@ -59,12 +59,10 @@ select.selectpicker {
  </div>   
 {% else: %}
 <div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
+ <div class="alert alert-danger fade in" style="width:100%;">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>Error!</strong> All our monitors are sold out!
+</div>
 </div>
 
 
@@ -123,6 +121,17 @@ select.selectpicker {
     </div>
 </div>
 
+<script>
+             function add_to_cart(model) {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/add-to-cart/' + model + '/monitor-client');
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form);
+                 form.submit();
+                 console.log('submitted');
+             }
+</script>
 
 
 

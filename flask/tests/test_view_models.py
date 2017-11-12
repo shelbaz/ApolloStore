@@ -63,11 +63,30 @@ class TestViewModels(BaseTestCase):
                                            'Windows 10', 'nice')
             TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
                                            'Windows 10', 'nice')
-            InventoryController.add_item_to_inventory(t1.model, 'tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
             user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111',
                                                         '5141234567', False)
-            cart = CartController.add_item_to_cart(t1.model, user.id)
+
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model, user.id)
+
+            inventories = CartController.get_cart_items(user.id)
+            count = CartController.count_number_items(user.id)
+            self.assertEqual(len(inventories), 7)
+            self.assertEqual(inventories[0].price, 500)
 
 
     # Test to see if the query function works for the Desktop class

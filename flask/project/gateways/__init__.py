@@ -181,6 +181,19 @@ def drop_table(name):
             if bool(cursor.rowcount):
                 cursor.execute('DROP TABLE %s;' % name)
 
+def count_rows(name,u_id):
+    try:
+        condition = 'user_id' + '=\'' + str(u_id) + '\''
+        query = 'SELECT COUNT(*) AS X FROM %s WHERE %s;' %(name, condition)
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                count = cursor.fetchone()
+        return count[0]
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
 from project.models.auth import User
 from project.models.item import Item
 from project.models.inventory import Inventory

@@ -1,5 +1,5 @@
 
-from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db
+from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db, count_rows
 
 
 class Mapper(object):
@@ -29,6 +29,10 @@ class Mapper(object):
         key = self._constraints['PRIMARY KEY'].strip('(').strip(')')
         dic = {key: getattr(self, key)}
         delete_from_db(self._name, **dic)
+
+    @staticmethod
+    def count_rows(table, user_id):
+        return count_rows(table.name, user_id)
 
     @staticmethod
     def create_table(table):
