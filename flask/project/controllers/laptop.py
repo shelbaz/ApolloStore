@@ -2,16 +2,15 @@
 from project import logger
 from project.models.laptop import Laptop
 from project.gateways import get_inventory_count
-from project.identityMap import IdentityMap
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
-
+from project import identity_map
 
 class LaptopController():
 
-    identityMap = IdentityMap()
+ 
 
     # Creates a laptop that is valid
     @staticmethod
@@ -22,7 +21,7 @@ class LaptopController():
                 laptop = Laptop(model=str(uuid4()), brand=brand, price=price, weight=weight, display_size=display_size, processor=processor, ram_size=ram_size,
                                 cpu_cores=cpu_cores, hd_size=hd_size, battery_info=battery_info, os=os, touchscreen=touchscreen, camera=camera)
                 laptop.insert()
-                LaptopController.identityMap.set(laptop.model, laptop)
+                identity_map.set(laptop.model, laptop)
 
                 logger.info('Laptop created successfully!')
 
@@ -56,20 +55,45 @@ class LaptopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+        # Queries the list of all desktops and their count
+    @staticmethod
+    def get_all_unlocked_laptops():
+        try:
+            rows = Mapper.query('items', 'laptops', 'inventories', locked=False)
+            laptops = LaptopController.get_laptops_from_rows(rows)
+            laptops_with_count = []
+
+            if laptops:
+                for laptop in laptops:
+                    count = get_inventory_count('laptops', laptop.model)
+                    laptops_with_count.append([laptop, count])
+                return laptops_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all laptops from rows taken from db
     @staticmethod
     def get_laptops_from_rows(rows):
         laptops = []
-
         if rows:
             for row in rows:
                 #check identity map
-                if LaptopController.identityMap.hasId(row[0]):
-                    laptop = LaptopController.identityMap.getObject(row[0])
+                if identity_map.getObject(row[0]):
+                    laptop = identity_map.getObject(row[0])
                 else:
-                    laptop = Laptop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10],
-                                row[11], row[12])
-                    LaptopController.identityMap.set(laptop.model, laptop)
+                    
+                    attributes = {}
+                    index = 0
+
+                    for key in Laptop.attributes.keys():
+                        attributes[key] = row[index]
+                        index += 1
+
+                    laptop = Laptop(**attributes)
+
+                    identity_map.set(laptop.model, laptop)
                     
                 laptops.append(laptop)
 
@@ -83,6 +107,7 @@ class LaptopController():
     @staticmethod
     def delete_model(model):
         try:
+            identity_map.delete(model)
             rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopController.get_laptops_from_rows(rows)[0]
 

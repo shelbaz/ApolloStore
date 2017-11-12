@@ -7,6 +7,7 @@ from project.controllers.desktop import DesktopController
 from project.controllers.tablet import TabletController
 from project.controllers.monitor import MonitorController
 from project.controllers.laptop import LaptopController
+from project.controllers.cart import CartController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
@@ -31,17 +32,18 @@ def index():
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_desktop_inventory(electronic, model):
+def add_to_inventory(electronic, model):
     if g.user.admin:
-        InventoryController.add_item_to_inventory(model)
-        return redirect('/' + electronic)
+        InventoryController.add_item_to_inventory(model, electronic)
+        return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def delete_item_from_inventory(electronic, model):
-    InventoryController.delete_item_from_inventory(model)
-    return redirect('/' + electronic)
+    if g.user.admin:
+        InventoryController.delete_item_from_inventory(model)
+        return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
@@ -71,7 +73,7 @@ def desktop():
 @website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
 @login_required
 def desktop_client():
-    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops())
+    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_unlocked_desktops())
 
 
 @website_blueprint.route('/edit-desktop', methods=['POST'])
@@ -138,7 +140,7 @@ def laptop():
 @website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
 @login_required
 def laptop_client():
-    return render_template('laptop-client.html', user=g.user, laptops=LaptopController.get_all_laptops())
+    return render_template('laptop-client.html', user=g.user, laptops=LaptopController.get_all_unlocked_laptops())
 
 
 
@@ -213,7 +215,7 @@ def tablet():
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
 @login_required
 def tablet_client():
-    return render_template('tablet-client.html', user=g.user, tablets=TabletController.get_all_tablets())
+    return render_template('tablet-client.html', user=g.user, tablets=TabletController.get_all_unlocked_tablets())
 
 
 @website_blueprint.route('/edit-tablet', methods=['POST'])
@@ -270,12 +272,35 @@ def monitor():
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
 @login_required
 def monitor_client():
-    return render_template('monitor-client.html', user=g.user, monitors=MonitorController.get_all_monitors())
+    return render_template('monitor-client.html', user=g.user, monitors=MonitorController.get_all_unlocked_monitors())
 
 @website_blueprint.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
     return render_template('cart.html', user=g.user)
+
+@website_blueprint.route('/add-to-cart/<string:model>/<string:inventory_id>', methods=['POST'])
+@login_required
+def add_to_cart(model, inventory_id, user_id):
+        CartController.add_item_to_cart(model, inventory_id, g.user.id)
+        return redirect('/')
+
+
+@website_blueprint.route('/remove-from-cart/<string:electronic>/<string:model>', methods=['POST'])
+@login_required
+def remove_item_from_cart(electronic, model):
+    CartController.remove_item_from_cart(model)
+    return redirect('/')
+
+# @website_blueprint.route('/checkout/<string:user_id>', methods=['POST'])
+# @login_required
+# def checkout_from_cart(user_id):
+#     return redirect('cart.html')
+
+@website_blueprint.route('/returns', methods=['GET', 'POST'])
+@login_required
+def returns():
+    return render_template('returns.html', user=g.user)
 
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])

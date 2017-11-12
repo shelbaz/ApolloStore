@@ -104,7 +104,7 @@ def drop():
 
 
 @manager.command
-def create_admins():
+def create_users():
     import traceback
     try:
         from project.controllers.authentication import AuthenticationController
@@ -117,6 +117,19 @@ def create_admins():
 
 
 @manager.command
+def test_aspect():
+    import traceback
+    try:
+        from project.controllers.monitor import MonitorController
+        monitor = MonitorController.create_monitor('Asus', 300, 5, '25x30')
+        from project import identity_map
+        identity_map.delete(monitor.model)
+        identity_map.getObject(monitor.model)
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
+@manager.command
 def create_items():
     import traceback
     try:
@@ -124,28 +137,36 @@ def create_items():
         from project.controllers.laptop import LaptopController
         from project.controllers.monitor import MonitorController
         from project.controllers.tablet import TabletController
-        LaptopController.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True)
-        LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
-        LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True)
+        from project.controllers.inventory import InventoryController
+
+        invModels = []
+
+        invModels.append(LaptopController.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True))
+        invModels.append(LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
+        invModels.append(LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
         
-        TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
-        TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
-        TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice')
+        invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
+        invModels.append(TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
+        invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
 
 
-        MonitorController.create_monitor('Asus', 600, 10, '125x100')
-        MonitorController.create_monitor('Dell', 600, 10, '150x100')
-        MonitorController.create_monitor('Asus', 600, 10, '170x100')
+        invModels.append(MonitorController.create_monitor('Asus', 600, 10, '125x100'))
+        invModels.append(MonitorController.create_monitor('Dell', 600, 10, '150x100'))
+        invModels.append(MonitorController.create_monitor('Asus', 600, 10, '170x100'))
 
-        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100')
-        DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100')
+        invModels.append(DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+        invModels.append(DesktopController.create_desktop('Lenovo', 500, 10, 'intel', 256, 2, 1080, '100x100'))
+
+        for item in invModels: 
+            InventoryController.add_item_to_inventory(item.model, item.__class__.__name__)
+
     except Exception:
         logger.error(traceback.format_exc())
 

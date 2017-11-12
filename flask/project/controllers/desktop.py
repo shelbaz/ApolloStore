@@ -3,15 +3,14 @@ from project import logger
 from project.gateways import get_inventory_count
 from project.models.desktop import Desktop
 from project.controllers.electronic import ElectronicController
-from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
-
+from project import identity_map
 
 class DesktopController():
 
-    identityMap = IdentityMap()
+
 
     # Creates a desktop that is valid
     @staticmethod
@@ -21,7 +20,7 @@ class DesktopController():
                 desktop = Desktop(model=str(uuid4()), brand=brand, price=price, weight=weight, processor=processor,
                                   ram_size=ram_size, cpu_cores=cpu_cores, hd_size=hd_size, dimensions=dimensions)
                 desktop.insert()
-                DesktopController.identityMap.set(desktop.model, desktop)
+                identity_map.set(desktop.model, desktop)
 
                 logger.info('Desktop created successfully!')
 
@@ -55,6 +54,24 @@ class DesktopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+    # Queries the list of all desktops and their count
+    @staticmethod
+    def get_all_unlocked_desktops():
+        try:
+            rows = Mapper.query('items', 'desktops', 'inventories', locked=False)
+            desktops = DesktopController.get_desktops_from_rows(rows)
+            desktops_with_count = []
+
+            if desktops:
+                for desktop in desktops:
+                    count = get_inventory_count('desktops', desktop.model)
+                    desktops_with_count.append([desktop, count])
+                return desktops_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all desktops from rows taken from db
     @staticmethod
     def get_desktops_from_rows(rows):
@@ -62,13 +79,13 @@ class DesktopController():
             desktops = []
             for row in rows:
                 #check identity map
-                if DesktopController.identityMap.hasId(row[0]):
+                if identity_map.getObject(row[0]):
                     logger.debug("found object in identity map")
-                    desktop = DesktopController.identityMap.getObject(row[0])
+                    desktop = identity_map.getObject(row[0])
                 else: 
                     logger.debug("inserting desktop into identity map")
                     desktop = Desktop(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
-                    DesktopController.identityMap.set(desktop.model, desktop)
+                    identity_map.set(desktop.model, desktop)
 
                 desktops.append(desktop)
 
@@ -82,6 +99,7 @@ class DesktopController():
     @staticmethod
     def delete_model(model):
         try:
+            identity_map.delete(model)
             rows = Mapper.query('items', 'desktops', model=model)
             desktop = DesktopController.get_desktops_from_rows(rows)[0]
 

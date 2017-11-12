@@ -8,7 +8,9 @@ class Inventory(Mapper):
 
     attributes = {
         'id': 'UUID',
-        'model': 'UUID'
+        'model': 'UUID',
+        'type': 'varchar(64)',
+        'locked': 'boolean'
     }
 
     constraints = {
@@ -17,10 +19,12 @@ class Inventory(Mapper):
     }
 
     # Constructor that creates inventory
-    def __init__(self, id, model):
+    def __init__(self, id, model, type):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 
         # Initialize object attributes
         self.id = id
         self.model = model
+        self.type = type
+        self.locked = False

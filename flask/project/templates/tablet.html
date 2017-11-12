@@ -31,14 +31,12 @@
 
 
 <script>
-function getSelected() {
-   var selectedIds = myTable.columns().checkboxes.selected()[0];
-   console.log(selectedIds)
-
-   selectedIds.forEach(function(selectedId) {
-       // Do something
-   });
-}
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
+    }
 </script>
 
 
@@ -132,7 +130,7 @@ function getSelected() {
             function add_to_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/add-inventory/tablet/' + model);
+                form.setAttribute('action', '/add-inventory/Tablet/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form)
                 form.submit();
@@ -164,7 +162,7 @@ function getSelected() {
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/tablet/' + model);
+                form.setAttribute('action', '/remove-inventory/Tablet/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
