@@ -23,75 +23,58 @@ hr {
   width:50%;
 }    
 </style>
-<script>console.log("{{items}}")</script>
     <div class="section">
 
         <div class="col-md-12 text-left">
             <h1>List of Items in Cart</h1>
-    <div class="row product-row">
         <form>
-        <!-- Products-->
-        <div class="col-xs-12 col-sm-7">
-            <div class="media">
-                <a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/WyBwviPGnlXgJLFReMcE.jpg"></a>
-                <div class="media-body">
-                    <h4 class="media-heading">Freshwater Cultured Pearl Set.</h4>
-                    <p class="text-muted">18 inch ringed potato shape freshwater pearl necklace has secure lobster claw.  Matching 7 inch stretch bracelet and fish hook style drop earrings  complete the set.  Rhodium finish.  ANC331</p>
+            {% if items: %}
+            <div class="row product-row">
+                <!-- Products-->
+                {% for item in items: %}
+                <div class="col-xs-12 col-sm-7">
+                    <div class="media">
+                        <a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/WyBwviPGnlXgJLFReMcE.jpg"></a>
+                        <div class="media-body">
+                            <h4 class="media-heading">{{item.brand}}</h4>
+                            <h6 class="media-heading">{{item.model}}</h6>
+                        </div>
+                        <br>
+                    </div>
                 </div>
-            </div>      
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <b>Price:</b> $800
-          <br>
-            <b>Quantity:</b> <input type="text" class="form-control input-sm" id="qty" value="2"> 
-          <br>
-            <b>Total:</b> 1600$ 
-        </div>
-        <div class="col-xs-12 col-sm-2">
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-                <button type="button" class="btn btn-default btn-danger"><span class="fa fa-close"></span>&nbsp;Remove</button>
+                <div class="col-xs-12 col-sm-3">
+                    <b>Price:</b> <span class="price">{{item.price}}</span>
+                </div>
+                <div class="col-xs-12 col-sm-2">
+                    <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+                        <button type="button" class="btn btn-default btn-danger"><span class="fa fa-close"></span>&nbsp;Remove</button>
+                    </div>
+
+                </div>
+                {% endfor %}
             </div>
-        </div>
-    </div> 
+            {% endif %}
 
 
 <hr/>
 
-    <div class="row product-row">
-        <!-- Products-->
-        <div class="col-xs-12 col-sm-7">
-            <div class="media">
-                <a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/KuMnGUdPifEyokCDnFrj.jpg"></a>
-                <div class="media-body">
-                    <h4 class="media-heading">Camelbak 20oz Bottle.</h4>
-                    <p class="text-muted">Flip, Bite and Sip. BPA-Free and spill-proof eddy Bottle makes it easy to stay hydrated on the go. Fits in most cup holders and is dishwasher safe. ARXA33</p>
-                </div>
-            </div>      
-        </div>
-        <div class="col-xs-12 col-sm-3">
-            <b>Price:</b> $800
-          <br>
-            <b>Quantity:</b> <input type="text" class="form-control input-sm" id="qty" value="2"> 
-          <br>
-            <b>Total:</b> 1600$ 
-        </div>
-        <div class="col-xs-12 col-sm-2">
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-                <button type="button" class="btn btn-default btn-danger"><span class="fa fa-close"></span>&nbsp;Remove</button>
-            </div>
-        </div>
-    </div>
-            
-<p> </p>
-
-
-  <p align="right"> The Sum Total of your Cart is : $ </p>          
+  <p align="right"> The Sum Total of your Cart is :<span id="total"></span>  $ </p>
         <p></p>
     <div align="right">
    <button type="button" class="btn btn-default btn-success"><span class="fa fa-shopping-cart"></span>&nbsp;Checkout</button> </div>
 </form>
 
+<script>
+    items=(document.getElementsByClassName('price'))
+    var total=0;
+    for (var i =0; i<items.length; i++){
+        total += Number(items[i].innerHTML)
+    }
 
+    document.getElementById('total').innerHTML=total;
+
+
+</script>
         </div>
 
         <script>

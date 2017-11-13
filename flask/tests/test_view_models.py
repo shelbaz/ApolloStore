@@ -63,8 +63,9 @@ class TestViewModels(BaseTestCase):
                                            'Windows 10', 'nice')
             TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
                                            'Windows 10', 'nice')
+            d1 =DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
             InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(d1.model, 'desktops')
             InventoryController.add_item_to_inventory(t1.model, 'tablets')
             InventoryController.add_item_to_inventory(t1.model, 'tablets')
             InventoryController.add_item_to_inventory(t1.model, 'tablets')
@@ -75,7 +76,7 @@ class TestViewModels(BaseTestCase):
                                                         '5141234567', False)
 
             CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(d1.model, user.id)
             CartController.add_item_to_cart(t1.model, user.id)
             CartController.add_item_to_cart(t1.model, user.id)
             CartController.add_item_to_cart(t1.model, user.id)
@@ -83,10 +84,11 @@ class TestViewModels(BaseTestCase):
             CartController.add_item_to_cart(t1.model, user.id)
             CartController.add_item_to_cart(t1.model, user.id)
 
-            cart_items = CartController.get_cart_items(user.id)
+            inventories = CartController.get_cart_items(user.id)
             count = CartController.count_number_items(user.id)
-            self.assertEqual(len(cart_items), 7)
-            self.assertEqual(cart_items[0].price, 500)
+            self.assertEqual(len(inventories), 7)
+            self.assertEqual(inventories[0].price, 500)
+            self.assertEqual(inventories[1].price, 600)
 
 
     # Test to see if the query function works for the Desktop class

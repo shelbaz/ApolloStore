@@ -209,7 +209,7 @@ def tablet():
                 else:
                     logger.error('couldnt create tablet item')
 
-        return render_template('tablet.html', user=g.user, tablets=TabletController.get_all_unlocked_tablets())
+        return render_template('tablet.html', user=g.user, tablets=TabletController.get_all_tablets())
 
 
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
@@ -266,7 +266,7 @@ def monitor():
                 else:
                     logger.error('couldnt create monitor item')
 
-        return render_template('monitor.html', user=g.user, monitors=MonitorController.get_all_unlocked_monitors())
+        return render_template('monitor.html', user=g.user, monitors=MonitorController.get_all_monitors())
 
 
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
