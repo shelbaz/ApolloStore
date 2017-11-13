@@ -112,7 +112,7 @@ select.selectpicker {
                             <!-- end col -->
                         <div class="space-ten"></div>
                         <div class="btn-ground">
-                            <button type="button" class="btn btn-primary" onclick="add_to_cart(document.getElementById('modelheader').innerHTML)"><span class="glyphicon glyphicon-shopping-cart" onclick="console.log('something');"></span> Add To Cart</button>
+                            <button type="button" class="btn btn-primary" onclick="add_to_cart(document.getElementById('modelheader').innerHTML)"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@ select.selectpicker {
 <script>
              function add_to_cart(model) {
                  var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
+                 form.setAttribute('method', 'get');
                  form.setAttribute('action', '/add-to-cart/' + model + '/monitor-client');
                  form.style.display = 'hidden';
                  document.body.appendChild(form);

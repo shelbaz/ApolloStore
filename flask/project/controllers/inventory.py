@@ -80,7 +80,7 @@ class InventoryController():
     # Deletes an item from the inventory after checkout
     @staticmethod
     def delete_item_from_inventory(model, inventoryid):
-        rows = Mapper.query('inventories', model=model, inventoryid=inventoryid)
+        rows = Mapper.query('inventories', model=model, id=inventoryid)
         if rows:
             inventory_items = InventoryController.get_inventory_items_from_rows(rows)
             inventory = inventory_items[0]

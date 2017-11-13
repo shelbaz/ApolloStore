@@ -1,5 +1,6 @@
 from project import logger
 from project.models.purchase import Purchase
+from flask import g
 import datetime
 import traceback
 from project.orm import Mapper
@@ -8,10 +9,10 @@ from uuid import uuid4
 class PurchaseController():
 
     @staticmethod
-    def insert_into_table(user_id, model_id):
+    def insert_into_table(model_id):
         try:
             added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            purchase = Purchase(id=str(uuid4()), user_id=user_id, added_time=added_time, model_id=model_id)
+            purchase = Purchase(id=str(uuid4()), user_id=g.user.id, added_time=added_time, model_id=model_id)
             purchase.insert()
             logger.info('Purchase created successfully!')
 
@@ -36,9 +37,9 @@ class PurchaseController():
             return None
 
     @staticmethod
-    def delete_purchases(user_id, model_id):
+    def delete_purchases(model_id):
         try:
-            rows = Mapper.query('purchases', model_id=model_id, user_id=user_id)
+            rows = Mapper.query('purchases', model_id=model_id, user_id=g.user.id)
             purchase = PurchaseController.get_monitors_from_rows(rows)[0]
 
             purchase.delete()
@@ -47,8 +48,8 @@ class PurchaseController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def get_past_purchases(user_id):
-        rows = Mapper.query('purchases', user_id=user_id)
+    def get_past_purchases():
+        rows = Mapper.query('purchases', user_id=g.user.id)
         purchases = PurchaseController.get_purchases_from_rows(rows)
         purchase_items = []
         if purchases:

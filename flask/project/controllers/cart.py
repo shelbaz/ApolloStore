@@ -1,6 +1,7 @@
 
 from project import logger
 from project.models.cart import Cart
+from flask import g
 from project.models.inventory import Inventory
 from project.controllers.electronic import ElectronicController
 from project.controllers.inventory import InventoryController
@@ -16,7 +17,7 @@ class CartController():
 
     # Adds an item of a specific model number to the cart
     @staticmethod
-    def add_item_to_cart(model, user_id):
+    def add_item_to_cart(model):
         try:
             rows = Mapper.query('inventories', model=model)
             inventory_items = InventoryController.get_inventory_items_from_rows(rows)
@@ -26,10 +27,10 @@ class CartController():
                     inventory_item = inv
 
             currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-            rows = CartController.count_number_items(user_id)
+            rows = CartController.count_number_items()
 
             if(inventory_item and rows < 7):
-                cart = Cart(id=str(uuid4()), model=model, inventory_id= inventory_item.id, user_id = user_id, added_time= currentDateTime)
+                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=currentDateTime)
                 cart.insert()
                 # Lock item when added to cart
                 InventoryController.update_inventory(model, inventory_item.id, locked=True, type=inventory_item.type)
@@ -42,25 +43,29 @@ class CartController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def count_number_items(user_id):
-        rows = Mapper.count_rows(Cart, user_id)
+    def count_number_items():
+        rows = Mapper.count_rows(Cart, g.user.id)
 
         return rows
 
     # Removes an item of a specific model number from the cart
     @staticmethod
-    def remove_item_from_cart(model, user_id):
+    def remove_item_from_cart(model):
+        logger.critical('something')
         try:
-            rows = Mapper.query('carts', model=model, user_id=user_id)
+
+            rows = Mapper.query('carts', model=model, user_id=g.user.id)
             if rows:
                 cart_items = CartController.get_cart_items_from_rows(rows)
                 cart = cart_items[0]
-                identity_map.delete(cart.id)
-                logger.error('something')
                 if cart:
+                    identity_map.delete(cart.id)
                     inv_id = cart.inventory_id
-                    cart.delete(cart.id)
-                    InventoryController.update_inventory(model=model, inventory_id=inv_id, locked=False)
+                    cart.delete()
+                    logger.info('cart inventory id:' + inv_id)
+                    InventoryController.update_inventory(model=model, inventoryid=inv_id, locked=False)
+                    logger.info('Added %s back to inventory successfully!' % (model))
+
                 else:
                     logger.error('No more items in cart')
             else:
@@ -70,8 +75,8 @@ class CartController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def get_cart_items(user_id):
-        rows = Mapper.query('carts', user_id=user_id)
+    def get_cart_items():
+        rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         cart_items = []
         if carts:
@@ -84,26 +89,28 @@ class CartController():
 
     #Takes items from cart and adds them to purchases db log, removes items from inventory and flushes cart
     @staticmethod
-    def checkout_from_cart(user_id):
-        rows = Mapper.query('carts', user_id=user_id)
+    def checkout_from_cart():
+        rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         if carts:
             for cart in carts:
-                PurchaseController.insert_into_table(user_id=user_id, model=cart.model)
-                InventoryController.delete_item_from_inventory(model=cart.model, inventoryid=cart.inventory_id)
+                PurchaseController.insert_into_table(model_id=cart.model)
+                mymodel = cart.model
+                inv_id = cart.inventory_id
+                cart.delete()
+                InventoryController.delete_item_from_inventory(model=mymodel, inventoryid=inv_id)
                 identity_map.delete(cart.id)
                 logger.info('Deleted %s from the inventory successfully!' % (cart.model))
-        CartController.flush_cart()
         logger.info('Cart flushed successfully!')
 
     #Removes all items from cart with selected user_id
     @staticmethod
-    def flush_cart(user_id):
-        rows = Mapper.query('carts', user_id=user_id)
+    def flush_cart():
+        rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         if carts:
             for cart in carts:
-                Mapper.delete(cart.id)
+                cart.delete()
                 logger.info('Deleted %s from the cart successfully!' % (cart.model))
 
     # Returns all inventory items from rows taken from db

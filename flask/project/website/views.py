@@ -8,6 +8,7 @@ from project.controllers.tablet import TabletController
 from project.controllers.monitor import MonitorController
 from project.controllers.laptop import LaptopController
 from project.controllers.cart import CartController
+from project.controllers.purchase import PurchaseController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
@@ -277,31 +278,32 @@ def monitor_client():
 @website_blueprint.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
-    return render_template('cart.html', user=g.user, items=CartController.get_cart_items(g.user.id))
+    return render_template('cart.html', user=g.user, items=CartController.get_cart_items())
 
-@website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['POST'])
+@website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['GET'])
 @login_required
 def add_to_cart(model,item):
-    CartController.add_item_to_cart(model, g.user.id)
+    CartController.add_item_to_cart(model)
     return redirect('/' + item)
 
 
-@website_blueprint.route('/remove-from-cart/<string:model>', methods=['POST'])
+@website_blueprint.route('/remove-from-cart/<string:model>', methods=['GET'])
 @login_required
 def remove_from_cart(model):
-    CartController.remove_item_from_cart(model, g.user.id)
+    logger.critical('something')
+    CartController.remove_item_from_cart(model)
     return redirect('/cart')
 
-@website_blueprint.route('/checkout/<string:user_id>', methods=['POST'])
+@website_blueprint.route('/checkout/', methods=['GET'])
 @login_required
 def checkout_from_cart():
-    CartController.checkout_from_cart(g.user.id)
+    CartController.checkout_from_cart()
     return redirect('/')
 
 @website_blueprint.route('/returns', methods=['GET', 'POST'])
 @login_required
 def returns():
-    return render_template('returns.html', user=g.user)
+    return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
 
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])

@@ -20,7 +20,7 @@ class Purchase(Mapper):
     }
 
     # Constructor that creates a new cart
-    def __init__(self, id, inventory_id, user_id, added_time, model_id):
+    def __init__(self, id, user_id, added_time, model_id):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 

@@ -80,8 +80,8 @@ hr {
 <script>
              function remove_from_cart(model) {
                  var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/remove_from_cart/' + model);
+                 form.setAttribute('method', 'get');
+                 form.setAttribute('action', '/remove-from-cart/' + model);
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
@@ -92,8 +92,8 @@ hr {
 <script>
              function checkout_from_cart() {
                  var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/checkout_from_cart/');
+                 form.setAttribute('method', 'get');
+                 form.setAttribute('action', '/checkout/');
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();

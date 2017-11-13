@@ -156,7 +156,7 @@ select.selectpicker {
 <script>
              function add_to_cart(model) {
                  var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
+                 form.setAttribute('method', 'get');
                  form.setAttribute('action', '/add-to-cart/' + model + '/desktop-client');
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
