@@ -88,10 +88,12 @@ select.selectpicker {
  </div>   
 {% else: %}
 <div class='items' id='items'>
- <div class="alert alert-danger fade in" style="width:100%;">
-    <a href="#" class="close" data-dismiss="alert">&times;</a>
-    <strong>All our desktops are sold out!</strong>
-</div>
+  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
+    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
+    <h2 class='item-title'>Test item</h2>
+    <p class='item-description'> Brand: 
+    </p>
+  </a>
 </div>
 
 
@@ -142,7 +144,7 @@ select.selectpicker {
                             <!-- end col -->
                         <div class="space-ten"></div>
                         <div class="btn-ground">
-                            <button type="button" class="btn btn-primary" onclick="add_to_cart(document.getElementById('modelheader').innerHTML, document.getElementById('inventoryid').innerHTML)"><span class="glyphicon glyphicon-shopping-cart" onclick="console.log('something');"></span> Add To Cart</button>
+                            <button type="button" class="btn btn-primary" onclick="add_to_cart(document.getElementById('modelheader').innerHTML)"><span class="glyphicon glyphicon-shopping-cart"></span> Add To Cart</button>
                         </div>
                     </div>
                 </div>
@@ -161,7 +163,7 @@ select.selectpicker {
                  form.submit();
                  console.log('submitted');
              }
-</script>
+        </script>
 
 
 <script>

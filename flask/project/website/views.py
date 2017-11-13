@@ -282,20 +282,21 @@ def cart():
 @website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['POST'])
 @login_required
 def add_to_cart(model,item):
-        CartController.add_item_to_cart(model, g.user.id)
-        return redirect('/' + item)
+    CartController.add_item_to_cart(model, g.user.id)
+    return redirect('/' + item)
 
 
-@website_blueprint.route('/remove-from-cart/<string:electronic>/<string:model>', methods=['POST'])
+@website_blueprint.route('/remove-from-cart/<string:model>', methods=['POST'])
 @login_required
-def remove_item_from_cart(electronic, model):
-    CartController.remove_item_from_cart(model)
-    return redirect('/')
+def remove_from_cart(model):
+    CartController.remove_item_from_cart(model, g.user.id)
+    return redirect('/cart')
 
-# @website_blueprint.route('/checkout/<string:user_id>', methods=['POST'])
-# @login_required
-# def checkout_from_cart(user_id):
-#     return redirect('cart.html')
+@website_blueprint.route('/checkout/<string:user_id>', methods=['POST'])
+@login_required
+def checkout_from_cart():
+    CartController.checkout_from_cart(g.user.id)
+    return redirect('/')
 
 @website_blueprint.route('/returns', methods=['GET', 'POST'])
 @login_required

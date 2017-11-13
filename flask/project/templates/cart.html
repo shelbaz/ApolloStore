@@ -36,8 +36,8 @@ hr {
                     <div class="media">
                         <a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/WyBwviPGnlXgJLFReMcE.jpg"></a>
                         <div class="media-body">
-                            <h4 class="media-heading">{{item.brand}}</h4>
-                            <h6 class="media-heading">{{item.model}}</h6>
+                            <h4 class="brand" id="brand">{{item.brand}}</h4>
+                            <h6 class="model" id="model">{{item.model}}</h6>
                         </div>
                         <br>
                     </div>
@@ -47,7 +47,7 @@ hr {
                 </div>
                 <div class="col-xs-12 col-sm-2">
                     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-                        <button type="button" class="btn btn-default btn-danger"><span class="fa fa-close"></span>&nbsp;Remove</button>
+                        <button type="button" class="btn btn-default btn-danger" onclick="remove_from_cart(document.getElementById('model').innerHTML)"><span class="fa fa-close"></span>&nbsp;Remove</button>
                     </div>
 
                 </div>
@@ -61,7 +61,7 @@ hr {
   <p align="right"> The Sum Total of your Cart is :<span id="total"></span>  $ </p>
         <p></p>
     <div align="right">
-   <button type="button" class="btn btn-default btn-success"><span class="fa fa-shopping-cart"></span>&nbsp;Checkout</button> </div>
+   <button type="button" class="btn btn-default btn-success" onclick="checkout_from_cart()"><span class="fa fa-shopping-cart"></span>&nbsp;Checkout</button> </div>
 </form>
 
 <script>
@@ -77,29 +77,29 @@ hr {
 </script>
         </div>
 
-        <script>
-             function add_to_inventory(model) {
+<script>
+             function remove_from_cart(model) {
                  var form = document.createElement('form');
                  form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/add-inventory/desktop/' + model);
+                 form.setAttribute('action', '/remove_from_cart/' + model);
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
                  console.log('submitted');
              }
-        </script>
+</script>
 
-
-        <script>
-            function delete_from_inventory(model) {
-                var form = document.createElement('form');
-                form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/desktop/' + model);
-                form.style.display = 'hidden';
-                document.body.appendChild(form);
-                form.submit();
-            }
-        </script>
+<script>
+             function checkout_from_cart() {
+                 var form = document.createElement('form');
+                 form.setAttribute('method', 'post');
+                 form.setAttribute('action', '/checkout_from_cart/');
+                 form.style.display = 'hidden';
+                 document.body.appendChild(form);
+                 form.submit();
+                 console.log('submitted');
+             }
+</script>
 
         <div class="col-md-8" >
             <p> </p>

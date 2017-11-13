@@ -8,7 +8,7 @@ from uuid import uuid4
 class PurchaseController():
 
     @staticmethod
-    def inset_into_table(user_id, model_id):
+    def insert_into_table(user_id, model_id):
         try:
             added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             purchase = Purchase(id=str(uuid4()), user_id=user_id, added_time=added_time, model_id=model_id)
