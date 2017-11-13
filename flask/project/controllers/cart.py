@@ -2,6 +2,7 @@
 from project import logger
 from project.models.cart import Cart
 from project.models.inventory import Inventory
+from project.controllers.electronic import ElectronicController
 from project.controllers.inventory import InventoryController
 from project.controllers.desktop import DesktopController
 from project.controllers.tablet import TabletController
@@ -73,31 +74,14 @@ class CartController():
     def get_cart_items(user_id):
         rows = Mapper.query('carts', user_id=user_id)
         carts = CartController.get_cart_items_from_rows(rows)
-        inventories = []
-        returning=[]
+        cart_items = []
         if carts:
             for cart in carts:
-                rows = Mapper.query('inventories', model = cart.model)
-                inventory = InventoryController.get_inventory_items_from_rows(rows)[0]
-                inventories.append(inventory)
+                rows = Mapper.query('items', model = cart.model)
+                inventory = ElectronicController.get_items_from_rows(rows)[0]
+                cart_items.append(inventory)
 
-            for inventory in inventories:
-                item=''
-                if (inventory.type == 'desktops'):
-                    rows = Mapper.query('items', 'desktops', model=inventory.model)
-                    item = DesktopController.get_desktops_from_rows(rows)[0]
-                elif (inventory.type == 'laptops'):
-                    rows = Mapper.query('items', 'laptops', model=inventory.model)
-                    item = LaptopController.get_laptops_from_rows(rows)[0]
-                elif (inventory.type == 'tablets'):
-                    rows = Mapper.query('items', 'tablets', model=inventory.model)
-                    item = TabletController.get_tablets_from_rows(rows)[0]
-                elif (inventory.type == 'monitors'):
-                    rows = Mapper.query('items', 'monitors', model=inventory.model)
-                    item = MonitorController.get_monitors_from_rows(rows)[0]
-
-                returning.append(item)
-            return returning
+            return cart_items
 
 
     # Returns all inventory items from rows taken from db

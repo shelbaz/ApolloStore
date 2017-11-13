@@ -1,5 +1,6 @@
 
 from project.identityMap import IdentityMap
+from project.models.item import Item
 
 
 class ElectronicController():
@@ -27,3 +28,17 @@ class ElectronicController():
     @staticmethod
     def validate_hd_size(hd_size):
         return (int(hd_size) > 0)
+
+    @staticmethod
+    def get_items_from_rows(rows):
+        if rows:
+            items = []
+            for row in rows:
+                item = Item(row[0], row[1], row[2])
+                items.append(item)
+
+            if items:
+                return items
+            else:
+                return None
+

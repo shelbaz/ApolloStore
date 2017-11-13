@@ -30,7 +30,7 @@ class Desktop(Item, Mapper):
         Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
 
         # Creates the Item object
-        self._item = Item(model)
+        self._item = Item(model, brand, price)
 
         # Initialize object attributes
         self.model = model

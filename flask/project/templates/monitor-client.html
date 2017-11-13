@@ -2,7 +2,7 @@
 
 {% block body %}
 <h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
-
+<script> console.log("{{items}}")</script>
 <div class="options">
 <select class="selectpicker" align="right">
   <option>Sort by</option>
@@ -61,7 +61,7 @@ select.selectpicker {
 <div class='items' id='items'>
  <div class="alert alert-danger fade in" style="width:100%;">
     <a href="#" class="close" data-dismiss="alert">&times;</a>
-    <strong>Error!</strong> All our monitors are sold out!
+    <strong>All our monitors are sold out!</strong>
 </div>
 </div>
 

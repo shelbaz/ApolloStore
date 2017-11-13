@@ -83,10 +83,10 @@ class TestViewModels(BaseTestCase):
             CartController.add_item_to_cart(t1.model, user.id)
             CartController.add_item_to_cart(t1.model, user.id)
 
-            inventories = CartController.get_cart_items(user.id)
+            cart_items = CartController.get_cart_items(user.id)
             count = CartController.count_number_items(user.id)
-            self.assertEqual(len(inventories), 7)
-            self.assertEqual(inventories[0].price, 500)
+            self.assertEqual(len(cart_items), 7)
+            self.assertEqual(cart_items[0].price, 500)
 
 
     # Test to see if the query function works for the Desktop class
