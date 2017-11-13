@@ -45,3 +45,13 @@ class PurchaseController():
 
         except Exception:
             logger.error(traceback.format_exc())
+
+    @staticmethod
+    def get_past_purchases(user_id):
+        rows = Mapper.query('purchases', user_id=user_id)
+        purchases = PurchaseController.get_purchases_from_rows(rows)
+        purchase_items = []
+        if purchases:
+            for purchase in purchases:
+                purchase_items.append(purchase.model_id)
+            return purchase_items
