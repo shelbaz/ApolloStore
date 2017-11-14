@@ -27,8 +27,8 @@
                     <div class="form-group">
                 <label for="model">Model: </label>
                 <select>
-                   {% for return in returns: %}
-                  <option value="{{return.model_id}}">{{return.model_id}}</option>  
+                   {% for model in returns: %}
+                  <option value="{{return}}">{{model.model_id}}</option>  
                   {% endfor %} 
                 </select>
                </div>

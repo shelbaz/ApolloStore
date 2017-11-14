@@ -52,7 +52,13 @@ class PurchaseController():
         rows = Mapper.query('purchases', user_id=g.user.id)
         purchases = PurchaseController.get_purchases_from_rows(rows)
         purchase_items = []
-        if purchases:
-            for purchase in purchases:
-                purchase_items.append(purchase.model_id)
-            return purchase_items
+        for purchase in purchases:
+            purchase_items.append(purchase)
+        return purchase_items
+
+    # @staticmethod
+    # def return_past_purchase(model):
+    #     rows = Mapper.query('purchases', user_id=g.user.id, model_id=model)
+    #     purchases = PurchaseController.get_purchases_from_rows(rows)
+    #     if purchases:
+    #         for purchase in purchases:
