@@ -103,13 +103,15 @@ class CartController():
                 logger.info('Deleted %s from the inventory successfully!' % (cart.model))
         logger.info('Cart flushed successfully!')
 
-    #Removes all items from cart with selected user_id
+    #Removes all items from cart with selected user_id (to be used with timer)
     @staticmethod
     def flush_cart():
         rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         if carts:
             for cart in carts:
+                InventoryController.update_inventory(model=cart.model, inventoryid=cart.inventory_id, locked=False)
+                logger.info('Added %s back to inventory successfully!' % (cart.model))
                 cart.delete()
                 logger.info('Deleted %s from the cart successfully!' % (cart.model))
 
