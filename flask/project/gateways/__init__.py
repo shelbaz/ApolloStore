@@ -81,6 +81,33 @@ def query_filtered_by(*tables, **conditions):
         return None
 
 
+def get_all_items(models):
+
+    filters = []
+
+    for model in models:
+        filters.append('model=\'' + str(model) + '\'')
+
+    filters = ' OR '.join(filters)
+
+    items = '((select model, brand, price from tablets) union (select model, brand, price from laptops) union (select model, brand, price from desktops) union (select model, brand, price from monitors)) as X'
+
+    if filters:
+        query = 'SELECT * FROM %s WHERE %s;' % (items, filters)
+    else:
+        query = 'SELECT * FROM %s;' % items
+
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+    if rows:
+        return rows
+    else:
+        return None
+
+
 def get_inventory_count(table, model):
     try:
         query = 'SELECT COUNT(*) FROM inventories NATURAL JOIN (SELECT * FROM %s WHERE model=\'%s\') AS x;' % (table, model)

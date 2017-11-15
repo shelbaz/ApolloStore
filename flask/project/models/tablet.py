@@ -34,7 +34,7 @@ class Tablet(Item, Mapper):
         Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
 
         # Creates the Item object
-        self._item = Item(model, brand, price)
+        self._item = Item(model)
 
         # Initialize object attributes
         self.model = model

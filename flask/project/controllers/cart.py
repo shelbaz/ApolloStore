@@ -78,14 +78,29 @@ class CartController():
     def get_cart_items():
         rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
-        cart_items = []
+        
         if carts:
-            for cart in carts:
-                rows = Mapper.query('items', model = cart.model)
-                inventory = ElectronicController.get_items_from_rows(rows)[0]
-                cart_items.append(inventory)
+            cart_models = []
 
-            return cart_items
+            for cart in carts:
+                cart_models.append(cart.model)
+
+            rows = Mapper.all_items_query(cart_models)
+            items = CartController.get_items_from_rows(rows)
+        
+            return items
+
+    @staticmethod
+    def get_items_from_rows(rows):
+        if rows:
+            items = []
+            for row in rows:
+                items.append({'model': row[0], 'brand': row[1], 'price': row[2]})
+
+            if items:
+                return items
+            else:
+                return None
 
     #Takes items from cart and adds them to purchases db log, removes items from inventory and flushes cart
     @staticmethod

@@ -34,7 +34,7 @@ class ElectronicController():
         if rows:
             items = []
             for row in rows:
-                item = Item(row[0], row[1], row[2])
+                item = Item(row[0])
                 items.append(item)
 
             if items:

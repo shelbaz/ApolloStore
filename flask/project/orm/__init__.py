@@ -1,5 +1,5 @@
 
-from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db, count_rows
+from project.gateways import insert_into_db, query_filtered_by, delete_from_db, create_table, drop_table, update_db, count_rows, get_all_items
 
 
 class Mapper(object):
@@ -33,6 +33,10 @@ class Mapper(object):
     @staticmethod
     def count_rows(table, user_id):
         return count_rows(table.name, user_id)
+
+    @staticmethod
+    def all_items_query(models):
+        return get_all_items(models)
 
     @staticmethod
     def create_table(table):
