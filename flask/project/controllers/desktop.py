@@ -54,6 +54,24 @@ class DesktopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+    # Queries the list of all desktops and their count
+    @staticmethod
+    def get_all_unlocked_desktops():
+        try:
+            rows = Mapper.query('items', 'desktops', 'inventories', locked=False)
+            desktops = DesktopController.get_desktops_from_rows(rows)
+            desktops_with_count = []
+
+            if desktops:
+                for desktop in desktops:
+                    count = get_inventory_count('desktops', desktop.model)
+                    desktops_with_count.append([desktop, count])
+                return desktops_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all desktops from rows taken from db
     @staticmethod
     def get_desktops_from_rows(rows):

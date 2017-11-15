@@ -55,11 +55,28 @@ class LaptopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+        # Queries the list of all desktops and their count
+    @staticmethod
+    def get_all_unlocked_laptops():
+        try:
+            rows = Mapper.query('items', 'laptops', 'inventories', locked=False)
+            laptops = LaptopController.get_laptops_from_rows(rows)
+            laptops_with_count = []
+
+            if laptops:
+                for laptop in laptops:
+                    count = get_inventory_count('laptops', laptop.model)
+                    laptops_with_count.append([laptop, count])
+                return laptops_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
     # Returns all laptops from rows taken from db
     @staticmethod
     def get_laptops_from_rows(rows):
         laptops = []
-        print(rows, flush=True)
         if rows:
             for row in rows:
                 #check identity map
