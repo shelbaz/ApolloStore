@@ -1,10 +1,13 @@
 from project import logger
 from project.models.purchase import Purchase
+from project.controllers.inventory import InventoryController
+from project.identityMap import IdentityMap
 from flask import g
 import datetime
 import traceback
 from project.orm import Mapper
 from uuid import uuid4
+from project import identity_map
 
 class PurchaseController():
 
@@ -36,16 +39,24 @@ class PurchaseController():
         else:
             return None
 
+    # deletes item from purchase table
     @staticmethod
     def delete_purchases(model_id):
         try:
             rows = Mapper.query('purchases', model_id=model_id, user_id=g.user.id)
-            purchase = PurchaseController.get_monitors_from_rows(rows)[0]
-
-            purchase.delete()
-
+            if rows:
+                purchase_items = PurchaseController.get_purchases_from_rows(rows)
+                purchase = purchase_items[0]
+                identity_map.delete(purchase.id)
+                if purchase:
+                    purchase.delete()
+                else:
+                    logger.error("No more purchases")
+            else:
+                logger.error("No purchase made by user")
         except Exception:
             logger.error(traceback.format_exc())
+
 
     @staticmethod
     def get_past_purchases():
@@ -56,9 +67,14 @@ class PurchaseController():
             purchase_items.append(purchase)
         return purchase_items
 
-    # @staticmethod
-    # def return_past_purchase(model):
-    #     rows = Mapper.query('purchases', user_id=g.user.id, model_id=model)
-    #     purchases = PurchaseController.get_purchases_from_rows(rows)
-    #     if purchases:
-    #         for purchase in purchases:
+
+    @staticmethod
+    def return_past_purchase(model):
+         rows = Mapper.query('purchases', user_id=g.user.id, model_id=model)
+         purchases = PurchaseController.get_purchases_from_rows(rows)
+         if purchases:
+            InventoryController.add_item_to_inventory(model, purchases.type)
+            PurchaseController.delete_purchases(model)
+
+
+

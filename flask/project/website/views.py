@@ -305,6 +305,11 @@ def checkout_from_cart():
 def returns():
     return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
 
+@website_blueprint.route('/return-item/<string:model>', methods=['GET'])
+@login_required
+def return_past_purchase(model):
+    PurchaseController.return_past_purchase(model)
+    return render_template('returns.html', user=g.user)
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required
