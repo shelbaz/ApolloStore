@@ -19,7 +19,7 @@ class Inventory(Mapper):
     }
 
     # Constructor that creates inventory
-    def __init__(self, id, model, type):
+    def __init__(self, id, model, type, locked=False):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 
@@ -27,4 +27,4 @@ class Inventory(Mapper):
         self.id = id
         self.model = model
         self.type = type
-        self.locked = False
+        self.locked = locked

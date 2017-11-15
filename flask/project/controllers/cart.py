@@ -110,12 +110,14 @@ class CartController():
         if carts:
             for cart in carts:
                 PurchaseController.insert_into_table(model_id=cart.model)
-                mymodel = cart.model
+                my_model = cart.model
                 inv_id = cart.inventory_id
-                cart.delete()
-                InventoryController.delete_item_from_inventory(model=mymodel, inventoryid=inv_id)
                 identity_map.delete(cart.id)
+                cart.delete()
+                InventoryController.delete_item_from_inventory(my_model, inv_id)
+
                 logger.info('Deleted %s from the inventory successfully!' % (cart.model))
+
         logger.info('Cart flushed successfully!')
 
     #Removes all items from cart with selected user_id (to be used with timer)

@@ -35,7 +35,7 @@ class InventoryController():
                 if identity_map.getObject(row[0]):
                     inventory = identity_map.getObject(row[0])
                 else:
-                    inventory = Inventory(row[0], row[1], row[2])
+                    inventory = Inventory(row[0], row[1], row[2], row[3])
                     identity_map.set(inventory.id, inventory)
 
                 inventories.append(inventory)
@@ -76,19 +76,21 @@ class InventoryController():
             logger.error(traceback.format_exc())
 
 
-
     # Deletes an item from the inventory after checkout
     @staticmethod
-    def delete_item_from_inventory(model, inventoryid):
-        rows = Mapper.query('inventories', model=model, id=inventoryid)
+    def delete_item_from_inventory(model, *inventory_id):
+        if inventory_id:
+            rows = []
+            for id in inventory_id:
+                rows.extend(Mapper.query('inventories', model=model, id=id))
+        else:
+            rows = Mapper.query('inventories', model=model)
         if rows:
             inventory_items = InventoryController.get_inventory_items_from_rows(rows)
-            inventory = inventory_items[0]
-            identity_map.delete(inventory.id)
-            if inventory:
+
+            for inventory in inventory_items:
+                identity_map.delete(inventory.id)
                 inventory.delete()
-            else:
-                logger.error("No more of type item in inventory")
         else:
             logger.error("No items.")
 
