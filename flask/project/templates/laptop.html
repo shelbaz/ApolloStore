@@ -47,7 +47,7 @@
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#edit" onclick="edit_button();">
             Change Item
         </button>
         <button class="btn btn-primary btn-lg" onclick="getSelected()">
@@ -136,6 +136,15 @@
                 form.submit();
                 console.log('submitted');
             }
+        </script>
+
+        <script>
+            function edit_button(){
+                var modelNumber = myTable.rows('.selected').data()[0][4];
+                fill_edit_form(modelNumber);
+            }
+
+
         </script>
 
         <script>

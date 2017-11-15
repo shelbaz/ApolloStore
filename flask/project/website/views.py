@@ -92,7 +92,7 @@ def edit_desktop():
         dimensions = request.form.get('desktopdimensions')
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
-            desktop = DesktopController.update_desktop(model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
+            desktop = DesktopController.update_desktop(model=model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
             if desktop:
                 return redirect('/desktop')
             else:
@@ -172,7 +172,7 @@ def edit_laptop():
             camera = False
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            laptop = LaptopController.update_laptop(model, brand=brand, price=price, weight=weight, display_size =displaysize,
+            laptop = LaptopController.update_laptop(model=model, brand=brand, price=price, weight=weight, display_size =displaysize,
                                                     processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize,
                                                     battery_info=battery, os=operatingsystem, touchscreen=touchscreen,
                                                     camera=camera)
@@ -238,7 +238,7 @@ def edit_tablet():
         dimensions = request.form.get('dimensions')
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            tablet = TabletController.update_tablet(model, brand=brand , price=price, weight=weight, display_size=displaysize,
+            tablet = TabletController.update_tablet(model=model, brand=brand , price=price, weight=weight, display_size=displaysize,
                                                     dimensions=dimensions, processor=processor, ram_size=ramsize,
                                                     cpu_cores=cpucores, hd_size=hdsize, battery=battery, os=operatingsystem,
                                                     camera_info=camera)
@@ -316,7 +316,7 @@ def edit_monitor():
         brand = request.form.get('brand')
         dimensions = request.form.get('monitor_dimensions')
         if model and price and weight and brand and dimensions:
-            monitor = MonitorController.update_monitor(model, brand=brand, price=price, weight=weight, dimensions=dimensions)
+            monitor = MonitorController.update_monitor(model=model, brand=brand, price=price, weight=weight, dimensions=dimensions)
             if monitor:
                 return redirect('/monitor')
             else:
