@@ -12,10 +12,10 @@
     <title>SOEN343 PROJECT</title>
 
     <!-- Bootstrap Core CSS -->
+
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">  -->
     <link href="{{url_for('static', filename='css/items.css')}}" rel="stylesheet">
-
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
@@ -76,7 +76,6 @@
                         </ul>
                     </div>
                 {% else: %}
-
                 <!-- This is the nav for users to direct to product views -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
@@ -99,6 +98,9 @@
                             <a href="/cart">
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
                             </a>
+                            </li>
+                            <li>
+                                <a href="/returns">Returns</a>
                             </li>
                         </ul>
                     </div>

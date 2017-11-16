@@ -29,24 +29,24 @@ class Laptop(Item, Mapper):
     }
 
     # Constructor that creates a new laptop
-    def __init__(self, model, brand, price, weight, display_size, processor, ram_size, cpu_cores, hd_size, battery_info, os, touchscreen, camera):
+    def __init__(self, **attributes):
 
         Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
 
         # Creates the Item object
-        self._item = Item(model)
+        self._item = Item(attributes['model'])
 
         # Initialize object attributes
-        self.model = model
-        self.brand = brand
-        self.price = price
-        self.weight = weight
-        self.display_size = display_size
-        self.processor = processor
-        self.ram_size = ram_size
-        self.cpu_cores = cpu_cores
-        self.hd_size = hd_size
-        self.battery_info = battery_info
-        self.os = os
-        self.touchscreen = touchscreen
-        self.camera = camera
+        self.model = attributes['model']
+        self.brand = attributes['brand']
+        self.price = attributes['price']
+        self.weight = attributes['weight']
+        self.display_size = attributes['display_size']
+        self.processor = attributes['processor']
+        self.ram_size = attributes['ram_size']
+        self.cpu_cores = attributes['cpu_cores']
+        self.hd_size = attributes['hd_size']
+        self.battery_info = attributes['battery_info']
+        self.os = attributes['os']
+        self.touchscreen = attributes['touchscreen']
+        self.camera = attributes['camera']

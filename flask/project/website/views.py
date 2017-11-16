@@ -314,6 +314,11 @@ def monitor_client():
 def cart():
     return render_template('cart.html', user=g.user)
 
+@website_blueprint.route('/returns', methods=['GET', 'POST'])
+@login_required
+def returns():
+    return render_template('returns.html', user=g.user)
+
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required

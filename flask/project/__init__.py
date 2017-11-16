@@ -8,6 +8,7 @@
 from flask import Flask
 import os
 import logging
+from celery import Celery
 from flask_login import LoginManager
 
 # Defines the format of the logging to include the time and to use the INFO logging level or worse.
@@ -16,6 +17,10 @@ logger = logging.getLogger(__name__)
 
 login_manager = LoginManager()
 
+from project.identityMap import IdentityMap
+identity_map = IdentityMap()
+
+celery = Celery(__name__, broker=os.getenv('CELERY_BROKER_URL'))
 
 # Defines the application factory. Every time this function is called, a new application
 # instance is created. The reason why an application factory is needed is because we
@@ -26,6 +31,8 @@ def create_app():
     app.config.from_object(app_settings)
 
     login_manager.init_app(app)
+
+    celery.conf.update(app.config)
 
     # Imports the 'website_blueprint' to apply it to the application instance.
     # In order to define routes/endpoints in Flask, you need to write something

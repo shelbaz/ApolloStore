@@ -4,8 +4,6 @@ from project.identityMap import IdentityMap
 
 class ElectronicController():
 
-    identityMap = IdentityMap()
-
     # Validates that a positive price is entered
     @staticmethod
     def validate_price(price):
