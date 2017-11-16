@@ -42,9 +42,6 @@ class DesktopController():
     @staticmethod
     def get_all_desktops(*filters):
         try:
-            logger.error("filters ")
-            logger.error(filters)
-            logger.error(filters == ())
             if filters == ():
                 rows = Mapper.query('items', 'desktops')
             else:
