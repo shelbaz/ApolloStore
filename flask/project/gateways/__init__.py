@@ -81,6 +81,33 @@ def query_filtered_by(*tables, **conditions):
         return None
 
 
+def get_all_items(models):
+
+    filters = []
+
+    for model in models:
+        filters.append('model=\'' + str(model) + '\'')
+
+    filters = ' OR '.join(filters)
+
+    items = '((select model, brand, price from tablets) union (select model, brand, price from laptops) union (select model, brand, price from desktops) union (select model, brand, price from monitors)) as X'
+
+    if filters:
+        query = 'SELECT * FROM %s WHERE %s;' % (items, filters)
+    else:
+        query = 'SELECT * FROM %s;' % items
+
+    with connect_to_db() as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+    if rows:
+        return rows
+    else:
+        return None
+
+
 def get_inventory_count(table, model):
     try:
         query = 'SELECT COUNT(*) FROM inventories NATURAL JOIN (SELECT * FROM %s WHERE model=\'%s\') AS x;' % (table, model)
@@ -112,7 +139,12 @@ def delete_from_db(*tables, **conditions):
 
 def update_db(table, attributes, obj):
     types_with_no_quotes = ['integer', 'decimal', 'boolean']
-
+    if(table == 'inventories'):
+        whereStatement = 'id'
+        id = obj.id
+    else:
+        whereStatement = 'model'
+        id=obj.model
     query = 'UPDATE %s SET ' % table
 
     currently_first_attribute = True
@@ -127,10 +159,9 @@ def update_db(table, attributes, obj):
         else:
             query += str(key) + '=\'' + str(getattr(obj, key)) + '\''
 
-    where_condition = 'model=\'' + str(obj.model) + '\''
+    where_condition = whereStatement + '=\'' + str(id) + '\''
 
     query+= ' WHERE %s' % where_condition + ';'
-
     with connect_to_db() as connection:
         with connection.cursor() as cursor:
             cursor.execute(query)
@@ -177,6 +208,19 @@ def drop_table(name):
             if bool(cursor.rowcount):
                 cursor.execute('DROP TABLE %s;' % name)
 
+def count_rows(name,u_id):
+    try:
+        condition = 'user_id' + '=\'' + str(u_id) + '\''
+        query = 'SELECT COUNT(*) AS X FROM %s WHERE %s;' %(name, condition)
+        with connect_to_db() as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(query)
+                count = cursor.fetchone()
+        return count[0]
+    except Exception:
+        logger.error(traceback.format_exc())
+
+
 from project.models.auth import User
 from project.models.item import Item
 from project.models.inventory import Inventory
@@ -185,6 +229,7 @@ from project.models.tablet import Tablet
 from project.models.monitor import Monitor
 from project.models.laptop import Laptop
 from project.models.desktop import Desktop
+from project.models.purchase import Purchase
 from project.orm import Mapper
 
 
@@ -199,6 +244,7 @@ def create_tables():
         Mapper.create_table(Monitor)
         Mapper.create_table(Laptop)
         Mapper.create_table(Desktop)
+        Mapper.create_table(Purchase)
     except Exception:
         # Safeguards against the first time creating the Docker volume, where postgres/create.sql didn't finish running
         time.sleep(5)
@@ -214,6 +260,7 @@ def drop_tables():
         Mapper.drop_table(Desktop)
         Mapper.drop_table(Cart)
         Mapper.drop_table(Inventory)
+        Mapper.drop_table(Purchase)
         Mapper.drop_table(Item)
         Mapper.drop_table(User)
     except Exception:

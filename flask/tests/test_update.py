@@ -5,6 +5,7 @@ from project.controllers.desktop import DesktopController
 from project.controllers.laptop import LaptopController
 from project.controllers.monitor import MonitorController
 from project.controllers.tablet import TabletController
+from project.controllers.inventory import InventoryController
 from project.orm import Mapper
 
 
@@ -23,6 +24,20 @@ class TestUpdateObjects(BaseTestCase):
             self.assertEqual(desktop.model, desktop1.model)
             self.assertEqual(desktop.brand, 'Apple')
             self.assertEqual(desktop.price, 600)
+
+    def test_update_inventory(self):
+        with self.client:
+            desktop1 = DesktopController.create_desktop('Asus', 500, 100, 'intel', 32, 4, 20, '20x20')
+            inv = InventoryController.add_item_to_inventory(desktop1.model, 'desktop')
+            inv2 = InventoryController.add_item_to_inventory(desktop1.model, 'desktop')
+            InventoryController.update_inventory(inv.model, inv.id, locked=True, type='desktop')
+            rows = Mapper.query('inventories',model=inv.model, id=inv.id)
+            newInv= InventoryController.get_inventory_items_from_rows(rows)[0]
+            inventories = InventoryController.get_inventory_not_locked('Desktop')
+            self.assertEqual(newInv.model, inv.model)
+            self.assertEqual(newInv.id, inv.id)
+            self.assertEqual(newInv.locked, True)
+            self.assertEqual(len(inventories), 1)
 
     def test_update_laptop(self):
         with self.client:
