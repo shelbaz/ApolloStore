@@ -76,20 +76,18 @@ class TestViewModels(BaseTestCase):
             user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111',
                                                         '5141234567', False)
 
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(d1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
-            CartController.add_item_to_cart(t1.model, user.id)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(d1.model)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t1.model)
 
-            inventories = CartController.get_cart_items(user.id)
-            count = CartController.count_number_items(user.id)
-            self.assertEqual(len(inventories), 7)
-            self.assertEqual(inventories[0].price, 500)
-            self.assertEqual(inventories[1].price, 600)
+            inventories = CartController.get_cart_items()
+            count = CartController.count_number_items()
+            self.assertEqual(len(inventories), 2)
 
 
     # Test to see if the query function works for the Desktop class

@@ -25,7 +25,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.delete_item_from_inventory(desktop.model)
             rows = Mapper.query('inventories', model=desktop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_laptop(self):
         with self.client:
@@ -41,7 +41,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.delete_item_from_inventory(laptop.model)
             rows = Mapper.query('inventories', model=laptop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_monitor(self):
         with self.client:
@@ -56,7 +56,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.delete_item_from_inventory(monitor.model)
             rows = Mapper.query('inventories', model=monitor.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_tablet(self):
         with self.client:
@@ -72,7 +72,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.delete_item_from_inventory(tablet.model)
             rows = Mapper.query('inventories', model=tablet.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
 # Runs the tests.
 if __name__ == '__main__':
