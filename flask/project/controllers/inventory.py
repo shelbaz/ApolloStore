@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.inventory import Inventory
-from project.gateways import get_inventory_count
 from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
@@ -67,7 +66,7 @@ class InventoryController():
                         itemType = 'tablets'
                     elif type == 'Monitor':
                         itemType = 'monitors'
-                    count = get_inventory_count(itemType, item.model)
+                    count = len(Mapper.query('inventories', itemType, model=item.model))
                     inventory_with_count.append([inventory, count])
                 return inventory_with_count
             else:

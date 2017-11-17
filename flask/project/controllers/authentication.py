@@ -16,7 +16,7 @@ class AuthenticationController():
             if AuthenticationController.validate_email(email):
                 if AuthenticationController.validate_name(first_name) and AuthenticationController.validate_name(last_name):
                     # if validate_password(password):
-                    if Mapper.query('users', email=email) is None:
+                    if not Mapper.query('users', email=email):
                         user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
                         user.hash_password(password)
                         user.insert()

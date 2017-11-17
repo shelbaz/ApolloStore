@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.laptop import Laptop
-from project.gateways import get_inventory_count
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
@@ -47,7 +46,7 @@ class LaptopController():
 
             if laptops:
                 for laptop in laptops:
-                    count = get_inventory_count('laptops', laptop.model)
+                    count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:
@@ -55,7 +54,7 @@ class LaptopController():
         except Exception:
             logger.error(traceback.format_exc())
 
-        # Queries the list of all desktops and their count
+        # Queries the list of all laptops and their count
     @staticmethod
     def get_all_unlocked_laptops():
         try:
@@ -65,7 +64,7 @@ class LaptopController():
 
             if laptops:
                 for laptop in laptops:
-                    count = get_inventory_count('laptops', laptop.model)
+                    count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
                     laptops_with_count.append([laptop, count])
                 return laptops_with_count
             else:

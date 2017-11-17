@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.monitor import Monitor
-from project.gateways import get_inventory_count
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
@@ -43,7 +42,7 @@ class MonitorController():
 
             if monitors:
                 for monitor in monitors:
-                    count = get_inventory_count('monitors', monitor.model)
+                    count = len(Mapper.query('inventories', 'monitors', model=monitor.model))
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:
@@ -62,7 +61,7 @@ class MonitorController():
 
             if monitors:
                 for monitor in monitors:
-                    count = get_inventory_count('monitors', monitor.model)
+                    count = len(Mapper.query('inventories', 'monitors', model=monitor.model))
                     monitors_with_count.append([monitor, count])
                 return monitors_with_count
             else:

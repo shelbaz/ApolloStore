@@ -1,6 +1,5 @@
 
 from project import logger
-from project.gateways import get_inventory_count
 from project.models.desktop import Desktop
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
@@ -46,7 +45,7 @@ class DesktopController():
 
             if desktops:
                 for desktop in desktops:
-                    count = get_inventory_count('desktops', desktop.model)
+                    count = len(Mapper.query('inventories', 'desktops', model=desktop.model))
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:
@@ -64,7 +63,7 @@ class DesktopController():
 
             if desktops:
                 for desktop in desktops:
-                    count = get_inventory_count('desktops', desktop.model)
+                    count = len(Mapper.query('inventories', 'desktops', model=desktop.model))
                     desktops_with_count.append([desktop, count])
                 return desktops_with_count
             else:

@@ -4,7 +4,6 @@
 <h1>Welcome to Apollo Store, {{user.first_name}}! </h1>
 
 
-
 <div class="options">
 <select class="selectpicker" align="right">
   <option>Sort by</option>
@@ -19,7 +18,6 @@ select.selectpicker {
     float:right
 }
 </style>
-
 
 <!-- Desktop Section -->
 <div class='header'>
@@ -88,12 +86,10 @@ select.selectpicker {
  </div>   
 {% else: %}
 <div class='items' id='items'>
-  <a href="#" class='item' data-toggle="modal" data-target="#myModalNorm">
-    <img class='item-image' src='https://assets.iamsteve.me/placeholder/1.jpg'>
-    <h2 class='item-title'>Test item</h2>
-    <p class='item-description'> Brand: 
-    </p>
-  </a>
+ <div class="alert alert-danger fade in" style="width:100%;">
+    <a href="#" class="close" data-dismiss="alert">&times;</a>
+    <strong>All our desktops are sold out!</strong>
+</div>
 </div>
 
 
