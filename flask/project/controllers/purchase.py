@@ -14,22 +14,24 @@ class PurchaseController():
     @staticmethod
     def insert_into_table(model_id):
         try:
-            added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            purchase = Purchase(id=str(uuid4()), user_id=g.user.id, added_time=added_time, model_id=model_id)
-            purchase.insert()
-            logger.info('Purchase created successfully!')
+            rows = Mapper.query('inventories', model=model_id)
+            if rows:
+                inventoryItem = InventoryController.get_inventory_items_from_rows(rows)[0]
+                added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                purchase = Purchase(id=str(uuid4()), user_id=g.user.id, added_time=added_time, model_id=model_id, type=inventoryItem.type)
+                print(purchase, flush=True)
+                purchase.insert()
+                logger.info('Purchase created successfully!')
 
         except Exception:
             logger.error(traceback.format_exc())
-
-            # Returns all monitors from rows taken from db
 
     @staticmethod
     def get_purchases_from_rows(rows):
         if rows:
             purchases = []
             for row in rows:
-                purchase = Purchase(row[0], row[1], row[2], row[3])
+                purchase = Purchase(row[0], row[1], row[2], row[3], row[4])
                 purchases.append(purchase)
 
             if purchases:
@@ -45,8 +47,7 @@ class PurchaseController():
         try:
             rows = Mapper.query('purchases', model_id=model_id, user_id=g.user.id)
             if rows:
-                purchase_items = PurchaseController.get_purchases_from_rows(rows)
-                purchase = purchase_items[0]
+                purchase = PurchaseController.get_purchases_from_rows(rows)[0]
                 identity_map.delete(purchase.id)
                 if purchase:
                     purchase.delete()
@@ -69,12 +70,14 @@ class PurchaseController():
 
 
     @staticmethod
-    def return_past_purchase(model):
-         rows = Mapper.query('purchases', user_id=g.user.id, model_id=model)
-         purchases = PurchaseController.get_purchases_from_rows(rows)
-         if purchases:
-            InventoryController.add_item_to_inventory(model, purchases.type)
-            PurchaseController.delete_purchases(model)
+    def return_item(model):
+        print(model, flush=True)
+        rows = Mapper.query('purchases', model_id=model)
+        print(rows, flush=True)
+        if rows:
+             purchaseItem = PurchaseController.get_purchases_from_rows(rows)[0]
+             InventoryController.add_item_to_inventory(model, purchaseItem.type)
+             PurchaseController.delete_purchases(model)
 
 
 

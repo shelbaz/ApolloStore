@@ -19,6 +19,7 @@ from project.controllers.laptop import LaptopController
 from project.controllers.inventory import InventoryController
 from project.controllers.cart import CartController
 from project.controllers.authentication import AuthenticationController
+from project.controllers.purchase import PurchaseController
 from project.orm import Mapper
 
 
@@ -170,6 +171,29 @@ class TestViewModels(BaseTestCase):
 
             result = MonitorController.get_all_monitors()
             self.assertEqual(len(result), 2)
+
+            # Tests to see if all monitors will be returned
+
+        def test_should_return_purchases(self):
+            with self.client:
+                t1 = TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                                    'Windows 10', 'nice')
+                TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                               'Windows 10', 'nice')
+                TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                               'Windows 10', 'nice')
+                d1 = DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+                InventoryController.add_item_to_inventory(t1.model, 'tablets')
+                InventoryController.add_item_to_inventory(d1.model, 'desktops')
+                InventoryController.add_item_to_inventory(t1.model, 'tablets')
+                result = PurchaseController.insert_into_table()
+                self.assertEqual(result, None)
+
+                MonitorController.create_monitor('Asus', 600, 10, '125x100')
+                MonitorController.create_monitor('Dell', 600, 10, '150x100')
+
+                result = MonitorController.get_all_monitors()
+                self.assertEqual(len(result), 2)
 
 # Runs the tests.
 if __name__ == '__main__':
