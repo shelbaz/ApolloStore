@@ -115,5 +115,6 @@ class LaptopController():
             processor = laptop.processor, ram_size = laptop.ram_size, cpu_cores = laptop.cpu_cores, hd_size = laptop.hd_size,
             battery_info = laptop.battery_info, os = laptop.os, touchscreen = laptop.touchscreen, camera = laptop.camera, hide=True)
 
+            return laptop
         except Exception:
             logger.error(traceback.format_exc())

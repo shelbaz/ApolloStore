@@ -108,6 +108,7 @@ class TabletController():
                           hd_size=tablet.hd_size,
                           battery=tablet.battery, os=tablet.os,
                           camera_info=tablet.camera_info, hide=True)
+            return tablet
 
         except Exception:
             logger.error(traceback.format_exc())

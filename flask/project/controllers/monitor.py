@@ -102,5 +102,6 @@ class MonitorController():
             monitor.update(model=model, brand=monitor.brand, price=monitor.price, weight=monitor.weight,
                           dimensions=monitor.dimensions, hide=True)
 
+            return monitor
         except Exception:
             logger.error(traceback.format_exc())
