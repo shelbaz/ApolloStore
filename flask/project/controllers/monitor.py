@@ -99,7 +99,8 @@ class MonitorController():
             rows = Mapper.query('items', 'monitors', model=model)
             monitor = MonitorController.get_monitors_from_rows(rows)[0]
 
-            monitor.delete()
+            monitor.update(model=model, brand=monitor.brand, price=monitor.price, weight=monitor.weight,
+                          dimensions=monitor.dimensions, hide=True)
 
         except Exception:
             logger.error(traceback.format_exc())

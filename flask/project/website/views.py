@@ -190,7 +190,7 @@ def edit_laptop():
 
 @website_blueprint.route('/delete-laptop/<string:model>', methods=['POST'])
 @login_required
-def delete_laptoptop(model):
+def delete_laptop(model):
     if g.user.admin:
         LaptopController.delete_model(model)
         return redirect('/laptop')
@@ -258,6 +258,12 @@ def edit_tablet():
             else:
                 logger.error('couldnt create tablet item')
 
+@website_blueprint.route('/delete-tablet/<string:model>', methods=['POST'])
+@login_required
+def delete_tablet(model):
+    if g.user.admin:
+        TabletController.delete_model(model)
+        return redirect('/tablet')
 
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 @login_required
@@ -338,7 +344,12 @@ def edit_monitor():
             else:
                 logger.error('couldnt create monitor item')
 
-
+@website_blueprint.route('/delete-monitor/<string:model>', methods=['POST'])
+@login_required
+def delete_monitor(model):
+    if g.user.admin:
+        MonitorController.delete_model(model)
+        return redirect('/monitor')
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 @login_required

@@ -102,7 +102,12 @@ class TabletController():
             rows = Mapper.query('items', 'tablets', model=model)
             tablet = TabletController.get_tablets_from_rows(rows)[0]
 
-            tablet.delete()
+            tablet.update(model=model, brand=tablet.brand, price=tablet.price, weight=tablet.weight,
+                          display_size=tablet.display_size, dimensions = tablet.dimensions,
+                          processor=tablet.processor, ram_size=tablet.ram_size, cpu_cores=tablet.cpu_cores,
+                          hd_size=tablet.hd_size,
+                          battery=tablet.battery, os=tablet.os,
+                          camera_info=tablet.camera_info, hide=True)
 
         except Exception:
             logger.error(traceback.format_exc())
