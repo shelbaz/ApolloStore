@@ -40,7 +40,7 @@ class DesktopController():
     @staticmethod
     def get_all_desktops():
         try:
-            rows = Mapper.query('items', 'desktops')
+            rows = Mapper.query('items', 'desktops', hide=False)
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
@@ -58,7 +58,7 @@ class DesktopController():
     @staticmethod
     def get_all_unlocked_desktops():
         try:
-            rows = Mapper.query('items', 'desktops', 'inventories', locked=False)
+            rows = Mapper.query('items', 'desktops', 'inventories', locked=False, hide=False)
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
@@ -103,7 +103,8 @@ class DesktopController():
             rows = Mapper.query('items', 'desktops', model=model)
             desktop = DesktopController.get_desktops_from_rows(rows)[0]
 
-            desktop.delete()
+            desktop.update(model=model, brand=desktop.brand, price=desktop.price, weight=desktop.weight, processor=desktop.processor, ram_size=desktop.ram_size, cpu_cores=desktop.cpu_cores, hd_size=desktop.hd_size, dimensions=desktop.dimensions, hide=True)
+            return desktop
 
         except Exception:
             logger.error(traceback.format_exc())

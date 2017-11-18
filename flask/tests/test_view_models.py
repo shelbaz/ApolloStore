@@ -55,6 +55,13 @@ class TestViewModels(BaseTestCase):
             self.assertEqual(len(result1), 2)
             self.assertEqual(result2, None)
 
+    def test_delete_desktop_spec(self):
+        with self.client:
+            d1 = DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
+            InventoryController.add_item_to_inventory(d1.model, 'desktops')
+            d1= DesktopController.delete_model(d1.model)
+            self.assertEqual(d1.hide, True)
+
     # Test to see if the query function works for the Tablet class
     def test_should_return_query_results_for_inventory(self):
         with self.client:

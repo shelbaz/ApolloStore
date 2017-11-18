@@ -39,7 +39,7 @@ class TabletController():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = Mapper.query('items', 'tablets')
+            rows = Mapper.query('items', 'tablets', hide=False)
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 

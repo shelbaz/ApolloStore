@@ -41,7 +41,7 @@ class LaptopController():
     @staticmethod
     def get_all_laptops():
         try:
-            rows = Mapper.query('items', 'laptops')
+            rows = Mapper.query('items', 'laptops', hide=False)
             laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
@@ -59,7 +59,7 @@ class LaptopController():
     @staticmethod
     def get_all_unlocked_laptops():
         try:
-            rows = Mapper.query('items', 'laptops', 'inventories', locked=False)
+            rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False)
             laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
@@ -111,7 +111,9 @@ class LaptopController():
             rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopController.get_laptops_from_rows(rows)[0]
 
-            laptop.delete()
+            laptop.update(model=model, brand = laptop.brand, price = laptop.price, weight = laptop.weight, display_size = laptop.display_size,
+            processor = laptop.processor, ram_size = laptop.ram_size, cpu_cores = laptop.cpu_cores, hd_size = laptop.hd_size,
+            battery_info = laptop.battery_info, os = laptop.os, touchscreen = laptop.touchscreen, camera = laptop.camera, hide=True)
 
         except Exception:
             logger.error(traceback.format_exc())

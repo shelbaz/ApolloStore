@@ -37,7 +37,7 @@ class MonitorController():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = Mapper.query('items', 'monitors')
+            rows = Mapper.query('items', 'monitors', hide=False)
             monitors = MonitorController.get_monitors_from_rows(rows)
             monitors_with_count = []
 

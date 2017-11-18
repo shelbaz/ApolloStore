@@ -24,6 +24,7 @@
                 <div class="form-group">
                 <label for="clientid">Client-ID: {{user.id}}</label>
                 </div>
+                {% if returns: %}
                     <div class="form-group">
                         <label for="model">Model: </label>
                         <select id = "propertyDropdown">
@@ -32,11 +33,14 @@
                             {% endfor %}
                         </select>
                     </div>
-            
-            <br>
-            <div align="right">
-                <button type="button" class="btn btn-default btn-success" onclick="returns_purchase();"><span class="fa fa-default"></span>&nbsp;Complete Return</button>
-            </div>
+                    <br>
+                    <div align="right">
+                        <button type="button" class="btn btn-default btn-success" onclick="returns_purchase();"><span class="fa fa-default"></span>&nbsp;Complete Return</button>
+                    </div>
+                {% else: %}
+                    <div>You have nothing to return!</div>
+                {% endif %}
+
         </form>
     </div>
             <script>
