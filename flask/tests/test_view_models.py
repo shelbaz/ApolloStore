@@ -86,7 +86,7 @@ class TestViewModels(BaseTestCase):
             CartController.add_item_to_cart(t1.model)
 
             inventories = CartController.get_cart_items()
-            count = CartController.count_number_items()
+            count = CartController.get_number_of_items_in_cart()
             self.assertEqual(len(inventories), 2)
 
 

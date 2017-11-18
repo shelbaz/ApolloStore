@@ -10,7 +10,7 @@
 from flask_testing import TestCase
 from project import create_app, logger
 import logging
-from project.gateways import create_tables, drop_tables
+from project.gateways.database_setup import create_tables, drop_tables
 from flask import g
 
 # Creates a new instance of the Flask application. The reason for this

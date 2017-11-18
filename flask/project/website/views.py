@@ -299,7 +299,7 @@ def cart():
 
 @website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['GET'])
 @login_required
-def add_to_cart(model,item):
+def add_to_cart(model, item):
     CartController.add_item_to_cart(model)
     return redirect('/' + item)
 

@@ -2,7 +2,6 @@
 from project import logger
 from project.models.tablet import Tablet
 from project.controllers.electronic import ElectronicController
-from project.gateways import get_inventory_count
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
@@ -45,7 +44,7 @@ class TabletController():
 
             if tablets:
                 for tablet in tablets:
-                    count = get_inventory_count('tablets', tablet.model)
+                    count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:
@@ -63,7 +62,7 @@ class TabletController():
 
             if tablets:
                 for tablet in tablets:
-                    count = get_inventory_count('tablets', tablet.model)
+                    count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
                     tablets_with_count.append([tablet, count])
                 return tablets_with_count
             else:
