@@ -57,7 +57,7 @@ class TabletController():
     @staticmethod
     def get_all_unlocked_tablets():
         try:
-            rows = Mapper.query('items', 'tablets', 'inventories', locked=False)
+            rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False)
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 
