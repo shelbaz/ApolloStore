@@ -60,6 +60,7 @@
                     <tr>
                         <th></th>
                         <th>Edit</th>
+                        <th>Delete</th>
                         <th>Add</th>
                         <th>Count</th>
                         <th>Model</th>
@@ -83,6 +84,7 @@
                     <tr>
                         <td></td>
                         <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{tablet[0].model}}');">EDIT</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="delete_model('{{tablet[0].model}}');">DELETE</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{tablet[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{tablet[0].model}}');">-</button></td>
                         <td>{{tablet[1]}}</td>
@@ -166,6 +168,16 @@
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
+            }
+
+            function delete_model(model){
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-tablet/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+
             }
         </script>
 

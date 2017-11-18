@@ -38,7 +38,7 @@ class TabletController():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = Mapper.query('items', 'tablets')
+            rows = Mapper.query('items', 'tablets', hide=False)
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 
@@ -56,7 +56,7 @@ class TabletController():
     @staticmethod
     def get_all_unlocked_tablets():
         try:
-            rows = Mapper.query('items', 'tablets', 'inventories', locked=False)
+            rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False)
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 
@@ -101,7 +101,13 @@ class TabletController():
             rows = Mapper.query('items', 'tablets', model=model)
             tablet = TabletController.get_tablets_from_rows(rows)[0]
 
-            tablet.delete()
+            tablet.update(model=model, brand=tablet.brand, price=tablet.price, weight=tablet.weight,
+                          display_size=tablet.display_size, dimensions = tablet.dimensions,
+                          processor=tablet.processor, ram_size=tablet.ram_size, cpu_cores=tablet.cpu_cores,
+                          hd_size=tablet.hd_size,
+                          battery=tablet.battery, os=tablet.os,
+                          camera_info=tablet.camera_info, hide=True)
+            return tablet
 
         except Exception:
             logger.error(traceback.format_exc())

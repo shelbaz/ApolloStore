@@ -10,7 +10,8 @@ class Purchase(Mapper):
         'id': 'UUID',
         'user_id': 'UUID',
         'added_time': 'timestamp',
-        'model_id' : 'UUID'
+        'model_id' : 'UUID',
+        'type' : 'varchar(64)'
     }
 
     constraints = {
@@ -20,7 +21,7 @@ class Purchase(Mapper):
     }
 
     # Constructor that creates a new cart
-    def __init__(self, id, user_id, added_time, model_id):
+    def __init__(self, id, user_id, added_time, model_id, type):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 
@@ -29,3 +30,4 @@ class Purchase(Mapper):
         self.user_id = user_id
         self.added_time = added_time
         self.model_id = model_id
+        self.type = type

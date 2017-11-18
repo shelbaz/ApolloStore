@@ -36,7 +36,7 @@ class MonitorController():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = Mapper.query('items', 'monitors')
+            rows = Mapper.query('items', 'monitors', hide=False)
             monitors = MonitorController.get_monitors_from_rows(rows)
             monitors_with_count = []
 
@@ -55,7 +55,7 @@ class MonitorController():
     @staticmethod
     def get_all_unlocked_monitors():
         try:
-            rows = Mapper.query('items', 'monitors', 'inventories', locked=False)
+            rows = Mapper.query('items', 'monitors', 'inventories', locked=False, hide=False)
             monitors = MonitorController.get_monitors_from_rows(rows)
             monitors_with_count = []
 
@@ -98,7 +98,9 @@ class MonitorController():
             rows = Mapper.query('items', 'monitors', model=model)
             monitor = MonitorController.get_monitors_from_rows(rows)[0]
 
-            monitor.delete()
+            monitor.update(model=model, brand=monitor.brand, price=monitor.price, weight=monitor.weight,
+                          dimensions=monitor.dimensions, hide=True)
 
+            return monitor
         except Exception:
             logger.error(traceback.format_exc())

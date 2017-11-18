@@ -19,6 +19,7 @@ from project.controllers.laptop import LaptopController
 from project.controllers.inventory import InventoryController
 from project.controllers.cart import CartController
 from project.controllers.authentication import AuthenticationController
+from project.controllers.purchase import PurchaseController
 from project.orm import Mapper
 
 
@@ -168,6 +169,42 @@ class TestViewModels(BaseTestCase):
 
             result = MonitorController.get_all_monitors()
             self.assertEqual(len(result), 2)
+
+    # Tests to see if item gets returned back to inventory and removed from past purchases
+    def test_should_return_item_from_past_purchases(self):
+        with self.client:
+            t1 = TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                                'Windows 10', 'nice')
+            t2 = TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
+                                                'Windows 10', 'nice')
+
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'tablets')
+            InventoryController.add_item_to_inventory(t2.model, 'tablets')
+
+            result = TabletController.get_all_unlocked_tablets()
+            self.assertEqual(len(result), 3)
+
+            CartController.add_item_to_cart(t1.model)
+            CartController.add_item_to_cart(t2.model)
+            CartController.checkout_from_cart()
+
+            result = TabletController.get_all_unlocked_tablets()
+            self.assertEqual(len(result), 1)
+
+            purchaseResult = PurchaseController.get_past_purchases()
+            self.assertEqual(len(purchaseResult), 2)
+
+            PurchaseController.return_item(purchaseResult[0].model_id)
+
+            result = TabletController.get_all_unlocked_tablets()
+            self.assertEqual(len(result), 2)
+
+            purchaseResult = PurchaseController.get_past_purchases()
+            self.assertEqual(len(purchaseResult), 1)
+
+
+
 
 # Runs the tests.
 if __name__ == '__main__':

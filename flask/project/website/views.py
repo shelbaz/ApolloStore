@@ -92,7 +92,7 @@ def edit_desktop():
         dimensions = request.form.get('desktopdimensions')
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
-            desktop = DesktopController.update_desktop(model=model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
+            desktop = DesktopController.update_desktop(model=model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions, hide=False)
             if desktop:
                 return redirect('/desktop')
             else:
@@ -100,6 +100,12 @@ def edit_desktop():
 
         # return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
+@website_blueprint.route('/delete-desktop/<string:model>', methods=['POST'])
+@login_required
+def delete_desktop(model):
+    if g.user.admin:
+        DesktopController.delete_model(model)
+        return redirect('/desktop')
 
 @website_blueprint.route('/laptop', methods=['GET', 'POST'])
 @login_required
@@ -175,14 +181,19 @@ def edit_laptop():
             laptop = LaptopController.update_laptop(model=model, brand=brand, price=price, weight=weight, display_size =displaysize,
                                                     processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize,
                                                     battery_info=battery, os=operatingsystem, touchscreen=touchscreen,
-                                                    camera=camera)
+                                                    camera=camera, hide=False)
 
             if laptop:
                 return redirect('/laptop')
             else:
                 logger.error('could not update laptop item')
 
-
+@website_blueprint.route('/delete-laptop/<string:model>', methods=['POST'])
+@login_required
+def delete_laptop(model):
+    if g.user.admin:
+        LaptopController.delete_model(model)
+        return redirect('/laptop')
 
 @website_blueprint.route('/tablet', methods=['GET', 'POST'])
 @login_required
@@ -247,6 +258,12 @@ def edit_tablet():
             else:
                 logger.error('couldnt create tablet item')
 
+@website_blueprint.route('/delete-tablet/<string:model>', methods=['POST'])
+@login_required
+def delete_tablet(model):
+    if g.user.admin:
+        TabletController.delete_model(model)
+        return redirect('/tablet')
 
 @website_blueprint.route('/monitor', methods=['GET', 'POST'])
 @login_required
@@ -305,6 +322,11 @@ def checkout_from_cart():
 def returns():
     return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
 
+@website_blueprint.route('/return-item/<string:model>', methods=['GET', 'POST'])
+@login_required
+def return_past_purchase(model):
+    PurchaseController.return_item(model)
+    return redirect('/returns')
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required
@@ -322,7 +344,12 @@ def edit_monitor():
             else:
                 logger.error('couldnt create monitor item')
 
-
+@website_blueprint.route('/delete-monitor/<string:model>', methods=['POST'])
+@login_required
+def delete_monitor(model):
+    if g.user.admin:
+        MonitorController.delete_model(model)
+        return redirect('/monitor')
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 @login_required

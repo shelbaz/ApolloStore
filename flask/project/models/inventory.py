@@ -11,6 +11,7 @@ class Inventory(Mapper):
         'model': 'UUID',
         'type': 'varchar(64)',
         'locked': 'boolean'
+
     }
 
     constraints = {
