@@ -55,8 +55,7 @@ class TestCreationObjects(BaseTestCase):
             desktop = DesktopController.create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
             desktop2 = DesktopController.create_desktop('ASUS', 700, 100, 'intel', 32, 4, 20, '20x20')
             desktop3 = DesktopController.create_desktop('DELL', 400, 100, 'intel', 32, 4, 20, '20x20')
-            desktops = DesktopController.get_all_desktops_order('price DESC')
-            self.assertEqual(desktops[0].price,700 )
+            
             self.assertEqual(desktop.price, 500)
             self.assertEqual(desktop.weight, 100)
             self.assertEqual(desktop.brand, 'LG')
