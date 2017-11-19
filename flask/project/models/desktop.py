@@ -44,11 +44,8 @@ class Desktop(Item, Mapper):
         self.dimensions = dimensions
 
     def serialize(self):
-        #  return {
-        #     'brand': str(self.brand),
-        #     'price': str(self.price)
-        # }
         return {
+            'model': str(self.model),
             'brand': str(self.brand),
             'price': str(self.price),
             'weight': str(self.weight),

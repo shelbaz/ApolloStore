@@ -44,7 +44,32 @@ class MonitorController():
             if monitors:
                 for monitor in monitors:
                     count = get_inventory_count('monitors', monitor.model)
-                    monitors_with_count.append([monitor, count])
+                    monitors_with_count.append([monitor.serialize(), count])
+                
+                return monitors_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
+
+    # Queries the list of all monitors and their count
+    @staticmethod
+    def get_all_unlocked_monitors(*filters):
+        try:
+            if filters == ():
+                rows = Mapper.query('items', 'monitors', 'inventories', locked=False)
+            else:
+                rows = Mapper.query('items', 'monitors', 'inventories', **filters[0])
+
+            monitors = MonitorController.get_monitors_from_rows(rows)
+            monitors_with_count = []
+
+            if monitors:
+                for monitor in monitors:
+                    count = get_inventory_count('monitors', monitor.model)
+                    monitors_with_count.append([monitor.serialize(), count])
+
                 return monitors_with_count
             else:
                 return None

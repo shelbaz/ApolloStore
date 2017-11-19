@@ -50,3 +50,20 @@ class Tablet(Item, Mapper):
         self.battery = battery
         self.os = os
         self.camera_info = camera_info
+
+    def serialize(self):
+        return {
+            'model': str(self.model),
+            'brand': str(self.brand),
+            'price': str(self.price),
+            'weight': str(self.weight),
+            'display_size': str(self.display_size),
+            'processor': str(self.processor),
+            'ram_size': str(self.ram_size),
+            'cpu_cores': str(self.cpu_cores),
+            'hd_size': str(self.hd_size),
+            'battery': str(self.battery),
+            'os': str(self.os),
+            'camera_info': str(self.camera_info),
+            'dimensions': str(self.dimensions)
+        }

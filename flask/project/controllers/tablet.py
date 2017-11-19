@@ -46,7 +46,29 @@ class TabletController():
             if tablets:
                 for tablet in tablets:
                     count = get_inventory_count('tablets', tablet.model)
-                    tablets_with_count.append([tablet, count])
+                    tablets_with_count.append([tablet.serialize(), count])
+                return tablets_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
+        # Queries the list of all tablets and their count
+    @staticmethod
+    def get_all_unlocked_tablets(*filters):
+        try:
+            if filters == ():
+                rows = Mapper.query('items', 'tablets', 'inventories', locked=False)
+            else:
+                rows = Mapper.query('items', 'tablets', 'inventories', **filters[0])
+
+            tablets = TabletController.get_tablets_from_rows(rows)
+            tablets_with_count = []
+
+            if tablets:
+                for tablet in tablets:
+                    count = get_inventory_count('tablets', tablet.model)
+                    tablets_with_count.append([tablet.serialize(), count])
                 return tablets_with_count
             else:
                 return None

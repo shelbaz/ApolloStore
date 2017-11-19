@@ -33,9 +33,9 @@
 <script>
     function getSelected() {
         console.log(myTable.rows('.selected').data()[0]);
-        var selectedId = myTable.rows('.selected').data()[0][3];
-        console.log(selectedId);
-        delete_from_inventory(selectedId);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
     }
 </script>
 
@@ -47,7 +47,7 @@
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#edit" onclick="edit_button();">
             Change Item
         </button>
         <button class="btn btn-primary btn-lg" onclick="getSelected()">
@@ -119,12 +119,21 @@
              function add_to_inventory(model) {
                  var form = document.createElement('form');
                  form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/add-inventory/desktop/' + model);
+                 form.setAttribute('action', '/add-inventory/Desktop/' + model);
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
                  console.log('submitted');
              }
+        </script>
+
+                <script>
+            function edit_button(){
+                var modelNumber = myTable.rows('.selected').data()[0][4];
+                fill_edit_form(modelNumber);
+            }
+
+
         </script>
 
         <script>
@@ -146,7 +155,7 @@
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/desktop/' + model);
+                form.setAttribute('action', '/remove-inventory/Desktop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();

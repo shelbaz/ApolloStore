@@ -1,17 +1,6 @@
 {% extends "header.html" %}
 
 {% block body %}
-
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/items.css">
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-</head>
-<h1 class="title" style="text-align: center">Welcome to Apollo Store, {{user.first_name}}!</h1>
 <div class="container-x">
   <div id="myCarousel" class="carousel slide" style="width: 100%;" data-ride="carousel">
     <!-- Indicators -->
@@ -23,56 +12,55 @@
     </ol>
     <div class="carousel-container">
     <!-- Wrapper for slides -->
-    <div class="carousel-inner">
-
-      <div class="item active">
-          <div class="container" style="width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
-            <a href="/desktop-client">
-        <img class = "fill" src="/static/img/desktop.jpg" alt="Desktops">
-        <div class="carousel-caption">
-          <h3>Desktops</h3>
-          <p>Power your machines away!</p>
+      <div class="carousel-inner">
+        <div class="item active">
+            <div class="container" style="width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+              <a href="/desktop-client">
+          <img class = "fill" src="/static/img/desktop.jpg" alt="Desktops">
+          <div class="carousel-caption">
+            <h3>Desktops</h3>
+            <p>Power your machines away!</p>
+          </div>
+              </a>
+          </div>
         </div>
-            </a>
+
+        <div class="item">
+            <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+              <a href="laptop-client">
+          <img class = "fill" src="/static/img/laptop.jpg" alt="Laptops">
+          <div class="carousel-caption">
+            <h3>Laptops</h3>
+            <p>For portable and practical use!</p>
+          </div>
+              </a>
+          </div>
+        </div>
+
+        <div class="item">
+            <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+              <a href="monitor-client">
+          <img class = "fill" src="/static/img/monitor.jpg" alt="Monitors">
+          <div class="carousel-caption">
+            <h3>Monitors</h3>
+            <p>Your lens to the net!</p>
+          </div>
+              </a>
+          </div>
+        </div>
+
+        <div class="item">
+            <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
+              <a href="tablet-client">
+          <img class = "fill" src="/static/img/tablets.jpg" alt="Tablets">
+          <div class="carousel-caption">
+            <h3>Tablets</h3>
+            <p>Everything you wanted on the go!</p>
+          </div>
+              </a>
+          </div>
         </div>
       </div>
-
-      <div class="item">
-          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
-            <a href="laptop-client">
-        <img class = "fill" src="/static/img/laptop.jpg" alt="Laptops">
-        <div class="carousel-caption">
-          <h3>Laptops</h3>
-          <p>For portable and practical use!</p>
-        </div>
-            </a>
-        </div>
-      </div>
-
-      <div class="item">
-          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
-            <a href="monitor-client">
-        <img class = "fill" src="/static/img/monitor.jpg" alt="Monitors">
-        <div class="carousel-caption">
-          <h3>Monitors</h3>
-          <p>Your lens to the net!</p>
-        </div>
-            </a>
-        </div>
-      </div>
-
-      <div class="item">
-          <div class="container" style="display:block;width:100%;height:500px;overflow:hidden;margin:0;padding:0;">
-            <a href="tablet-client">
-        <img class = "fill" src="/static/img/tablets.jpg" alt="Tablets">
-        <div class="carousel-caption">
-          <h3>Tablets</h3>
-          <p>Everything you wanted on the go!</p>
-        </div>
-            </a>
-        </div>
-      </div>
-    </div>
     </div>
 
     <!-- Left and right controls -->
@@ -86,16 +74,6 @@
     </a>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
 
 {% endblock %}
 

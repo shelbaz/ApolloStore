@@ -1,7 +1,8 @@
 {% extends "header.html" %}
 
 {% block body %}
-<div class="container">
+<div class="container my-2">
+    <div id="ajax-alert" role="alert"></div>
     <div class="row">
         Brand:  <select class="custom-select" id="brand-filter">
                     <option selected value="">None</option>
@@ -21,36 +22,27 @@
 </div>
     <!-- all the items get appended in this container -->
 <div id="itemContainer" class="container"></div>
-
-<!-- 
-<div class="options">
-<select class="selectpicker" align="right">
-  <option>Sort by</option>
-  <option>Sort by Price</option>
-  <option>Sort by Name</option>
-  <option>Sort by Type</option>
-</select>
-</div> -->
 <script>
+
     $(document).ready(function() {
         getDesktopData(null);
+    });
 
-        $('#filter-submit').click(function() {
-            var filters =  {};
-            var brandFilter = $('#brand-filter').val();
-            var processorFilter = $('#processor-filter').val();
+    $('#filter-submit').click(function() {
+        var filters =  {};
+        var brandFilter = $('#brand-filter').val();
+        var processorFilter = $('#processor-filter').val();
 
-            if (brandFilter != '') {
-                filters['brand'] = brandFilter;
-            }
+        if (brandFilter != '') {
+            filters['brand'] = brandFilter;
+        }
 
-            if (processorFilter != '') {
-                filters['processor'] = processorFilter;
-            }
+        if (processorFilter != '') {
+            filters['processor'] = processorFilter;
+        }
 
-            console.log("filters: %o", filters);
-            getDesktopData(filters);
-        });
+        console.log("filters: %o", filters);
+        getDesktopData(filters);
     });
 
     function getDesktopData(filters) {
@@ -63,6 +55,7 @@
                 //loading gif logic goes here.
             },
             success: function(response) {
+                console.log("responsee %o", response);
                 $('#itemContainer').empty();
                 console.log("response data: %o", response.data);
                 if (response.data != null) {
@@ -76,10 +69,27 @@
         }); 
     }
 
+    function addToCart(e) {
+        var model = $(e).find('span').text();
+
+        var addToCartUrl = "/add-to-cart/" + model + "/desktop-client";
+        $.ajax({
+            type: "GET",
+            url: addToCartUrl,
+            beforeSend: function() {
+            },
+            success: function(response) {
+               $("#ajax-alert").addClass("alert alert-success").text("Item Successfully Added to Cart.");
+                $("#ajax-alert").alert();
+                $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
+                });
+            }
+        });
+    }
+
     function desktopElement(response) {
         var data = response[0];
         var count = response[1];
-
         return [
             '<div class="product-container">',
                 '<div class="product-subcontainer text-left">',
@@ -94,43 +104,11 @@
                         '<div>Hard Drive Space: ' + data.hd_size + 'Gb</div>',
                         '<div>Dimensions: ' + data.dimensions + '</div>',
                     '</div>',
+                    '<button class="btn btn-primary" onclick="addToCart(this)">Add To Cart<span style="display:none">'+data.model+'</span></div>',
                 '</div>',
             '</div>',
         ].join("\n");
     }
 </script>
-<style>
-    .loader {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    #itemContainer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .product-image {
-        width: 100%;
-    }
-
-    .product-container {
-      position: relative;
-      width: 25%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-</style>
-
-
 {% endblock %}
 

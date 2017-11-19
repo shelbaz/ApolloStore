@@ -7,6 +7,8 @@ from project.controllers.desktop import DesktopController
 from project.controllers.tablet import TabletController
 from project.controllers.monitor import MonitorController
 from project.controllers.laptop import LaptopController
+from project.controllers.cart import CartController
+from project.controllers.purchase import PurchaseController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
@@ -32,17 +34,18 @@ def index():
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
-def add_desktop_inventory(electronic, model):
+def add_to_inventory(electronic, model):
     if g.user.admin:
-        InventoryController.add_item_to_inventory(model)
-        return redirect('/' + electronic)
+        InventoryController.add_item_to_inventory(model, electronic)
+        return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/remove-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def delete_item_from_inventory(electronic, model):
-    InventoryController.delete_item_from_inventory(model)
-    return redirect('/' + electronic)
+    if g.user.admin:
+        InventoryController.delete_item_from_inventory(model)
+        return redirect('/' + electronic.lower())
 
 
 @website_blueprint.route('/desktop', methods=['GET', 'POST'])
@@ -74,8 +77,6 @@ def desktop():
 def desktop_client():
     desktops=DesktopController.get_all_desktops()
     
-    # do all the group by for the filter selects here
-    # filters -> brand, processor, ram_size, cpu_core
     filters = {
         'brand': [],
         'processor': [],
@@ -96,20 +97,14 @@ def desktop_client():
         if desktop[0]['cpu_cores'] not in filters['cpu_cores']: 
             filters['cpu_cores'].append(desktop[0]['cpu_cores'])
         
-
-    logger.info(filters)
     return render_template('desktop-client.html', user=g.user, filters=filters)
 
 @website_blueprint.route('/desktop-client/table', methods=['GET'])
 def desktop_client_table():    
+    logger.error(request.args.to_dict())
     return json.dumps({
-        'data': DesktopController.get_all_desktops(request.args.to_dict())
+        'data': DesktopController.get_all_unlocked_desktops(request.args.to_dict())
     })
-
-@website_blueprint.route('/desktop-client/<string:attr>', methods=['GET', 'POST'])
-@login_required
-def desktop_client_order(attr):
-    return render_template('desktop-client.html', user=g.user, desktops=DesktopController.get_all_desktops_order(attr))
 
 @website_blueprint.route('/edit-desktop', methods=['POST'])
 @login_required
@@ -126,7 +121,7 @@ def edit_desktop():
         dimensions = request.form.get('desktopdimensions')
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and dimensions:
-            desktop = DesktopController.update_desktop(model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
+            desktop = DesktopController.update_desktop(model=model, brand=brand, price=price, weight=weight, processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize, dimensions=dimensions)
             if desktop:
                 return redirect('/desktop')
             else:
@@ -175,9 +170,35 @@ def laptop():
 @website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
 @login_required
 def laptop_client():
-    return render_template('laptop-client.html', user=g.user, laptops=LaptopController.get_all_laptops())
+    laptops=LaptopController.get_all_laptops()
 
+    filters = {
+        'brand': [],
+        'processor': [],
+        'os': [],
+        'cpu_cores': []
+    }
 
+    for laptop in laptops:
+        if laptop[0]['brand'] not in filters['brand']: 
+            filters['brand'].append(laptop[0]['brand'])
+
+        if laptop[0]['processor'] not in filters['processor']: 
+            filters['processor'].append(laptop[0]['processor'])
+
+        if laptop[0]['os'] not in filters['os']: 
+            filters['os'].append(laptop[0]['os'])
+
+        if laptop[0]['cpu_cores'] not in filters['cpu_cores']: 
+            filters['cpu_cores'].append(laptop[0]['cpu_cores'])
+
+    return render_template('laptop-client.html', user=g.user, filters=filters)
+
+@website_blueprint.route('/laptop-client/table', methods=['GET'])
+def laptop_client_table():    
+    return json.dumps({
+        'data': LaptopController.get_all_unlocked_laptops(request.args.to_dict())
+    })
 
 @website_blueprint.route('/edit-laptop', methods=['POST'])
 @login_required
@@ -206,7 +227,7 @@ def edit_laptop():
             camera = False
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            laptop = LaptopController.update_laptop(model, brand=brand, price=price, weight=weight, display_size =displaysize,
+            laptop = LaptopController.update_laptop(model=model, brand=brand, price=price, weight=weight, display_size =displaysize,
                                                     processor=processor, ram_size=ramsize, cpu_cores=cpucores, hd_size=hdsize,
                                                     battery_info=battery, os=operatingsystem, touchscreen=touchscreen,
                                                     camera=camera)
@@ -250,8 +271,35 @@ def tablet():
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
 @login_required
 def tablet_client():
-    return render_template('tablet-client.html', user=g.user, tablets=TabletController.get_all_tablets())
+    tablets=TabletController.get_all_unlocked_tablets()
 
+    filters = {
+        'brand': [],
+        'os': [],
+        'dimensions': [],
+        'cpu_cores': []
+    }
+
+    for tablet in tablets:
+        if tablet[0]['brand'] not in filters['brand']: 
+            filters['brand'].append(tablet[0]['brand'])
+
+        if tablet[0]['os'] not in filters['os']: 
+            filters['os'].append(tablet[0]['os'])
+
+        if tablet[0]['dimensions'] not in filters['dimensions']: 
+            filters['dimensions'].append(tablet[0]['dimensions'])
+
+        if tablet[0]['cpu_cores'] not in filters['cpu_cores']: 
+            filters['cpu_cores'].append(tablet[0]['cpu_cores'])
+
+    return render_template('tablet-client.html', user=g.user, filters=filters)
+
+@website_blueprint.route('/tablet-client/table', methods=['GET'])
+def tablet_client_table():
+    return json.dumps({
+        'data': TabletController.get_all_unlocked_tablets(request.args.to_dict())
+    })
 
 @website_blueprint.route('/edit-tablet', methods=['POST'])
 @login_required
@@ -272,7 +320,7 @@ def edit_tablet():
         dimensions = request.form.get('dimensions')
 
         if model and price and weight and brand and processor and ramsize and cpucores and hdsize and displaysize:
-            tablet = TabletController.update_tablet(model, brand=brand , price=price, weight=weight, display_size=displaysize,
+            tablet = TabletController.update_tablet(model=model, brand=brand , price=price, weight=weight, display_size=displaysize,
                                                     dimensions=dimensions, processor=processor, ram_size=ramsize,
                                                     cpu_cores=cpucores, hd_size=hdsize, battery=battery, os=operatingsystem,
                                                     camera_info=camera)
@@ -307,17 +355,57 @@ def monitor():
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
 @login_required
 def monitor_client():
-    return render_template('monitor-client.html', user=g.user, monitors=MonitorController.get_all_monitors())
+    monitors=MonitorController.get_all_monitors()
+
+    filters = {
+        'brand': [],
+        'dimensions': []
+    }
+
+    for monitor in monitors:
+        if monitor[0]['brand'] not in filters['brand']: 
+            filters['brand'].append(monitor[0]['brand'])
+        if monitor[0]['dimensions'] not in filters['dimensions']: 
+            filters['dimensions'].append(monitor[0]['dimensions'])
+
+    return render_template('monitor-client.html', user=g.user, filters=filters)
+
+@website_blueprint.route('/monitor-client/table', methods=['GET'])
+def monitor_client_table():    
+    logger.error(request.args.to_dict())
+    return json.dumps({
+        'data': MonitorController.get_all_unlocked_monitors(request.args.to_dict())
+    })
 
 @website_blueprint.route('/cart', methods=['GET', 'POST'])
 @login_required
 def cart():
-    return render_template('cart.html', user=g.user)
+    return render_template('cart.html', user=g.user, items=CartController.get_cart_items())
+
+@website_blueprint.route('/add-to-cart/<string:model>/<string:item>', methods=['GET'])
+@login_required
+def add_to_cart(model,item):
+    CartController.add_item_to_cart(model)
+    return redirect('/' + item)
+
+
+@website_blueprint.route('/remove-from-cart/<string:model>', methods=['GET'])
+@login_required
+def remove_from_cart(model):
+    logger.critical('something')
+    CartController.remove_item_from_cart(model)
+    return redirect('/cart')
+
+@website_blueprint.route('/checkout/', methods=['GET'])
+@login_required
+def checkout_from_cart():
+    CartController.checkout_from_cart()
+    return redirect('/')
 
 @website_blueprint.route('/returns', methods=['GET', 'POST'])
 @login_required
 def returns():
-    return render_template('returns.html', user=g.user)
+    return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
 
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
@@ -330,7 +418,7 @@ def edit_monitor():
         brand = request.form.get('brand')
         dimensions = request.form.get('monitor_dimensions')
         if model and price and weight and brand and dimensions:
-            monitor = MonitorController.update_monitor(model, brand=brand, price=price, weight=weight, dimensions=dimensions)
+            monitor = MonitorController.update_monitor(model=model, brand=brand, price=price, weight=weight, dimensions=dimensions)
             if monitor:
                 return redirect('/monitor')
             else:

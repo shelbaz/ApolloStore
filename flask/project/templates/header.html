@@ -21,8 +21,54 @@
     <!-- Custom CSS -->
     <style>
         body {
-            padding-top: 70px;
+            padding-top: 50px;
             /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #3498db; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #itemContainer {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .product-image {
+            width: 100%;
+        }
+
+        .product-container {
+          position: relative;
+          width: 20%;
+          padding: 10px;
+          margin: 10px;
+          box-sizing: border-box;
+          background-color: white;
+            box-shadow: 0px 0px 5px grey;
+        }
+
+        .product-container:hover {
+        }
+
+        .product-container .price {
+            color: red;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info-container {
+            margin: 10px 0;
         }
     </style>
 
@@ -38,7 +84,7 @@
     <body>
         <header>
             <!-- Navigation -->
-            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <nav style="margin-bottom: 0px !important;" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">

@@ -34,3 +34,12 @@ class Monitor(Item, Mapper):
         self.price = price
         self.weight = weight
         self.dimensions = dimensions
+
+    def serialize(self):
+        return {
+            'model': str(self.model),
+            'brand': str(self.brand),
+            'price': str(self.price),
+            'weight': str(self.weight),
+            'dimensions': str(self.dimensions)
+        }

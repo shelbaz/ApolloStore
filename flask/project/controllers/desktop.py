@@ -39,13 +39,9 @@ class DesktopController():
 
     # Queries the list of all desktops and their count
     @staticmethod
-    def get_all_desktops(*filters):
+    def get_all_desktops():
         try:
-            if filters == ():
-                rows = Mapper.query('items', 'desktops')
-            else:
-                rows = Mapper.query('items', 'desktops', **filters[0])
-    
+            rows = Mapper.query('items', 'desktops')
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
@@ -60,15 +56,24 @@ class DesktopController():
         except Exception:
             logger.error(traceback.format_exc())
 
+    # Queries the list of all desktops and their count
     @staticmethod
-    def get_all_desktops_order(attr):
+    def get_all_unlocked_desktops(*filters):
         try:
-            rows = Mapper.order_by(attr, 'items', 'desktops')
+            if filters == ():
+                rows = Mapper.query('items', 'desktops', 'inventories', locked=False)
+            else:
+                rows = Mapper.query('items', 'desktops', 'inventories', **filters[0])
+
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
             if desktops:
-                return desktops
+                for desktop in desktops:
+                    count = get_inventory_count('desktops', desktop.model)
+                    desktops_with_count.append([desktop.serialize(), count])
+
+                return desktops_with_count
             else:
                 return None
         except Exception:

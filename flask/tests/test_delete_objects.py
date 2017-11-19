@@ -20,12 +20,12 @@ class TestDeletionObjects(BaseTestCase):
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
             InventoryController.delete_item_from_inventory(desktop.model)
-            InventoryController.add_item_to_inventory(desktop.model)
-            InventoryController.add_item_to_inventory(desktop.model)
+            InventoryController.add_item_to_inventory(desktop.model, desktop.__class__.__name__)
+            InventoryController.add_item_to_inventory(desktop.model, desktop.__class__.__name__)
             InventoryController.delete_item_from_inventory(desktop.model)
             rows = Mapper.query('inventories', model=desktop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_laptop(self):
         with self.client:
@@ -35,13 +35,13 @@ class TestDeletionObjects(BaseTestCase):
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
             InventoryController.delete_item_from_inventory(laptop.model)
-            InventoryController.add_item_to_inventory(laptop.model)
-            InventoryController.add_item_to_inventory(laptop.model)
+            InventoryController.add_item_to_inventory(laptop.model, laptop.__class__.__name__)
+            InventoryController.add_item_to_inventory(laptop.model, laptop.__class__.__name__)
 
             InventoryController.delete_item_from_inventory(laptop.model)
             rows = Mapper.query('inventories', model=laptop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_monitor(self):
         with self.client:
@@ -50,13 +50,13 @@ class TestDeletionObjects(BaseTestCase):
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
             InventoryController.delete_item_from_inventory(monitor.model)
-            InventoryController.add_item_to_inventory(monitor.model)
-            InventoryController.add_item_to_inventory(monitor.model)
+            InventoryController.add_item_to_inventory(monitor.model, monitor.__class__.__name__)
+            InventoryController.add_item_to_inventory(monitor.model, monitor.__class__.__name__)
 
             InventoryController.delete_item_from_inventory(monitor.model)
             rows = Mapper.query('inventories', model=monitor.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
     def test_delete_tablet(self):
         with self.client:
@@ -66,13 +66,13 @@ class TestDeletionObjects(BaseTestCase):
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
             InventoryController.delete_item_from_inventory(tablet.model)
-            InventoryController.add_item_to_inventory(tablet.model)
-            InventoryController.add_item_to_inventory(tablet.model)
+            InventoryController.add_item_to_inventory(tablet.model, tablet.__class__.__name__)
+            InventoryController.add_item_to_inventory(tablet.model, tablet.__class__.__name__)
 
             InventoryController.delete_item_from_inventory(tablet.model)
             rows = Mapper.query('inventories', model=tablet.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(1, len(items))
+            self.assertEqual(items, None)
 
 # Runs the tests.
 if __name__ == '__main__':

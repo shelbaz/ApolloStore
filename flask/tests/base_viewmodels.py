@@ -11,6 +11,7 @@ from flask_testing import TestCase
 from project import create_app, logger
 import logging
 from project.gateways import create_tables, drop_tables
+from flask import g
 
 # Creates a new instance of the Flask application. The reason for this
 # is that we can't interrupt the application instance that is currently
@@ -35,11 +36,15 @@ class BaseTestCase(TestCase):
 
     # Defines what should be done before every single test in this test group.
     def setUp(self):
-         with self.create_app().app_context():
+        with self.create_app().app_context():
             drop_tables()
             create_tables()
 
+        from project.controllers.authentication import AuthenticationController
+        g.user = AuthenticationController.create_user('first', 'last', 'elm street', 'test@test.com', 'qwert123123', '123123123', True)
+
     # Defines what should be done after every single test in this test group.
     def tearDown(self):
-         with self.create_app().app_context():
+        with self.create_app().app_context():
             drop_tables()
+        g.user = None

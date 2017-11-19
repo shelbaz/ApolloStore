@@ -2,6 +2,7 @@
 
 {% block body %}
 <div class="container">
+    <div id="ajax-alert" role="alert"></div>
     <div class="row">
         Brand:  <select class="custom-select" id="brand-filter">
                     <option selected value="">None</option>
@@ -15,33 +16,43 @@
                             <option value="{{processor}}">{{processor}}</option>
                         {% endfor %}
                     </select>
+        Operating System:  <select  class="custom-select" id="os-filter">
+                        <option selected value="">None</option>
+                        {% for os in filters.os %}
+                            <option value="{{os}}">{{os}}</option>
+                        {% endfor %}
+                    </select>
         <button id="filter-submit">Search</button>
         <div id="item-count" class="text-right" style="float: right"></div> 
     </div>
 </div>
     <!-- all the items get appended in this container -->
 <div id="itemContainer" class="container"></div>
-
 <script>
+
     $(document).ready(function() {
         getLaptopData(null);
+    });
 
-        $('#filter-submit').click(function() {
-            var filters =  {};
-            var brandFilter = $('#brand-filter').val();
-            var processorFilter = $('#processor-filter').val();
+    $('#filter-submit').click(function() {
+        var filters =  {};
+        var brandFilter = $('#brand-filter').val();
+        var processorFilter = $('#processor-filter').val();
+        var osFilter = $('#os-filter').val();
 
-            if (brandFilter != '') {
-                filters['brand'] = brandFilter;
-            }
+        if (brandFilter != '') {
+            filters['brand'] = brandFilter;
+        }
 
-            if (processorFilter != '') {
-                filters['processor'] = processorFilter;
-            }
+        if (processorFilter != '') {
+            filters['processor'] = processorFilter;
+        }
 
-            console.log("filters: %o", filters);
-            getLaptopData(filters);
-        });
+        if (osFilter != '') {
+            filters['os'] = osFilter;
+        }
+
+        getLaptopData(filters);
     });
 
     function getLaptopData(filters) {
@@ -54,6 +65,7 @@
                 //loading gif logic goes here.
             },
             success: function(response) {
+                console.log("responsee %o", response);
                 $('#itemContainer').empty();
                 console.log("response data: %o", response.data);
                 if (response.data != null) {
@@ -67,69 +79,50 @@
         }); 
     }
 
+    function addToCart(e) {
+        var model = $(e).find('span').text();
+
+        var addToCartUrl = "/add-to-cart/" + model + "/desktop-client";
+        $.ajax({
+            type: "GET",
+            url: addToCartUrl,
+            beforeSend: function() {
+            },
+            success: function(response) {
+               $("#ajax-alert").addClass("alert alert-success").text("Item Successfully Added to Cart.");
+                $("#ajax-alert").alert();
+                $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
+                });
+            }
+        });
+    }
+
     function laptopElement(response) {
         var data = response[0];
         var count = response[1];
-
-        'battery_info': 'varchar(64)',
-        'os': 'varchar(64)',
-        'touchscreen': 'boolean',
-        'camera': 'boolean'
         return [
             '<div class="product-container">',
                 '<div class="product-subcontainer text-left">',
-                    '<img class="product-image" src="https://www.staples-3p.com/s7/is/image/Staples/m006008801_sc7?$splssku$">',
+                    '<img class="product-image" src="http://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c05504697.png">',
                     '<div class="price">$' + data.price + '</div>',
                     '<div class="brand">'+ data.brand + '</div>',
                     '<div class="info-container text-left">',
-                        '<div>Weight: ' + data.display_size + '</div>',
                         '<div>Weight: ' + data.weight + 'kg</div>',
+                        '<div>Display Size: ' + data.display_size + '</div>',
                         '<div>Processor: ' + data.processor + '</div>',
                         '<div>Ram Size: ' + data.ram_size + '</div>',
                         '<div>CPU Cores: ' + data.cpu_cores + '</div>',
                         '<div>Hard Drive Space: ' + data.hd_size + 'Gb</div>',
-                        '<div>Battery Info: ' + data.battery_info + '</div>',
-                        '<div>OS: ' + data.os + '</div>',
+                        '<div>Battery: ' + data.battery_info + '</div>',
+                        '<div>Operating System: ' + data.os + '</div>',
                         '<div>Touchscreen: ' + data.touchscreen + '</div>',
                         '<div>Camera: ' + data.camera + '</div>',
                     '</div>',
+                    '<button class="btn btn-primary" onclick="addToCart(this)">Add To Cart<span style="display:none">'+data.model+'</span></div>',
                 '</div>',
             '</div>',
         ].join("\n");
     }
 </script>
-<style>
-    .loader {
-        border: 16px solid #f3f3f3; /* Light grey */
-        border-top: 16px solid #3498db; /* Blue */
-        border-radius: 50%;
-        width: 120px;
-        height: 120px;
-        animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    #itemContainer {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .product-image {
-        width: 100%;
-    }
-
-    .product-container {
-      position: relative;
-      width: 25%;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-</style>
-
-
 {% endblock %}
 

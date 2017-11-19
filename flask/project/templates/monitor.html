@@ -31,14 +31,12 @@
 
 
 <script>
-function getSelected() {
-   var selectedIds = myTable.columns().checkboxes.selected()[0];
-   console.log(selectedIds)
-
-   selectedIds.forEach(function(selectedId) {
-       // Do something
-   });
-}
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
+    }
 </script>
 
 
@@ -49,7 +47,7 @@ function getSelected() {
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
+        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#edit" onclick="edit_button();">
             Change Item
         </button>
         <button class="btn btn-primary btn-lg" onclick="getSelected()">
@@ -108,12 +106,21 @@ function getSelected() {
              function add_to_inventory(model) {
                  var form = document.createElement('form');
                  form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/add-inventory/monitor/' + model);
+                 form.setAttribute('action', '/add-inventory/Monitor/' + model);
                  form.style.display = 'hidden';
                  document.body.appendChild(form)
                  form.submit();
                  console.log('submitted');
              }
+        </script>
+
+                <script>
+            function edit_button(){
+                var modelNumber = myTable.rows('.selected').data()[0][4];
+                fill_edit_form(modelNumber);
+            }
+
+
         </script>
 
         <script>
@@ -130,7 +137,7 @@ function getSelected() {
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/monitor/' + model);
+                form.setAttribute('action', '/remove-inventory/Monitor/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
