@@ -1,7 +1,5 @@
-
 from project.models.item import Item
 from project.orm import Mapper
-
 
 class Tablet(Item, Mapper):
 
@@ -20,7 +18,8 @@ class Tablet(Item, Mapper):
         'hd_size': 'integer',
         'battery': 'varchar(64)',
         'os': 'varchar(64)',
-        'camera_info': 'varchar(64)'
+        'camera_info': 'varchar(64)',
+        'hide': 'boolean'
     }
 
     constraints = {
@@ -29,7 +28,7 @@ class Tablet(Item, Mapper):
     }
 
     # Constructor that creates a new tablet
-    def __init__(self, model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
+    def __init__(self, model, brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info, hide=False):
 
         Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
 
@@ -50,6 +49,7 @@ class Tablet(Item, Mapper):
         self.battery = battery
         self.os = os
         self.camera_info = camera_info
+        self.hide = hide
 
     def serialize(self):
         return {

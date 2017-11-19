@@ -27,7 +27,7 @@ class CartController():
                     inventory_item = inv
 
             currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-            rows = CartController.count_number_items()
+            rows = CartController.get_number_of_items_in_cart()
 
             if(inventory_item and rows < 7):
                 cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=currentDateTime)
@@ -43,10 +43,9 @@ class CartController():
             logger.error(traceback.format_exc())
 
     @staticmethod
-    def count_number_items():
-        rows = Mapper.count_rows(Cart, g.user.id)
-
-        return rows
+    def get_number_of_items_in_cart():
+        items = CartController.get_cart_items()
+        return len(items)
 
     # Removes an item of a specific model number from the cart
     @staticmethod
@@ -79,6 +78,8 @@ class CartController():
         rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         
+        items = []
+
         if carts:
             cart_models = []
 
@@ -88,19 +89,14 @@ class CartController():
             rows = Mapper.all_items_query(cart_models)
             items = CartController.get_items_from_rows(rows)
         
-            return items
+        return items
 
     @staticmethod
     def get_items_from_rows(rows):
-        if rows:
-            items = []
-            for row in rows:
-                items.append({'model': row[0], 'brand': row[1], 'price': row[2]})
-
-            if items:
-                return items
-            else:
-                return None
+        items = []
+        for row in rows:
+            items.append({'model': row[0], 'brand': row[1], 'price': row[2]})
+        return items
 
     #Takes items from cart and adds them to purchases db log, removes items from inventory and flushes cart
     @staticmethod
@@ -152,7 +148,3 @@ class CartController():
                 return None
         else:
             return None
-
-
-
-

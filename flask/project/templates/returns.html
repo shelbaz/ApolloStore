@@ -24,22 +24,40 @@
                 <div class="form-group">
                 <label for="clientid">Client-ID: {{user.id}}</label>
                 </div>
+                {% if returns: %}
                     <div class="form-group">
-                <label for="model">Model: </label>
-                <select>
-                   {% for model in returns: %}
-                  <option value="{{return}}">{{model.model_id}}</option>  
-                  {% endfor %} 
-                </select>
-               </div>
-            
-            <br>
-    <div align="right">
-   <button type="button" class="btn btn-default btn-success"><span class="fa fa-default"></span>&nbsp;Complete Return</button> </div>
-</form>
+                        <label for="model">Model: </label>
+                        <select id = "propertyDropdown">
+                            {% for model in returns: %}
+                            <option id="model" value="{{model.model_id}}">{{model.model_id}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <br>
+                    <div align="right">
+                        <button type="button" class="btn btn-default btn-success" onclick="returns_purchase();"><span class="fa fa-default"></span>&nbsp;Complete Return</button>
+                    </div>
+                {% else: %}
+                    <div>You have nothing to return!</div>
+                {% endif %}
 
+        </form>
+    </div>
+            <script>
+                function returns_purchase(){
+                    var element = document.getElementById("propertyDropdown");
+                    var item = element.options[element.selectedIndex].value;
+                    var form = document.createElement('form');
+                    form.setAttribute('method','get');
+                    form.setAttribute('action','/return-item/' + item);
+                    form.style.display = 'hidden';
+                    document.body.appendChild(form);
 
-        </div>
+                    form.submit();
+                    console.log(element);
+                    console.log("testing returns");
+                }
+            </script>
 
         <script>
              function add_to_inventory(model) {
@@ -64,6 +82,7 @@
                 form.submit();
             }
         </script>
+
 
         <div class="col-md-8" >
             <p> </p>

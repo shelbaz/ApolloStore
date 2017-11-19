@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.laptop import Laptop
-from project.gateways import get_inventory_count
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
@@ -41,35 +40,36 @@ class LaptopController():
     @staticmethod
     def get_all_laptops():
         try:
-            rows = Mapper.query('items', 'laptops')
+            rows = Mapper.query('items', 'laptops', hide=False)
             laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
                 for laptop in laptops:
-                    count = get_inventory_count('laptops', laptop.model)
+                    count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
                     laptops_with_count.append([laptop.serialize(), count])
+
                 return laptops_with_count
             else:
                 return None
         except Exception:
             logger.error(traceback.format_exc())
 
-        # Queries the list of all desktops and their count
+        # Queries the list of all laptops and their count
     @staticmethod
     def get_all_unlocked_laptops(*filters):
         try:
             if filters == ():
-                rows = Mapper.query('items', 'laptops', 'inventories', locked=False)
+                rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False)
             else:
-                rows = Mapper.query('items', 'laptops', 'inventories', **filters[0])
+                rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False, **filters[0])
                 
             laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
                 for laptop in laptops:
-                    count = get_inventory_count('laptops', laptop.model)
+                    count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
                     laptops_with_count.append([laptop.serialize(), count])
                 return laptops_with_count
             else:
@@ -115,7 +115,10 @@ class LaptopController():
             rows = Mapper.query('items', 'laptops', model=model)
             laptop = LaptopController.get_laptops_from_rows(rows)[0]
 
-            laptop.delete()
+            laptop.update(model=model, brand = laptop.brand, price = laptop.price, weight = laptop.weight, display_size = laptop.display_size,
+            processor = laptop.processor, ram_size = laptop.ram_size, cpu_cores = laptop.cpu_cores, hd_size = laptop.hd_size,
+            battery_info = laptop.battery_info, os = laptop.os, touchscreen = laptop.touchscreen, camera = laptop.camera, hide=True)
 
+            return laptop
         except Exception:
             logger.error(traceback.format_exc())

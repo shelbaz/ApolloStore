@@ -20,7 +20,8 @@ class Laptop(Item, Mapper):
         'battery_info': 'varchar(64)',
         'os': 'varchar(64)',
         'touchscreen': 'boolean',
-        'camera': 'boolean'
+        'camera': 'boolean',
+        'hide': 'boolean'
     }
 
     constraints = {
@@ -50,6 +51,7 @@ class Laptop(Item, Mapper):
         self.os = attributes['os']
         self.touchscreen = attributes['touchscreen']
         self.camera = attributes['camera']
+        self.hide = False
 
     def serialize(self):
         return {
