@@ -47,7 +47,8 @@ class LaptopController():
             if laptops:
                 for laptop in laptops:
                     count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
-                    laptops_with_count.append([laptop, count])
+                    laptops_with_count.append([laptop.serialize(), count])
+
                 return laptops_with_count
             else:
                 return None
@@ -56,16 +57,20 @@ class LaptopController():
 
         # Queries the list of all laptops and their count
     @staticmethod
-    def get_all_unlocked_laptops():
+    def get_all_unlocked_laptops(*filters):
         try:
-            rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False)
+            if filters == ():
+                rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False)
+            else:
+                rows = Mapper.query('items', 'laptops', 'inventories', locked=False, hide=False, **filters[0])
+                
             laptops = LaptopController.get_laptops_from_rows(rows)
             laptops_with_count = []
 
             if laptops:
                 for laptop in laptops:
                     count = len(Mapper.query('inventories', 'laptops', model=laptop.model))
-                    laptops_with_count.append([laptop, count])
+                    laptops_with_count.append([laptop.serialize(), count])
                 return laptops_with_count
             else:
                 return None

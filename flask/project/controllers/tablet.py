@@ -9,8 +9,6 @@ from project import identity_map
 
 class TabletController():
 
-    
-
     # Creates a tablet that is valid
     def create_tablet(brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
         try:
@@ -44,8 +42,10 @@ class TabletController():
 
             if tablets:
                 for tablet in tablets:
+                    # count = get_inventory_count('tablets', tablet.model)
+                    # tablets_with_count.append([tablet.serialize(), count])
                     count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
-                    tablets_with_count.append([tablet, count])
+                    tablets_with_count.append([tablet.serialize(), count])
                 return tablets_with_count
             else:
                 return None
@@ -54,16 +54,22 @@ class TabletController():
 
         # Queries the list of all tablets and their count
     @staticmethod
-    def get_all_unlocked_tablets():
+    def get_all_unlocked_tablets(*filters):
         try:
-            rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False)
+            if filters == ():
+                rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False)
+            else:
+                rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False, **filters[0])
+
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 
             if tablets:
                 for tablet in tablets:
+                    # count = get_inventory_count('tablets', tablet.model)
+                    # tablets_with_count.append([tablet.serialize(), count])
                     count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
-                    tablets_with_count.append([tablet, count])
+                    tablets_with_count.append([tablet.serialize(), count])
                 return tablets_with_count
             else:
                 return None

@@ -1,6 +1,4 @@
-
 from project.gateways import Gateway as gw
-
 
 class Mapper(object):
 
@@ -17,6 +15,10 @@ class Mapper(object):
     @staticmethod
     def query(*table, **conditions):
         return gw.query_filtered_by(*table, **conditions)
+
+    @staticmethod
+    def order_by(attribute, *table):
+        return query_filtered_by_order(attribute,*table)
 
     def update(self, **attributes):
         for key, value in attributes.items():

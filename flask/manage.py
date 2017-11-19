@@ -100,7 +100,6 @@ def drop():
     except Exception:
         logger.error(traceback.format_exc())
 
-
 @manager.command
 def create_users():
     import traceback
@@ -142,7 +141,7 @@ def create_items():
         invModels.append(LaptopController.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True))
         invModels.append(LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
         invModels.append(LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
-        
+
         invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
         invModels.append(TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
         invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
@@ -164,7 +163,6 @@ def create_items():
 
         for item in invModels: 
             InventoryController.add_item_to_inventory(item.model, item.__class__.__name__)
-
     except Exception:
         logger.error(traceback.format_exc())
 
