@@ -1,5 +1,6 @@
 
 from project.controllers import printer
+from project.controllers.cart import CartController
 from project import celery
 
 
@@ -9,5 +10,12 @@ celery.conf.beat_schedule = {
         'task': 'printer',
         'schedule': 30,
         'args': (6,)
+    },
+}
+
+celery.conf.beat_schedule = {
+    'arbitrary-name': {
+        'task': 'timeout',
+        'schedule': 60,
     },
 }

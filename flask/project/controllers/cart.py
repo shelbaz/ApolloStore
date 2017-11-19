@@ -12,6 +12,8 @@ import traceback
 from time import gmtime, strftime
 from project.orm import Mapper
 from project import identity_map
+from datetime import datetime, timedelta
+from project import celery
 
 class CartController():
 
@@ -26,16 +28,27 @@ class CartController():
                 if(not inv.locked):
                     inventory_item = inv
 
-            currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            item_timeout = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            if inventory_item.type == 'desktop':
+                item_timeout = (datetime.datetime.now() + datetime.timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+            elif inventory_item.type == 'laptop':
+                item_timeout = (datetime.datetime.now() + datetime.timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+            elif inventory_item.type == 'tablet':
+                item_timeout = (datetime.datetime.now() + datetime.timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+            elif inventory_item.type == 'monitor':
+                item_timeout = (datetime.datetime.now() + datetime.timedelta(minutes=1)).strftime("%Y-%m-%d %H:%M:%S")
+
             rows = CartController.get_number_of_items_in_cart()
 
             if(inventory_item and rows < 7):
-                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=currentDateTime)
+                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=item_timeout)
                 cart.insert()
                 # Lock item when added to cart
                 InventoryController.update_inventory(model, inventory_item.id, locked=True, type=inventory_item.type)
                 identity_map.set(cart.id, cart)
                 logger.info('Added %s to the cart successfully!' % (model))
+
+                CartController.cart_timeout()
 
                 return cart
 
@@ -148,3 +161,15 @@ class CartController():
                 return None
         else:
             return None
+
+    @staticmethod
+    @celery.task(name='timeout')
+    def cart_timeout():
+        logger.info('CALLED THE METHOD!!!')
+        rows = Mapper.query('carts', user_id=g.user.id)
+        carts = CartController.get_cart_items_from_rows(rows)
+        for item in carts:
+            current_time = datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
+            logger.info('TIMES: %s' % (datetime.strptime(item.added_time, "%Y-%m-%d %H:%M:%S") < current_time))
+            if datetime.strptime(item.added_time, "%Y-%m-%d %H:%M:%S") < current_time:
+                CartController.remove_item_from_cart(item.model)
