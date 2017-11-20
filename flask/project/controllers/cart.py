@@ -1,12 +1,9 @@
 
-from project import logger
+from project import logger, create_app
 from project.models.cart import Cart
 from flask import g
-from project.models.inventory import Inventory
-from project.controllers.electronic import ElectronicController
 from project.controllers.inventory import InventoryController
 from project.controllers.purchase import PurchaseController
-from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
 from time import gmtime, strftime
@@ -158,18 +155,20 @@ class CartController():
             if carts:
                 return carts
             else:
-                return None
+                return []
         else:
-            return None
+            return []
 
     @staticmethod
-    @celery.task(name='cartTimeout')
+    @celery.task(name='cart_timeout')
     def cart_timeout():
-        logger.info('CALLED THE METHOD!!!')
-        rows = Mapper.query('carts')
-        carts = CartController.get_cart_items_from_rows(rows)
-        for item in carts:
-            current_time = datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
-            logger.info('TIMES: %s' % (datetime.strptime(item.added_time, "%Y-%m-%d %H:%M:%S") < current_time))
-            if datetime.strptime(item.added_time, "%Y-%m-%d %H:%M:%S") < current_time:
-                CartController.remove_item_from_cart(item.model)
+        with create_app().app_context():
+            logger.warning('CALLED THE METHOD!!!')
+            rows = Mapper.query('carts')
+            carts = CartController.get_cart_items_from_rows(rows)
+            for item in carts:
+                current_time = datetime.now()
+                added_time = datetime.strptime(item.added_time, '%Y-%m-%d %H:%M:%S')
+                logger.info('TIMES: %s' % (added_time < current_time))
+                if added_time < current_time:
+                    CartController.remove_item_from_cart(item.model)
