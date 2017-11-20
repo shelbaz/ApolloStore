@@ -15,7 +15,7 @@ celery.conf.beat_schedule = {
 
 celery.conf.beat_schedule = {
     'arbitrary-name': {
-        'task': 'timeout',
+        'task': 'cartTimeout',
         'schedule': 60,
     },
 }

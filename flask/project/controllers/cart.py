@@ -12,7 +12,7 @@ import traceback
 from time import gmtime, strftime
 from project.orm import Mapper
 from project import identity_map
-from datetime import datetime, timedelta
+from datetime import datetime
 from project import celery
 
 class CartController():
@@ -163,10 +163,10 @@ class CartController():
             return None
 
     @staticmethod
-    @celery.task(name='timeout')
+    @celery.task(name='cartTimeout')
     def cart_timeout():
         logger.info('CALLED THE METHOD!!!')
-        rows = Mapper.query('carts', user_id=g.user.id)
+        rows = Mapper.query('carts')
         carts = CartController.get_cart_items_from_rows(rows)
         for item in carts:
             current_time = datetime.strptime(datetime.now().strftime("%Y-%m-%d %H:%M:%S"), "%Y-%m-%d %H:%M:%S")
