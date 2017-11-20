@@ -118,12 +118,13 @@ def create_users():
     import traceback
     try:
         from project.controllers.authentication import AuthenticationController
-        AuthenticationController.create_user('Teacher', 'something', '4378473 north', 'teacher@test.com', 'test', '3736363663', 'True')
-        AuthenticationController.create_user('TA', 'something', '437843 north', 'ta@test.com', 'test', '337737373', 'True')
-        AuthenticationController.create_user('Teacher', 'something', '4378473 north', 'teacher@teacher.com', 'test', '3736363663', 'False')
-        AuthenticationController.create_user('TA', 'something', '437843 north', 'ta@ta.com', 'test', '337737373', 'False')
-        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@shawn.com', 'lol', '4747747474', 'False')
-        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@test.com', 'lol', '4747747474', 'True')
+        AuthenticationController.create_user('Admin', 'One', '4378473 north', 'admin1@test.com', 'test', '3736363663', 'True')
+        AuthenticationController.create_user('Admin', 'Two', '437843 north', 'admin2@test.com', 'test', '337737373', 'True')
+        AuthenticationController.create_user('Client', 'One', '4378473 north', 'client1@test.com', 'test', '3736363663', 'False')
+        AuthenticationController.create_user('Client', 'Two', '437843 north', 'client2@test.com', 'test', '337737373', 'False')
+        AuthenticationController.create_user('Client', 'Three', '437843 north', 'client3@test.com', 'test', '337737373', 'False')
+        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@shawn.com', 'lool', '4747747474', 'False')
+        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@test.com', 'lool', '4747747474', 'True')
     except Exception:
         logger.error(traceback.format_exc())
 
