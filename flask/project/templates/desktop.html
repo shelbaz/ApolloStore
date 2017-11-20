@@ -33,9 +33,9 @@
 <script>
     function getSelected() {
         console.log(myTable.rows('.selected').data()[0]);
-        var selectedId = myTable.rows('.selected').data()[0][3];
-        console.log(selectedId);
-        delete_from_inventory(selectedId);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
     }
 </script>
 
@@ -47,12 +47,7 @@
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
-            Change Item
-        </button>
-        <button class="btn btn-primary btn-lg" onclick="getSelected()">
-            Delete Item
-        </button>
+
         <div class="col-md-12 text-left">
             <h1>List of Items</h1>
             <table id="projTable" class="table table-responsive table-bordered table-striped">
@@ -60,6 +55,7 @@
                     <tr>
                         <th></th>
                         <th>Edit</th>
+                        <th>Delete</th>
                         <th>Add</th>
                         <th>Count</th>                        
                         <th>Model</th>
@@ -79,6 +75,7 @@
                     <tr>
                         <td></td>
                         <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{desktop[0].model}}');">EDIT</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="delete_model('{{desktop[0].model}}');">DELETE</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{desktop[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{desktop[0].model}}');">-</button></td>
                         <td>{{desktop[1]}}</td>
@@ -119,12 +116,21 @@
              function add_to_inventory(model) {
                  var form = document.createElement('form');
                  form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/add-inventory/desktop/' + model);
+                 form.setAttribute('action', '/add-inventory/Desktop/' + model);
                  form.style.display = 'hidden';
                  document.body.appendChild(form);
                  form.submit();
                  console.log('submitted');
              }
+        </script>
+
+                <script>
+            function edit_button(){
+                var modelNumber = myTable.rows('.selected').data()[0][4];
+                fill_edit_form(modelNumber);
+            }
+
+
         </script>
 
         <script>
@@ -146,10 +152,20 @@
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/desktop/' + model);
+                form.setAttribute('action', '/remove-inventory/Desktop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
+            }
+
+            function delete_model(model){
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-desktop/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+
             }
         </script>
 

@@ -17,6 +17,7 @@ class Desktop(Item, Mapper):
         'cpu_cores': 'integer',
         'hd_size': 'integer',
         'dimensions': 'varchar(64)',
+        'hide': 'boolean'
     }
 
     constraints = {
@@ -25,7 +26,7 @@ class Desktop(Item, Mapper):
     }
 
     # Constructor that creates a new desktop
-    def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions):
+    def __init__(self, model, brand, price, weight, processor, ram_size, cpu_cores, hd_size, dimensions, hide=False):
 
         Mapper.__init__(self, __class__.name, __class__.attributes, __class__.constraints)
 
@@ -42,3 +43,17 @@ class Desktop(Item, Mapper):
         self.cpu_cores = cpu_cores
         self.hd_size = hd_size
         self.dimensions = dimensions
+        self.hide = hide
+
+    def serialize(self):
+        return {
+            'model': str(self.model),
+            'brand': str(self.brand),
+            'price': str(self.price),
+            'weight': str(self.weight),
+            'processor': str(self.processor),
+            'ram_size': str(self.ram_size),
+            'cpu_cores': str(self.cpu_cores),
+            'hd_size': str(self.hd_size),
+            'dimensions': str(self.dimensions)
+        }

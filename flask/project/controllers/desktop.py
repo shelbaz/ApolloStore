@@ -1,10 +1,10 @@
 
 from project import logger
-from project.gateways import get_inventory_count
 from project.models.desktop import Desktop
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
+import json
 from project.orm import Mapper
 from project import identity_map
 
@@ -40,14 +40,36 @@ class DesktopController():
     @staticmethod
     def get_all_desktops():
         try:
-            rows = Mapper.query('items', 'desktops')
+            rows = Mapper.query('items', 'desktops', hide=False)
             desktops = DesktopController.get_desktops_from_rows(rows)
             desktops_with_count = []
 
             if desktops:
                 for desktop in desktops:
-                    count = get_inventory_count('desktops', desktop.model)
-                    desktops_with_count.append([desktop, count])
+                    count = len(Mapper.query('inventories', 'desktops', model=desktop.model))
+                    desktops_with_count.append([desktop.serialize(), count])
+                return desktops_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
+    # Queries the list of all desktops and their count
+    @staticmethod
+    def get_all_unlocked_desktops(*filters):
+        try:
+            if filters == ():
+                rows = Mapper.query('items', 'desktops', 'inventories', locked=False, hide=False)
+            else:
+                rows = Mapper.query('items', 'desktops', 'inventories', locked=False, hide=False, **filters[0])
+
+            desktops = DesktopController.get_desktops_from_rows(rows)
+            desktops_with_count = []
+
+            if desktops:
+                for desktop in desktops:
+                    count = len(Mapper.query('inventories', 'desktops', model=desktop.model))
+                    desktops_with_count.append([desktop.serialize(), count])
                 return desktops_with_count
             else:
                 return None
@@ -85,7 +107,8 @@ class DesktopController():
             rows = Mapper.query('items', 'desktops', model=model)
             desktop = DesktopController.get_desktops_from_rows(rows)[0]
 
-            desktop.delete()
+            desktop.update(model=model, brand=desktop.brand, price=desktop.price, weight=desktop.weight, processor=desktop.processor, ram_size=desktop.ram_size, cpu_cores=desktop.cpu_cores, hd_size=desktop.hd_size, dimensions=desktop.dimensions, hide=True)
+            return desktop
 
         except Exception:
             logger.error(traceback.format_exc())

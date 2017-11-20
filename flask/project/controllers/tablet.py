@@ -2,15 +2,12 @@
 from project import logger
 from project.models.tablet import Tablet
 from project.controllers.electronic import ElectronicController
-from project.gateways import get_inventory_count
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
 from project import identity_map
 
 class TabletController():
-
-    
 
     # Creates a tablet that is valid
     def create_tablet(brand, price, weight, display_size, dimensions, processor, ram_size, cpu_cores, hd_size, battery, os, camera_info):
@@ -39,14 +36,40 @@ class TabletController():
     @staticmethod
     def get_all_tablets():
         try:
-            rows = Mapper.query('items', 'tablets')
+            rows = Mapper.query('items', 'tablets', hide=False)
             tablets = TabletController.get_tablets_from_rows(rows)
             tablets_with_count = []
 
             if tablets:
                 for tablet in tablets:
-                    count = get_inventory_count('tablets', tablet.model)
-                    tablets_with_count.append([tablet, count])
+                    # count = get_inventory_count('tablets', tablet.model)
+                    # tablets_with_count.append([tablet.serialize(), count])
+                    count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
+                    tablets_with_count.append([tablet.serialize(), count])
+                return tablets_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
+        # Queries the list of all tablets and their count
+    @staticmethod
+    def get_all_unlocked_tablets(*filters):
+        try:
+            if filters == ():
+                rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False)
+            else:
+                rows = Mapper.query('items', 'tablets', 'inventories', locked=False, hide=False, **filters[0])
+
+            tablets = TabletController.get_tablets_from_rows(rows)
+            tablets_with_count = []
+
+            if tablets:
+                for tablet in tablets:
+                    # count = get_inventory_count('tablets', tablet.model)
+                    # tablets_with_count.append([tablet.serialize(), count])
+                    count = len(Mapper.query('inventories', 'tablets', model=tablet.model))
+                    tablets_with_count.append([tablet.serialize(), count])
                 return tablets_with_count
             else:
                 return None
@@ -84,7 +107,13 @@ class TabletController():
             rows = Mapper.query('items', 'tablets', model=model)
             tablet = TabletController.get_tablets_from_rows(rows)[0]
 
-            tablet.delete()
+            tablet.update(model=model, brand=tablet.brand, price=tablet.price, weight=tablet.weight,
+                          display_size=tablet.display_size, dimensions = tablet.dimensions,
+                          processor=tablet.processor, ram_size=tablet.ram_size, cpu_cores=tablet.cpu_cores,
+                          hd_size=tablet.hd_size,
+                          battery=tablet.battery, os=tablet.os,
+                          camera_info=tablet.camera_info, hide=True)
+            return tablet
 
         except Exception:
             logger.error(traceback.format_exc())

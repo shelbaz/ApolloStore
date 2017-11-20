@@ -31,14 +31,12 @@
 
 
 <script>
-function getSelected() {
-   var selectedIds = myTable.columns().checkboxes.selected()[0];
-   console.log(selectedIds)
-
-   selectedIds.forEach(function(selectedId) {
-       // Do something
-   });
-}
+    function getSelected() {
+        console.log(myTable.rows('.selected').data()[0]);
+        var modelNumber = myTable.rows('.selected').data()[0][4];
+        console.log(modelNumber);
+        delete_from_inventory(modelNumber);
+    }
 </script>
 
 
@@ -49,12 +47,7 @@ function getSelected() {
         <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
             Add Item
         </button>
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#done">
-            Change Item
-        </button>
-        <button class="btn btn-primary btn-lg" onclick="getSelected()">
-            Delete Item
-        </button>
+
         <div class="col-md-12 text-left">
             <h1>List of Items</h1>
             <table id="projTable" class="table table-responsive table-bordered table-striped">
@@ -62,6 +55,7 @@ function getSelected() {
                     <tr>
                         <th></th>
                         <th>Edit</th>
+                        <th>Delete</th>
                         <th>Add</th>
                         <th>Count</th>
                         <th>Model</th>
@@ -85,6 +79,7 @@ function getSelected() {
                     <tr>
                         <td></td>
                         <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{laptop[0].model}}');">EDIT</button></td>
+                        <td><button type="button" class="btn btn-default" onclick="delete_model('{{laptop[0].model}}');">DELETE</button></td>
                         <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{laptop[0].model}}');">+</button>
                         <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{laptop[0].model}}');">-</button></td>
                         <td>{{laptop[1]}}</td>
@@ -132,12 +127,21 @@ function getSelected() {
             function add_to_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/add-inventory/laptop/' + model);
+                form.setAttribute('action', '/add-inventory/Laptop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form)
                 form.submit();
                 console.log('submitted');
             }
+        </script>
+
+        <script>
+            function edit_button(){
+                var modelNumber = myTable.rows('.selected').data()[0][4];
+                fill_edit_form(modelNumber);
+            }
+
+
         </script>
 
         <script>
@@ -172,10 +176,19 @@ function getSelected() {
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/laptop/' + model);
+                form.setAttribute('action', '/remove-inventory/Laptop/' + model);
                 form.style.display = 'hidden';
                 document.body.appendChild(form);
                 form.submit();
+            }
+            function delete_model(model){
+                var form = document.createElement('form');
+                form.setAttribute('method', 'post');
+                form.setAttribute('action', '/delete-laptop/' + model);
+                form.style.display = 'hidden';
+                document.body.appendChild(form);
+                form.submit();
+
             }
         </script>
 

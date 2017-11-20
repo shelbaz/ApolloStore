@@ -1,7 +1,6 @@
 
 from project import logger
 from project.models.monitor import Monitor
-from project.gateways import get_inventory_count
 from project.controllers.electronic import ElectronicController
 from uuid import uuid4
 import traceback
@@ -37,14 +36,37 @@ class MonitorController():
     @staticmethod
     def get_all_monitors():
         try:
-            rows = Mapper.query('items', 'monitors')
+            rows = Mapper.query('items', 'monitors', hide=False)
             monitors = MonitorController.get_monitors_from_rows(rows)
             monitors_with_count = []
 
             if monitors:
                 for monitor in monitors:
-                    count = get_inventory_count('monitors', monitor.model)
-                    monitors_with_count.append([monitor, count])
+                    count = len(Mapper.query('inventories', 'monitors', model=monitor.model))
+                    monitors_with_count.append([monitor.serialize(), count])
+                return monitors_with_count
+            else:
+                return None
+        except Exception:
+            logger.error(traceback.format_exc())
+
+
+    # Queries the list of all monitors and their count
+    @staticmethod
+    def get_all_unlocked_monitors(*filters):
+        try:
+            if filters == ():
+                rows = Mapper.query('items', 'monitors', 'inventories', locked=False, hide=False)
+            else:
+                rows = Mapper.query('items', 'monitors', 'inventories', locked=False, hide=False, **filters[0])
+
+            monitors = MonitorController.get_monitors_from_rows(rows)
+            monitors_with_count = []
+
+            if monitors:
+                for monitor in monitors:
+                    count = len(Mapper.query('inventories', 'monitors', model=monitor.model))
+                    monitors_with_count.append([monitor.serialize(), count])
                 return monitors_with_count
             else:
                 return None
@@ -80,7 +102,9 @@ class MonitorController():
             rows = Mapper.query('items', 'monitors', model=model)
             monitor = MonitorController.get_monitors_from_rows(rows)[0]
 
-            monitor.delete()
+            monitor.update(model=model, brand=monitor.brand, price=monitor.price, weight=monitor.weight,
+                          dimensions=monitor.dimensions, hide=True)
 
+            return monitor
         except Exception:
             logger.error(traceback.format_exc())

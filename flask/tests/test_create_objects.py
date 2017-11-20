@@ -53,7 +53,9 @@ class TestCreationObjects(BaseTestCase):
     def test_create_desktop_object(self):
         with self.client:
             desktop = DesktopController.create_desktop('LG', 500, 100, 'intel', 32, 4, 20, '20x20')
-
+            desktop2 = DesktopController.create_desktop('ASUS', 700, 100, 'intel', 32, 4, 20, '20x20')
+            desktop3 = DesktopController.create_desktop('DELL', 400, 100, 'intel', 32, 4, 20, '20x20')
+            
             self.assertEqual(desktop.price, 500)
             self.assertEqual(desktop.weight, 100)
             self.assertEqual(desktop.brand, 'LG')
