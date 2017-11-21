@@ -5,6 +5,7 @@ from re import match
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
+import datetime
 from project.identityMap import IdentityMap
 from project import identity_map
 from flask import g
@@ -21,7 +22,8 @@ class AuthenticationController():
                 if AuthenticationController.validate_name(first_name) and AuthenticationController.validate_name(last_name):
                     # if validate_password(password):
                     if not Mapper.query('users', email=email):
-                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
+                        added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin, logged_in=False,time_stamp=added_time)
                         user.hash_password(password)
                         user.insert()
 
@@ -61,7 +63,7 @@ class AuthenticationController():
         if rows:
             users = []
             for row in rows:
-                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
+                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
                 user.password_hash = row[5]
                 users.append(user)
 
@@ -80,7 +82,7 @@ class AuthenticationController():
         users = []
 
         for row in rows:
-            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
+            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
             user.password_hash = row[5]
             users.append(user)
 
