@@ -104,8 +104,12 @@
                         '<div>Hard Drive Space: ' + data.hd_size + 'Gb</div>',
                         '<div>Dimensions: ' + data.dimensions + '</div>',
                     '</div>',
+                    '{% if user.is_authenticated: %}',
                     '<button class="btn btn-primary" onclick="addToCart(this)">Add To Cart<span style="display:none">'+data.model+'</span></div>',
-                '</div>',
+                    '{% else: %}',
+                    '<button class="btn btn-primary disabled" onclick="">Add To Cart<span style="display:none">'+data.model+'</span></div>',
+                    '{% endif %}',
+            '</div>',
             '</div>',
         ].join("\n");
     }

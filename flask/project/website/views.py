@@ -29,7 +29,7 @@ def index():
         if g.user.admin:
             return redirect('/dashboard')
         return redirect('/home')
-    return render_template('index.html')
+    return redirect('/home')
 
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
@@ -464,21 +464,4 @@ def home():
 @login_required
 def users():
     if g.user.admin:
-        if request.method == 'POST':
-            id = request.form.get('id')
-            firstname = request.form.get('first_name')
-            lastname = request.form.get('last_name')
-            address = request.form.get('address')
-            email = request.form.get('email')
-            phone = request.form.get('phone')
-            admin = request.form.get('admin')
-
-            if id and firstname and lastname and address and email and phone and admin:
-                users = UserController.create_user(id, firstname, lastname, address, email, phone, admin)
-
-                if user:
-                    return redirect('/users')
-                else:
-                    logger.error('couldnt create user')
-
-        return render_template('users.html', user=g.user, users=UserController.get_all_users())
+        return render_template('users.html', user=g.user, users=Controller.get_all_users())
