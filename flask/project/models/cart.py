@@ -11,7 +11,7 @@ class Cart(Mapper):
         'inventory_id': 'UUID',
         'model': 'UUID',
         'user_id': 'UUID',
-        'added_time': 'integer'
+        'expiry_time': 'integer'
     }
 
     constraints = {
@@ -23,7 +23,7 @@ class Cart(Mapper):
     }
 
     # Constructor that creates a new cart
-    def __init__(self, id, inventory_id, model, user_id, added_time):
+    def __init__(self, id, inventory_id, model, user_id, expiry_time):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 
@@ -32,4 +32,4 @@ class Cart(Mapper):
         self.inventory_id = inventory_id
         self.model = model
         self.user_id = user_id
-        self.added_time = added_time
+        self.expiry_time = expiry_time

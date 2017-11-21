@@ -15,7 +15,9 @@ class User(Mapper):
         'email': 'varchar(128)',
         'password_hash': 'varchar(256)',
         'phone': 'varchar(64)',
-        'admin': 'boolean'
+        'admin': 'boolean',
+        'logged_in': 'boolean',
+        'time_stamp': 'timestamp'
     }
 
     constraints = {
@@ -24,7 +26,7 @@ class User(Mapper):
     }
 
     # Constructor that creates a new user
-    def __init__(self, id, first_name, last_name, address, email, phone, admin):
+    def __init__(self, id, first_name, last_name, address, email, phone, admin, logged_in, time_stamp):
 
         super().__init__(__class__.name, __class__.attributes, __class__.constraints)
 
@@ -36,6 +38,8 @@ class User(Mapper):
         self.email = email
         self.phone = phone
         self.admin = admin
+        self.logged_in = logged_in
+        self.time_stamp = time_stamp
 
     # Hashes the password and initializes the user's password_hash attribute
     def hash_password(self, password):

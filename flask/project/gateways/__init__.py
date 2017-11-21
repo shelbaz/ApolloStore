@@ -131,7 +131,10 @@ class Gateway:
     def update_db(table, attributes, obj):
         """Updates an entry in the database with the attributes provided."""
         types_with_no_quotes = ['integer', 'decimal', 'boolean']
-        if(table == 'inventories'):
+        if(table == 'users'):
+            whereStatement = 'id'
+            id = obj.id
+        elif(table == 'inventories'):
             whereStatement = 'id'
             id = obj.id
         else:
