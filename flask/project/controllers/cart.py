@@ -1,17 +1,16 @@
 
-from project import logger
+from project import logger, create_app
 from project.models.cart import Cart
 from flask import g
-from project.models.inventory import Inventory
-from project.controllers.electronic import ElectronicController
 from project.controllers.inventory import InventoryController
 from project.controllers.purchase import PurchaseController
-from project.identityMap import IdentityMap
 from uuid import uuid4
 import traceback
-from time import gmtime, strftime
 from project.orm import Mapper
 from project import identity_map
+from datetime import datetime, timedelta
+from project import celery
+import time
 
 class CartController():
 
@@ -26,16 +25,29 @@ class CartController():
                 if(not inv.locked):
                     inventory_item = inv
 
-            currentDateTime = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+            logger.info(inventory_item.type)
+
+            item_timeout = datetime.now()
+            if inventory_item.type == 'Desktop':
+                item_timeout = time.mktime((datetime.now() + timedelta(seconds=45)).timetuple())
+            elif inventory_item.type == 'Laptop':
+                item_timeout = time.mktime((datetime.now() + timedelta(seconds=65)).timetuple())
+            elif inventory_item.type == 'Tablet':
+                item_timeout = time.mktime((datetime.now() + timedelta(seconds=85)).timetuple())
+            elif inventory_item.type == 'Monitor':
+                item_timeout = time.mktime((datetime.now() + timedelta(seconds=95)).timetuple())
+
             rows = CartController.get_number_of_items_in_cart()
 
             if(inventory_item and rows < 7):
-                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=currentDateTime)
+                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=item_timeout)
                 cart.insert()
                 # Lock item when added to cart
                 InventoryController.update_inventory(model, inventory_item.id, locked=True, type=inventory_item.type)
                 identity_map.set(cart.id, cart)
                 logger.info('Added %s to the cart successfully!' % (model))
+
+                CartController.cart_timeout()
 
                 return cart
 
@@ -145,6 +157,27 @@ class CartController():
             if carts:
                 return carts
             else:
-                return None
+                return []
         else:
-            return None
+            return []
+
+    @staticmethod
+    @celery.task(name='cart_timeout')
+    def cart_timeout():
+        with create_app().app_context():
+            rows = Mapper.query('carts')
+            carts = CartController.get_cart_items_from_rows(rows)
+            for item in carts:
+                current_time = datetime.now()
+                expiry = datetime.fromtimestamp(item.added_time)
+                if expiry < current_time:
+                    try:
+
+                        identity_map.delete(item.id)
+                        item.delete()
+                        logger.info('cart inventory id:' + item.inventory_id)
+                        InventoryController.update_inventory(item.model, inventoryid=item.inventory_id, locked=False)
+                        logger.info('Added %s back to inventory successfully!' % (item.model))
+
+                    except Exception:
+                        logger.error(traceback.format_exc())
