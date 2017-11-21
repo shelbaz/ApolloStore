@@ -5,6 +5,9 @@ from re import match
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
+from project.identityMap import IdentityMap
+from project import identity_map
+from flask import g
 
 
 class AuthenticationController():
@@ -84,3 +87,16 @@ class AuthenticationController():
             return users[0]
         else:
             return None
+
+    @staticmethod
+    def delete_user(user_id):
+        rows = Mapper.query('users', id=g.user.id)
+        if rows:
+            user = AuthenticationController.get_user_from_rows(rows)
+            identity_map.delete(user.id)
+            if user:
+                user.delete()
+            else:
+                logger.error("Account cannot be deleted")
+
+        logger.info('Account deleted successfully!')

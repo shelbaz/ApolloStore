@@ -12,6 +12,7 @@ from project.controllers.purchase import PurchaseController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
+from project.controllers.authentication import AuthenticationController
 import json
 
 website_blueprint = Blueprint('website_blueprint', __name__)
@@ -413,22 +414,26 @@ def remove_from_cart(model):
     CartController.remove_item_from_cart(model)
     return redirect('/cart')
 
+
 @website_blueprint.route('/checkout/', methods=['GET'])
 @login_required
 def checkout_from_cart():
     CartController.checkout_from_cart()
     return redirect('/')
 
+
 @website_blueprint.route('/returns', methods=['GET', 'POST'])
 @login_required
 def returns():
     return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
+
 
 @website_blueprint.route('/return-item/<string:model>', methods=['GET', 'POST'])
 @login_required
 def return_past_purchase(model):
     PurchaseController.return_item(model)
     return redirect('/returns')
+
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required
@@ -446,12 +451,14 @@ def edit_monitor():
             else:
                 logger.error('couldnt create monitor item')
 
+
 @website_blueprint.route('/delete-monitor/<string:model>', methods=['POST'])
 @login_required
 def delete_monitor(model):
     if g.user.admin:
         MonitorController.delete_model(model)
         return redirect('/monitor')
+
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -464,3 +471,18 @@ def dashboard():
 @login_required
 def home():
     return render_template('home.html', user=g.user)
+
+
+@website_blueprint.route('/account-settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    return render_template('account-settings.html', user=g.user)
+
+
+@website_blueprint.route('/account-delete', methods=['GET', 'POST'])
+@login_required
+def account_delete():
+    AuthenticationController.delete_user(g.user.id)
+    return redirect('/')
+
+
