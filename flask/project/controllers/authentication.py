@@ -19,7 +19,7 @@ class AuthenticationController():
                     # if validate_password(password):
                     if not Mapper.query('users', email=email):
                         added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=True, logged_in=False,time_stamp=added_time)
+                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin, logged_in=False,time_stamp=added_time)
                         user.hash_password(password)
                         user.insert()
 
