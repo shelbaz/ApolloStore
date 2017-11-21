@@ -100,15 +100,31 @@ def drop():
     except Exception:
         logger.error(traceback.format_exc())
 
+# For use to resetup application with users and data after an update
+@manager.command
+def init_store():
+    import traceback
+    try:
+        drop()
+        create()
+        create_users()
+        create_items()
+    except Exception:
+        logger.error(traceback.format_exc())
+
+# For use to create test users
 @manager.command
 def create_users():
     import traceback
     try:
         from project.controllers.authentication import AuthenticationController
-        AuthenticationController.create_user('Teacher', 'something', '4378473 north', 'teacher@test.com', 'test', '3736363663', 'True')
-        AuthenticationController.create_user('TA', 'something', '437843 north', 'ta@test.com', 'test', '337737373', 'True')
-        AuthenticationController.create_user('shawn', 'elbaz', '4847 north', 'shawn@shawn.com', 'lol', '4747747474', 'False')
-        AuthenticationController.create_user('shawn', 'elbaz', '4847 north', 'shawn@test.com', 'lol', '4747747474', 'True')
+        AuthenticationController.create_user('Admin', 'One', '4378473 north', 'admin1@test.com', 'test', '3736363663', 'True')
+        AuthenticationController.create_user('Admin', 'Two', '437843 north', 'admin2@test.com', 'test', '337737373', 'True')
+        AuthenticationController.create_user('Client', 'One', '4378473 north', 'client1@test.com', 'test', '3736363663', 'False')
+        AuthenticationController.create_user('Client', 'Two', '437843 north', 'client2@test.com', 'test', '337737373', 'False')
+        AuthenticationController.create_user('Client', 'Three', '437843 north', 'client3@test.com', 'test', '337737373', 'False')
+        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@shawn.com', 'lool', '4747747474', 'False')
+        AuthenticationController.create_user('Shawn', 'Elbaz', '4847 north', 'shawn@test.com', 'lool', '4747747474', 'True')
     except Exception:
         logger.error(traceback.format_exc())
 
@@ -125,7 +141,7 @@ def test_aspect():
     except Exception:
         logger.error(traceback.format_exc())
 
-
+# For use to create test items and add to inventory 
 @manager.command
 def create_items():
     import traceback
@@ -139,17 +155,28 @@ def create_items():
         invModels = []
 
         invModels.append(LaptopController.create_laptop('Asus', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', True, True))
-        invModels.append(LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
-        invModels.append(LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 2, 1080, 'good', 'Windows 10', False, True))
+        invModels.append(LaptopController.create_laptop('Lenovo', 500, 10, '10x10', 'intel', 256, 4, 1080, 'good', 'Windows 8', False, True))
+        invModels.append(LaptopController.create_laptop('Dell', 500, 10, '10x10', 'intel', 256, 6, 1080, 'good', 'Windows 10', False, True))
+        invModels.append(LaptopController.create_laptop('Asus', 600, 10, '10x10', 'intel', 128, 8, 1080, 'good', 'Windows 7', True, True))
+        invModels.append(LaptopController.create_laptop('Lenovo', 700, 10, '10x10', 'intel', 512, 2, 1080, 'good', 'Windows 10', False, True))
+        invModels.append(LaptopController.create_laptop('Dell', 800, 10, '10x10', 'intel', 1000, 6, 1080, 'good', 'Windows 10', False, True))
+
+
 
         invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
         invModels.append(TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
         invModels.append(TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 10', 'nice'))
+        invModels.append(TabletController.create_tablet('Asus', 600, 10, '10x10', '100x100', 'intel', 512, 2, 1080, 'good', 'Windows 7', 'nice'))
+        invModels.append(TabletController.create_tablet('Dell', 700, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good', 'Windows 8', 'nice'))
+        invModels.append(TabletController.create_tablet('Asus', 800, 10, '10x10', '100x100', 'intel', 128, 2, 1080, 'good', 'Windows 10', 'nice'))
 
 
         invModels.append(MonitorController.create_monitor('Asus', 600, 10, '125x100'))
         invModels.append(MonitorController.create_monitor('Dell', 600, 10, '150x100'))
         invModels.append(MonitorController.create_monitor('Asus', 600, 10, '170x100'))
+        invModels.append(MonitorController.create_monitor('Asus', 700, 11, '125x100'))
+        invModels.append(MonitorController.create_monitor('Dell', 800, 12, '150x100'))
+        invModels.append(MonitorController.create_monitor('Asus', 900, 13, '170x100'))
 
         invModels.append(DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100'))
         invModels.append(DesktopController.create_desktop('Dell', 500, 10, 'intel', 256, 2, 1080, '100x100'))
