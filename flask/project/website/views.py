@@ -73,7 +73,6 @@ def desktop():
         return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
 @website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
-@login_required
 def desktop_client():
     desktops=DesktopController.get_all_desktops()
     
@@ -174,7 +173,6 @@ def laptop():
         return render_template('laptop.html', user=g.user, laptops=LaptopController.get_all_laptops())
 
 @website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
-@login_required
 def laptop_client():
     laptops=LaptopController.get_all_laptops()
 
@@ -280,7 +278,6 @@ def tablet():
 
 
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
-@login_required
 def tablet_client():
     tablets=TabletController.get_all_unlocked_tablets()
 
@@ -370,7 +367,6 @@ def monitor():
 
 
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
-@login_required
 def monitor_client():
     monitors=MonitorController.get_all_monitors()
 
@@ -461,6 +457,28 @@ def dashboard():
 
 
 @website_blueprint.route('/home', methods=['GET', 'POST'])
-@login_required
 def home():
     return render_template('home.html', user=g.user)
+
+@website_blueprint.route('/users', methods=['GET', 'POST'])
+@login_required
+def users():
+    if g.user.admin:
+        if request.method == 'POST':
+            id = request.form.get('id')
+            firstname = request.form.get('first_name')
+            lastname = request.form.get('last_name')
+            address = request.form.get('address')
+            email = request.form.get('email')
+            phone = request.form.get('phone')
+            admin = request.form.get('admin')
+
+            if id and firstname and lastname and address and email and phone and admin:
+                users = UserController.create_user(id, firstname, lastname, address, email, phone, admin)
+
+                if user:
+                    return redirect('/users')
+                else:
+                    logger.error('couldnt create user')
+
+        return render_template('users.html', user=g.user, users=UserController.get_all_users())
