@@ -8,7 +8,8 @@ from project.orm import Mapper
 from project.identityMap import IdentityMap
 from project import identity_map
 from flask import g
-
+from project.controllers.purchase import PurchaseController
+from project.controllers.cart import CartController
 
 class AuthenticationController():
 
@@ -90,6 +91,15 @@ class AuthenticationController():
 
     @staticmethod
     def delete_user(user_id):
+        purchases = PurchaseController.get_past_purchases()
+        if purchases and purchases[0]:
+            for purchase in purchases:
+                PurchaseController.delete_purchases(purchase.model_id)
+        else:
+            logger.info("No purchases were made by user")
+
+        CartController.flush_cart()
+
         rows = Mapper.query('users', id=g.user.id)
         if rows:
             user = AuthenticationController.get_user_from_rows(rows)

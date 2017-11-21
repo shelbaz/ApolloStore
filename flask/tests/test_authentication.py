@@ -87,8 +87,14 @@ class TestAuthentication(BaseTestCase):
             self.assertNotEqual(user, None)
             result = AuthenticationController.delete_user(user.id)
             rows = Mapper.query('users', email=request_data['email'])
-            user = AuthenticationController.get_user_from_rows(rows)
-            self.assertEqual(user, None)
+            deleted_user = AuthenticationController.get_user_from_rows(rows)
+            self.assertEqual(deleted_user, None)
+
+            rows = Mapper.query('purchases', user_id = user.id)
+            self.assertEqual(rows, [])
+
+            cart_rows = Mapper.query('carts', user_id = user.id)
+            self.assertEqual(cart_rows, [])
 
 # Runs the tests.
 if __name__ == '__main__':
