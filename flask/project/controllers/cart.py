@@ -25,7 +25,9 @@ class CartController():
                 if(not inv.locked):
                     inventory_item = inv
 
-            item_timeout = (datetime.now()).timetuple()
+            logger.info(inventory_item.type)
+
+            item_timeout = datetime.now()
             if inventory_item.type == 'Desktop':
                 item_timeout = time.mktime((datetime.now() + timedelta(seconds=45)).timetuple())
             elif inventory_item.type == 'Laptop':
