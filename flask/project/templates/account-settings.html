@@ -1,0 +1,28 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<div>
+
+    <div style="text-align: center;">
+        <h1>Are you sure you want to delete your account?</h1>
+        <span></span>
+        <button type="button" class="btn btn-danger" onclick="delete_accounts()">Delete Account</button>
+    </div>
+
+</div>
+
+
+<script>
+    function delete_accounts() {
+        var form = document.createElement('form');
+        form.setAttribute('method', 'post');
+        form.setAttribute('action', '/account-delete');
+        form.style.display = 'hidden';
+        document.body.appendChild(form);
+        form.submit();
+        console.log('submitted');
+    }
+</script>
+
+{% endblock %}

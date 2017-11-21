@@ -70,6 +70,32 @@ class TestAuthentication(BaseTestCase):
 
             self.assertTrue(user)
 
+    def test_delete_account(self):
+        with self.client:
+            request_data = dict(password='test',
+                                email='test@test.com',
+                                firstName='muku',
+                                lastName='dey',
+                                address='123213432g',
+                                phone='34543534',
+                                admin=False)
+
+            self.client.post('/register', data=request_data, content_type='application/x-www-form-urlencoded')
+
+            rows = Mapper.query('users', email=request_data['email'])
+            user = AuthenticationController.get_user_from_rows(rows)
+            self.assertNotEqual(user, None)
+            result = AuthenticationController.delete_user(user.id)
+            rows = Mapper.query('users', email=request_data['email'])
+            deleted_user = AuthenticationController.get_user_from_rows(rows)
+            self.assertEqual(deleted_user, None)
+
+            rows = Mapper.query('purchases', user_id = user.id)
+            self.assertEqual(rows, [])
+
+            cart_rows = Mapper.query('carts', user_id = user.id)
+            self.assertEqual(cart_rows, [])
+
 # Runs the tests.
 if __name__ == '__main__':
     unittest.main()
