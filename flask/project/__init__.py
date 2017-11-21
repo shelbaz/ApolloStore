@@ -28,7 +28,13 @@ celery = Celery(__name__, broker=os.getenv('CELERY_BROKER_URL'))
 def create_app():
     app = Flask(__name__)
     app_settings = os.getenv('APP_SETTINGS')
-    app.config.from_object(app_settings)
+
+    try:
+        app.config.from_object(app_settings)
+    except ImportError:
+        import sys
+        sys.path.append('/usr/src/app')
+        app.config.from_object(app_settings)
 
     login_manager.init_app(app)
 
