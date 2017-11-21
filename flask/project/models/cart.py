@@ -11,7 +11,7 @@ class Cart(Mapper):
         'inventory_id': 'UUID',
         'model': 'UUID',
         'user_id': 'UUID',
-        'added_time': 'timestamp'
+        'added_time': 'integer'
     }
 
     constraints = {
