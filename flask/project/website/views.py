@@ -32,7 +32,6 @@ def index():
         return redirect('/home')
     return redirect('/home')
 
-
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
 @login_required
 def add_to_inventory(electronic, model):
@@ -466,6 +465,10 @@ def dashboard():
 @website_blueprint.route('/home', methods=['GET', 'POST'])
 def home():
     return render_template('home.html', user=g.user)
+
+@website_blueprint.route('/copyright', methods=['GET', 'POST'])
+def copyright():
+    return render_template('copyright.html', user=g.user)
 
 @website_blueprint.route('/users', methods=['GET', 'POST'])
 @login_required
