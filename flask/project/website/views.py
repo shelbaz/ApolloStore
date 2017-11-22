@@ -12,6 +12,7 @@ from project.controllers.purchase import PurchaseController
 from flask_login import login_required
 from project import logger
 from project.controllers.inventory import InventoryController
+from project.controllers.authentication import AuthenticationController
 import json
 
 website_blueprint = Blueprint('website_blueprint', __name__)
@@ -29,7 +30,7 @@ def index():
         if g.user.admin:
             return redirect('/dashboard')
         return redirect('/home')
-    return render_template('index.html')
+    return redirect('/home')
 
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
@@ -73,7 +74,6 @@ def desktop():
         return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
 @website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
-@login_required
 def desktop_client():
     desktops=DesktopController.get_all_desktops()
     
@@ -174,7 +174,6 @@ def laptop():
         return render_template('laptop.html', user=g.user, laptops=LaptopController.get_all_laptops())
 
 @website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
-@login_required
 def laptop_client():
     laptops=LaptopController.get_all_laptops()
 
@@ -280,7 +279,6 @@ def tablet():
 
 
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
-@login_required
 def tablet_client():
     tablets=TabletController.get_all_unlocked_tablets()
 
@@ -370,7 +368,6 @@ def monitor():
 
 
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
-@login_required
 def monitor_client():
     monitors=MonitorController.get_all_monitors()
 
@@ -413,22 +410,26 @@ def remove_from_cart(model):
     CartController.remove_item_from_cart(model)
     return redirect('/cart')
 
+
 @website_blueprint.route('/checkout/', methods=['GET'])
 @login_required
 def checkout_from_cart():
     CartController.checkout_from_cart()
     return redirect('/')
 
+
 @website_blueprint.route('/returns', methods=['GET', 'POST'])
 @login_required
 def returns():
     return render_template('returns.html', user=g.user, returns=PurchaseController.get_past_purchases())
+
 
 @website_blueprint.route('/return-item/<string:model>', methods=['GET', 'POST'])
 @login_required
 def return_past_purchase(model):
     PurchaseController.return_item(model)
     return redirect('/returns')
+
 
 @website_blueprint.route('/edit-monitor', methods=['POST'])
 @login_required
@@ -446,12 +447,14 @@ def edit_monitor():
             else:
                 logger.error('couldnt create monitor item')
 
+
 @website_blueprint.route('/delete-monitor/<string:model>', methods=['POST'])
 @login_required
 def delete_monitor(model):
     if g.user.admin:
         MonitorController.delete_model(model)
         return redirect('/monitor')
+
 
 @website_blueprint.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -461,6 +464,22 @@ def dashboard():
 
 
 @website_blueprint.route('/home', methods=['GET', 'POST'])
-@login_required
 def home():
     return render_template('home.html', user=g.user)
+
+@website_blueprint.route('/users', methods=['GET', 'POST'])
+@login_required
+def users():
+    if g.user.admin:
+        return render_template('users.html', user=g.user, users=Controller.get_all_users())
+
+@website_blueprint.route('/account-settings', methods=['GET', 'POST'])
+@login_required
+def account_settings():
+    return render_template('account-settings.html', user=g.user)
+
+@website_blueprint.route('/account-delete', methods=['GET', 'POST'])
+@login_required
+def account_delete():
+    AuthenticationController.delete_user(g.user.id)
+    return redirect('/')

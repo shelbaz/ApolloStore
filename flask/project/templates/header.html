@@ -140,7 +140,8 @@
                         {% if user.is_authenticated: %}
                         <a class="navbar-brand" href="/logout">Logout</a>
                         {% else: %}
-                        <a class="navbar-brand" href="/login">Login</a>
+                        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#signupModal">Register</a>
                         {% endif %}
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -162,12 +163,16 @@
                             <li>
                                 <a href="/tablet">Tablet</a>
                             </li>
+                            <li>
+                                <a href="/users">Users</a>
+                            </li>
                         </ul>
                     </div>
                 {% else: %}
                 <!-- This is the nav for users to direct to product views -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            {% if user.is_authenticated: %}
                             <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi, {{user.first_name}} {{user.last_name}} <br> <b>Your Account</b> <span class="caret"></span></a>
 
@@ -176,8 +181,10 @@
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
                                 </a></li>
                                 <li><a href="/returns"><span class="glyphicon glyphicon-chevron-left"></span>Return Purchases</a></li>
+                                <li><a href="/account-settings"><span class="glyphicon glyphicon-cog"></span>Account Settings</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
                             <li>
                                 <a href="/home">Home</a>
                             </li>
@@ -202,7 +209,87 @@
                 <!-- /.container -->
             </nav>
 
+		<!-- Login Modal -->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+			     <form action="/login" method="post">
+				  <div class="form-group">
+				    <label for="loginEmailInput">Email address</label>
+				    <input name="email" type="email" class="form-control" id="loginEmailInput" placeholder="Enter email">
+				  </div>
+				  <div class="form-group">
+				    <label for="loginPasswordInput">Password</label>
+				    <input name="password" type="password" class="form-control" id="loginPasswordInput" placeholder="Password">
+				  </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button name="action" onclick="submit" class="btn btn-primary">Login</button>
+			      </div>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
+		<!-- Signup Modal -->
+		<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form action="/register" method="post">
+		        	<div class="row">
+		        		<div class="col">
+				        	<div class="form-group">
+								    <label for="firstNameInput">First Name</label>
+								    <input name="firstName" type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+								  </div>
+								</div>
+								<div class="col">
+								  <div class="form-group">
+								    <label for="lastNameInput">Last Name</label>
+								    <input name="lastName" type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+								  </div>
+								</div>
+							</div>
+						  <div class="form-group">
+						    <label for="addressInput">Address</label>
+						    <input name="address" type="text" class="form-control" id="addressInput" placeholder="Address">
+						  </div>
+						  <div class="form-group">
+						    <label for="emailInput">Email address</label>
+						    <input name="email" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
+						  </div>
+						  <div class="form-group">
+						    <label for="phoneInput">Phone</label>
+						    <input name="phone" type="number" class="form-control" id="phoneInput" placeholder="Phone">
+						  </div>
+						  <div class="form-group">
+						    <label for="passwordInput">Password</label>
+						    <input name="password" type="password" class="form-control" id="passwordInput" placeholder="Password">
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button name="action" type="submit" class="btn btn-primary">Create</button>
+				      </div>
+		      	</form>
+		    </div>
+		  </div>
+		</div>
 
             <!-- Bootstrap Core JavaScript -->
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
