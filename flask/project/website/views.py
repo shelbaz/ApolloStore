@@ -471,7 +471,7 @@ def home():
 @login_required
 def users():
     if g.user.admin:
-        return render_template('users.html', user=g.user, users=Controller.get_all_users())
+        return render_template('users.html', user=g.user, users=AuthenticationController.get_all_users())
 
 @website_blueprint.route('/account-settings', methods=['GET', 'POST'])
 @login_required
