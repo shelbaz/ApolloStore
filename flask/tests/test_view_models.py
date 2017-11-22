@@ -56,37 +56,6 @@ class TestViewModels(BaseTestCase):
             self.assertEqual(result2, None)
 
     # Test to see if the query function works for the Tablet class
-    def test_should_return_query_results_for_inventory(self):
-        with self.client:
-            t1 = TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
-                                           'Windows 10', 'nice')
-            TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
-                                           'Windows 10', 'nice')
-            TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
-                                           'Windows 10', 'nice')
-            d1 =DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(d1.model, 'Desktop')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(d1.model)
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t1.model)
-
-            inventories = CartController.get_cart_items()
-            count = CartController.get_number_of_items_in_cart()
-            self.assertEqual(len(inventories), 7)
-
 
     # Test to see if the query function works for the Desktop class
     def test_should_return_query_results_for_desktop(self):
@@ -167,42 +136,6 @@ class TestViewModels(BaseTestCase):
 
             result = MonitorController.get_all_monitors()
             self.assertEqual(len(result), 2)
-
-    # Tests to see if item gets returned back to inventory and removed from past purchases
-    def test_should_return_item_from_past_purchases(self):
-        with self.client:
-            t1 = TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
-                                                'Windows 10', 'nice')
-            t2 = TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
-                                                'Windows 10', 'nice')
-
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            InventoryController.add_item_to_inventory(t2.model, 'Tablet')
-
-            result = TabletController.get_all_unlocked_tablets()
-            self.assertEqual(len(result), 3)
-
-            CartController.add_item_to_cart(t1.model)
-            CartController.add_item_to_cart(t2.model)
-            CartController.checkout_from_cart()
-
-            result = TabletController.get_all_unlocked_tablets()
-            self.assertEqual(len(result), 1)
-
-            purchaseResult = PurchaseController.get_past_purchases()
-            self.assertEqual(len(purchaseResult), 2)
-
-            PurchaseController.return_item(purchaseResult[0].model_id)
-
-            result = TabletController.get_all_unlocked_tablets()
-            self.assertEqual(len(result), 2)
-
-            purchaseResult = PurchaseController.get_past_purchases()
-            self.assertEqual(len(purchaseResult), 1)
-
-
-
 
 # Runs the tests.
 if __name__ == '__main__':
