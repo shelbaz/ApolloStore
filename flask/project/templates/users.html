@@ -9,16 +9,10 @@
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
 
-
 <script type="text/javascript">
     var myTable;
     $(document).ready(function() {
        myTable = $('#projTable').DataTable( {
-        columnDefs: [ {
-            orderable: false,
-            className: 'select-checkbox',
-            targets:   0
-        } ],
         select: {
             style:    'os',
             selector: 'td:first-child'
@@ -27,7 +21,6 @@
     } );
     });
 </script>
-
 
 <!-- Page Content -->
 <div class="container">
@@ -39,8 +32,7 @@
             <table id="projTable" class="table table-responsive table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>ID</th>
+                        <th>Client ID</th>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Address</th>
@@ -53,14 +45,13 @@
                 {% if users: %}
                     {% for user in users: %}
                     <tr>
-                        <td></td>
-                        <td id ="{{user[0].id}}">{{user[0].id}}</td>
-                        <td id ="{{user[0].id}}-fname">{{user[0].first_name}}</td>
-                        <td id ="{{user[0].id}}-lname">{{user[0].last_name}}</td>
-                        <td id ="{{user[0].id}}-address">{{user[0].address}}</td>
-                        <td id ="{{user[0].id}}-email">{{user[0].email}}</td>
-                        <td id ="{{user[0].id}}-phone">{{user[0].phone}}</td>
-                        <td id ="{{user[0].id}}-admin">{{user[0].admin}}</td>
+                        <td id ="{{user.id}}">{{user.id}}</td>
+                        <td id ="{{user.id}}-fname">{{user.first_name}}</td>
+                        <td id ="{{user.id}}-lname">{{user.last_name}}</td>
+                        <td id ="{{user.id}}-address">{{user.address}}</td>
+                        <td id ="{{user.id}}-email">{{user.email}}</td>
+                        <td id ="{{user.id}}-phone">{{user.phone}}</td>
+                        <td id ="{{user.id}}-admin">{{user.admin}}</td>
                     </tr>
                     {% endfor %}
                 {% else: %}
