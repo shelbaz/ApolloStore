@@ -2,6 +2,7 @@
 
 from flask import redirect, g, Blueprint, request, abort
 from project import logger
+import datetime
 from project.controllers.authentication import AuthenticationController
 from flask_login import current_user, login_user, logout_user
 from project.orm import Mapper
@@ -58,9 +59,11 @@ def login():
 
     elif user.logged_in:
         return 'You are already logged in on another browser/computer.'
+
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     user.update(first_name=user.first_name, last_name=user.last_name, email=user.email,
                 address=user.address, password_hash=user.password_hash, phone=user.phone, admin=user.admin,
-                logged_in=True, time_stamp=user.time_stamp)
+                logged_in=True, time_stamp=current_time)
     g.user = user
     login_user(g.user)
 

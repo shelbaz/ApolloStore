@@ -93,15 +93,23 @@ class CartController():
         items = []
 
         if carts:
-            cart_models = []
+            cart_models = {}
 
             for cart in carts:
-                cart_models.append(cart.model)
+                if cart.model in cart_models.keys():
+                    cart_models[cart.model] += 1
+                else:
+                    cart_models[cart.model] = 1
 
-            rows = Mapper.all_items_query(cart_models)
+            rows = Mapper.all_items_query(cart_models.keys())
             items = CartController.get_items_from_rows(rows)
-        
-        return items
+
+        cart_items = []
+
+        for item in items:
+             cart_items.extend([item] * cart_models[item['model']])
+
+        return cart_items
 
     @staticmethod
     def get_items_from_rows(rows):
