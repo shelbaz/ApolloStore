@@ -2,6 +2,7 @@
 from project import logger
 from project.models.desktop import Desktop
 from project.controllers.electronic import ElectronicController
+from project.controllers.inventory import InventoryController
 from uuid import uuid4
 import traceback
 import json
@@ -31,10 +32,14 @@ class DesktopController():
 
     @staticmethod
     def update_desktop(model, **conditions):
-        rows = Mapper.query('desktops', model=model)
-        desktop = DesktopController.get_desktops_from_rows(rows)[0]
-        desktop.update(**conditions)
-        return desktop
+        inventory_rows = Mapper.query('inventories', model=model, locked=True)
+        inventories = InventoryController.get_inventory_items_from_rows(inventory_rows)
+
+        if not inventories:
+            rows = Mapper.query('desktops', model=model)
+            desktop = DesktopController.get_desktops_from_rows(rows)[0]
+            desktop.update(**conditions)
+            return desktop
 
     # Queries the list of all desktops and their count
     @staticmethod

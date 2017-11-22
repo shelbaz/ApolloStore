@@ -74,6 +74,24 @@ class AuthenticationController():
         else:
             return None
 
+    @staticmethod
+    def get_all_users():
+        rows = Mapper.query('users', admin=False)
+        logger.error(rows);
+        if rows:
+            users = []
+            for row in rows:
+                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
+                user.password_hash = row[5]
+                users.append(user)
+
+            if users:
+                return users
+            else:
+                return None
+        else:
+            return None
+
     @login_manager.user_loader
     def load_user(user_id):
 

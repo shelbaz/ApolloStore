@@ -96,6 +96,24 @@ class TestAuthentication(BaseTestCase):
             cart_rows = Mapper.query('carts', user_id = user.id)
             self.assertEqual(cart_rows, [])
 
+    def test_get_all_users(self):
+        with self.client:
+            user1 = AuthenticationController.create_user('TestA', 'TesterA', '123 Test1', 'testing1@gmail.com',
+                                                        'testing111', '5141234567', False)
+            user2 = AuthenticationController.create_user('TestB', 'TesterB', '123 Test2', 'testing2@gmail.com',
+                                                        'testing111', '5141234567', False)
+            user3 = AuthenticationController.create_user('TestC', 'TesterC', '123 Test3', 'testing3@gmail.com',
+                                                        'testing111', '5141234567', False)
+            user4 = AuthenticationController.create_user('TestD', 'TesterD', '123 Test4', 'testing4@gmail.com',
+                                                        'testing111', '5141234567', False)
+
+            all_users = AuthenticationController.get_all_users()
+
+            self.assertEqual(user1.email, all_users[0].email)
+            self.assertEqual(user2.email, all_users[1].email)
+            self.assertEqual(user3.email, all_users[2].email)
+            self.assertEqual(user4.email, all_users[3].email)
+
 # Runs the tests.
 if __name__ == '__main__':
     unittest.main()

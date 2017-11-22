@@ -6,6 +6,7 @@ from uuid import uuid4
 import traceback
 from project.orm import Mapper
 from project import identity_map
+from project.controllers.inventory import InventoryController
 
 class MonitorController():
 
@@ -27,10 +28,14 @@ class MonitorController():
 
     @staticmethod
     def update_monitor(model, **conditions):
-        rows = Mapper.query('monitors', model=model)
-        monitor = MonitorController.get_monitors_from_rows(rows)[0]
-        monitor.update(**conditions)
-        return monitor
+        inventory_rows = Mapper.query('inventories', model=model, locked=True)
+        inventories = InventoryController.get_inventory_items_from_rows(inventory_rows)
+
+        if not inventories:
+            rows = Mapper.query('monitors', model=model)
+            monitor = MonitorController.get_monitors_from_rows(rows)[0]
+            monitor.update(**conditions)
+            return monitor
 
     # Queries the list of all monitors and their count
     @staticmethod
