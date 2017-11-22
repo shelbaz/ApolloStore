@@ -126,6 +126,7 @@ def edit_desktop():
                 return redirect('/desktop')
             else:
                 logger.error('could not update desktop item')
+                return redirect('/desktop')
 
         # return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
@@ -241,6 +242,7 @@ def edit_laptop():
                 return redirect('/laptop')
             else:
                 logger.error('could not update laptop item')
+                return redirect('/laptop')
 
 @website_blueprint.route('/delete-laptop/<string:model>', methods=['POST'])
 @login_required
@@ -337,6 +339,7 @@ def edit_tablet():
                 return redirect('/tablet')
             else:
                 logger.error('couldnt create tablet item')
+                return redirect('/tablet')
 
 @website_blueprint.route('/delete-tablet/<string:model>', methods=['POST'])
 @login_required
@@ -446,6 +449,7 @@ def edit_monitor():
                 return redirect('/monitor')
             else:
                 logger.error('couldnt create monitor item')
+                return redirect('/monitor')
 
 
 @website_blueprint.route('/delete-monitor/<string:model>', methods=['POST'])
@@ -471,7 +475,7 @@ def home():
 @login_required
 def users():
     if g.user.admin:
-        return render_template('users.html', user=g.user, users=Controller.get_all_users())
+        return render_template('users.html', user=g.user, users=AuthenticationController.get_all_users())
 
 @website_blueprint.route('/account-settings', methods=['GET', 'POST'])
 @login_required
