@@ -118,8 +118,8 @@
         var data = response[0];
         var count = response[1];
         return [
-            '<div class="product-container">',
-                '<div class="product-subcontainer text-left">',
+            '<div class="product-container panel panel-default">',
+                '<div class="product-subcontainer text-left panel-body">',
                     '<img class="product-image" src="https://www.staples-3p.com/s7/is/image/Staples/m006008801_sc7?$splssku$">',
                     '<div class="price">$' + data.price + '</div>',
                     '<div class="brand">'+ data.brand + '</div>',
@@ -136,7 +136,7 @@
                     '{% else: %}',
                     '<button class="btn btn-primary disabled" onclick="alert(\'You must be logged in to add item to cart.\');">Add To Cart<span style="display:none">'+data.model+'</span></div>',
                     '{% endif %}',
-            '</div>',
+                '</div>',
             '</div>',
         ].join("\n");
     }

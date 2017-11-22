@@ -2,159 +2,73 @@
 
 {% block body %}
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script> -->
 
+<script>
+    function returns_purchase() {
+        $('.returnCheckbox:checkbox:checked').each( function() {
+            var modelId = $(this).val();
+
+            $.ajax({
+                type: "GET",
+                url: "/return-item/" + modelId,
+                beforeSend: function() {
+                    //loading gif logic goes here.
+                },
+                success: function(response) {
+                    $("#"+modelId).remove();
+                }
+            }); 
+        });
+    }
+</script>
 <!-- Page Content -->
 <div class="container">
-
-
-
     <div class="section">
 
         <div class="col-md-12 text-left">
             <h1>Returns</h1>
-    <div class="row product-row">
-        <form>
-                <div class="form-group">
-                <label for="clientid">Client-ID: {{user.id}}</label>
-                </div>
-                {% if returns: %}
-                    <div class="form-group">
-                        <label for="model">Model: </label>
-                        <select id = "propertyDropdown">
-                            {% for model in returns: %}
-                            <option id="model" value="{{model.model_id}}">{{model.model_id}}</option>
+            <div class="row product-row">
+                <table class="table"> 
+                    <thead> 
+                        <tr> 
+                            <th></th> 
+                            <th>Model</th> 
+                            <th>Item</th>
+                            <th>Purchased Date</th>
+                        </tr> 
+                    </thead> 
+                    <tbody>  
+                        {% if returns: %}
+                            {% for return in returns: %}
+                            <tr id="{{return.model_id}}">
+                                <th scope="row">
+                                    <input type="checkbox" class="returnCheckbox" id="{{return.model_id}}" name="model_id" value="{{return.model_id}}">
+                                    <label for="{{return.model_id}}"></label>
+                                </th>
+                                <td>{{return.model_id}}</td>
+                                <td>{{return.type}}</td>
+                                <td>{{return.added_time}}</td>
+                            </tr>
                             {% endfor %}
-                        </select>
-                    </div>
-                    <br>
-                    <div align="right">
-                        <button type="button" class="btn btn-default btn-success" onclick="returns_purchase();"><span class="fa fa-default"></span>&nbsp;Complete Return</button>
-                    </div>
-                {% else: %}
-                    <div>You have nothing to return!</div>
-                {% endif %}
-
-        </form>
-    </div>
-            <script>
-                function returns_purchase(){
-                    var element = document.getElementById("propertyDropdown");
-                    var item = element.options[element.selectedIndex].value;
-                    var form = document.createElement('form');
-                    form.setAttribute('method','get');
-                    form.setAttribute('action','/return-item/' + item);
-                    form.style.display = 'hidden';
-                    document.body.appendChild(form);
-
-                    form.submit();
-                    console.log(element);
-                    console.log("testing returns");
-                }
-            </script>
-
-        <script>
-             function add_to_inventory(model) {
-                 var form = document.createElement('form');
-                 form.setAttribute('method', 'post');
-                 form.setAttribute('action', '/add-inventory/desktop/' + model);
-                 form.style.display = 'hidden';
-                 document.body.appendChild(form);
-                 form.submit();
-                 console.log('submitted');
-             }
-        </script>
-
-
-        <script>
-            function delete_from_inventory(model) {
-                var form = document.createElement('form');
-                form.setAttribute('method', 'post');
-                form.setAttribute('action', '/remove-inventory/desktop/' + model);
-                form.style.display = 'hidden';
-                document.body.appendChild(form);
-                form.submit();
-            }
-        </script>
-
-
-        <div class="col-md-8" >
-            <p> </p>
-
-<!-- Delete Modal --> 
-<div class="modal fade" id="delete" tabindex="-1" role="dialog" 
-            aria-labelledby="delete" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <button type="button" class="close" 
-                        data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                        <span class="sr-only">Close</span>
-                    </button>
-                    <h4 class="modal-title" id="delete">
-                        Please enter the ID of the item to delete:
-                    </h4>
+                        {% else: %}
+                            <td>No purchased items.</td>
+                        {% endif %}
+                    </tbody>
+                </table>
+                <div class="row text-right">
+                    <button type="button" class="btn btn-primary" onclick="returns_purchase()">Return items</button>
                 </div>
-
-                <!-- Modal Body -->
-                <div class="modal-body">
-
-                    <form role="form" action="/desktop" method="post">
-                        <div class="form-group">
-                        <label for="delete">Item ID: </label>
-                            <input type="text" class="form-control"
-                            id="delete" name="delete" placeholder="Item/ ID"/>
-                        </div>
-                        <br>
-
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
-
-
-                </div>
-
-                <!-- Modal Footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default"
-                    data-dismiss="modal">
-                    Close
-                </button>
             </div>
         </div>
     </div>
 </div>
-<!-- End of Delete Modal --> 
-
-
-
-  <!-- Quantity Modal -->
-  <div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Quantity</h4>
-        </div>
-        <form>
-        <div class="modal-body">
-          Quantity: <input type="text" class="form-control bfh-number" id="quantity">
-        </div>
-        </form>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
 
 
 
