@@ -73,8 +73,6 @@ class TestViewModels(BaseTestCase):
             InventoryController.add_item_to_inventory(t1.model, 'Tablet')
             InventoryController.add_item_to_inventory(t1.model, 'Tablet')
             InventoryController.add_item_to_inventory(t1.model, 'Tablet')
-            user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111',
-                                                        '5141234567', False)
 
             CartController.add_item_to_cart(t1.model)
             CartController.add_item_to_cart(d1.model)
@@ -87,7 +85,7 @@ class TestViewModels(BaseTestCase):
 
             inventories = CartController.get_cart_items()
             count = CartController.get_number_of_items_in_cart()
-            self.assertEqual(len(inventories), 2)
+            self.assertEqual(len(inventories), 7)
 
 
     # Test to see if the query function works for the Desktop class
