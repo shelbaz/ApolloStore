@@ -2,6 +2,7 @@
 from project import logger
 from project.models.laptop import Laptop
 from project.controllers.electronic import ElectronicController
+from project.controllers.inventory import InventoryController
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
@@ -31,10 +32,14 @@ class LaptopController():
 
     @staticmethod
     def update_laptop(model, **conditions):
-        rows = Mapper.query('laptops', model=model)
-        laptop = LaptopController.get_laptops_from_rows(rows)[0]
-        laptop.update(**conditions)
-        return laptop
+        inventory_rows = Mapper.query('inventories', model=model, locked=True)
+        inventories = InventoryController.get_inventory_items_from_rows(inventory_rows)
+
+        if not inventories:
+            rows = Mapper.query('laptops', model=model)
+            laptop = LaptopController.get_laptops_from_rows(rows)[0]
+            laptop.update(**conditions)
+            return laptop
 
     # Queries the list of all laptops and their count
     @staticmethod

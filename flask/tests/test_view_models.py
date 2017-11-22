@@ -65,16 +65,14 @@ class TestViewModels(BaseTestCase):
             TabletController.create_tablet('Asus', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
                                            'Windows 10', 'nice')
             d1 =DesktopController.create_desktop('Asus', 600, 10, 'intel', 256, 2, 1080, '100x100')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(d1.model, 'desktops')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            user = AuthenticationController.create_user('Test', 'Tester', '123 Test', 'testing@gmail.com', 'testing111',
-                                                        '5141234567', False)
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(d1.model, 'Desktop')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
 
             CartController.add_item_to_cart(t1.model)
             CartController.add_item_to_cart(d1.model)
@@ -87,7 +85,7 @@ class TestViewModels(BaseTestCase):
 
             inventories = CartController.get_cart_items()
             count = CartController.get_number_of_items_in_cart()
-            self.assertEqual(len(inventories), 2)
+            self.assertEqual(len(inventories), 7)
 
 
     # Test to see if the query function works for the Desktop class
@@ -178,9 +176,9 @@ class TestViewModels(BaseTestCase):
             t2 = TabletController.create_tablet('Dell', 500, 10, '10x10', '100x100', 'intel', 256, 2, 1080, 'good',
                                                 'Windows 10', 'nice')
 
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t1.model, 'tablets')
-            InventoryController.add_item_to_inventory(t2.model, 'tablets')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t1.model, 'Tablet')
+            InventoryController.add_item_to_inventory(t2.model, 'Tablet')
 
             result = TabletController.get_all_unlocked_tablets()
             self.assertEqual(len(result), 3)
