@@ -40,7 +40,7 @@ class CartController():
             rows = CartController.get_number_of_items_in_cart()
 
             if(inventory_item and rows < 7):
-                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, added_time=item_timeout)
+                cart = Cart(id=str(uuid4()), model=model, inventory_id=inventory_item.id, user_id=g.user.id, expiry_time=item_timeout)
                 cart.insert()
                 # Lock item when added to cart
                 InventoryController.update_inventory(model, inventory_item.id, locked=True, type=inventory_item.type)
@@ -169,7 +169,7 @@ class CartController():
             carts = CartController.get_cart_items_from_rows(rows)
             for item in carts:
                 current_time = datetime.now()
-                expiry = datetime.fromtimestamp(item.added_time)
+                expiry = datetime.fromtimestamp(item.expiry_time)
                 if expiry < current_time:
                     try:
 

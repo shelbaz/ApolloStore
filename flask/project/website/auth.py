@@ -44,8 +44,8 @@ def register():
 # Logs the user in
 @auth_blueprint.route('/login', methods=['POST'])
 def login():
-    if g.user is not None and g.user.is_authenticated:
-        return redirect('/dashboard')
+    # if g.user is not None and g.user.is_authenticated:
+    #     return redirect('/dashboard')
 
     email = request.form.get('email')
     password = request.form.get('password')
@@ -55,8 +55,13 @@ def login():
 
     if not user or not user.verify_password(password):
         return 'Wrong credentials.'
-    g.user = user
 
+    elif user.logged_in:
+        return 'You are already logged in on another browser/computer.'
+    user.update(first_name=user.first_name, last_name=user.last_name, email=user.email,
+                address=user.address, password_hash=user.password_hash, phone=user.phone, admin=user.admin,
+                logged_in=True, time_stamp=user.time_stamp)
+    g.user = user
     login_user(g.user)
 
     logger.info(g.user.first_name + ' ' + g.user.last_name + ' (' + g.user.email + ') logged in')
@@ -65,9 +70,12 @@ def login():
     return redirect('/home')
 
 
-
 # Logs the user out
 @auth_blueprint.route('/logout')
 def logout():
+    rows = Mapper.query('users', email=g.user.email)
+    user = AuthenticationController.get_user_from_rows(rows)
+    user.update(first_name=user.first_name, last_name=user.last_name, email=user.email,
+                address=user.address, password_hash=user.password_hash, phone=user.phone, admin=user.admin, logged_in=False, time_stamp=user.time_stamp)
     logout_user()
     return redirect('/')
