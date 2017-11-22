@@ -31,15 +31,38 @@
                     {% endfor %}
                 </select>
         <button id="filter-submit">Search</button>
-        <div id="item-count" class="text-right" style="float: right"></div> 
+        <!-- <div id="item-count" class="text-right" style="float: right"></div>  -->
+        <div>Sort By Price: 
+            <select id="sort-by-filter">
+                <option selected value="0">None</option>
+                <option value="1">High to Low</option>
+                <option value="-1">Low to High</option>
+            </select>
+        </div>
     </div>
 </div>
     <!-- all the items get appended in this container -->
 <div id="itemContainer" class="container"></div>
 <script>
+    var items = [];
 
     $(document).ready(function() {
         getTabletData(null);
+
+        $("#sort-by-filter").change(function(){
+            var sortValue =  $("#sort-by-filter").val();
+
+            if (sortValue == 1) {
+                items = quick_sort_up(items);
+            } else if (sortValue == -1) {
+                items = quick_sort_down(items);
+            }
+            //reload the table
+            $('#itemContainer').empty();
+            for (var i = 0; i < items.length; i++) {
+                $('#itemContainer').append(tabletElement(items[i]));
+            }
+        });
     });
 
     $('#filter-submit').click(function() {
@@ -81,7 +104,9 @@
                 $('#itemContainer').empty();
 
                 if (response.data != null) {
+                    items = [];
                     for (var i = 0; i < response.data.length; i++) {
+                        items.push(response.data[i]);
                         $('#itemContainer').append(tabletElement(response.data[i]));
                     }
                 }
@@ -105,6 +130,8 @@
                 $("#ajax-alert").alert();
                 $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
                 });
+
+                getTabletData(null);
             }
         });
     }
@@ -130,7 +157,11 @@
                         '<div>Camera: ' + data.camera_info + '</div>',
                         '<div>Dimensions: ' + data.dimensions + '</div>',
                     '</div>',
+                     '{% if user.is_authenticated: %}',
                     '<button class="btn btn-primary" onclick="addToCart(this)">Add To Cart<span style="display:none">'+data.model+'</span></div>',
+                    '{% else: %}',
+                    '<button class="btn btn-primary disabled" onclick="alert(\'You must be logged in to add item to cart.\');">Add To Cart<span style="display:none">'+data.model+'</span></div>',
+                    '{% endif %}',
                 '</div>',
             '</div>',
         ].join("\n");

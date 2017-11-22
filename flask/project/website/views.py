@@ -30,7 +30,7 @@ def index():
         if g.user.admin:
             return redirect('/dashboard')
         return redirect('/home')
-    return render_template('index.html')
+    return redirect('/home')
 
 
 @website_blueprint.route('/add-inventory/<string:electronic>/<string:model>', methods=['POST'])
@@ -74,7 +74,6 @@ def desktop():
         return render_template('desktop.html', user=g.user, desktops=DesktopController.get_all_desktops())
 
 @website_blueprint.route('/desktop-client', methods=['GET', 'POST'])
-@login_required
 def desktop_client():
     desktops=DesktopController.get_all_desktops()
     
@@ -175,7 +174,6 @@ def laptop():
         return render_template('laptop.html', user=g.user, laptops=LaptopController.get_all_laptops())
 
 @website_blueprint.route('/laptop-client', methods=['GET', 'POST'])
-@login_required
 def laptop_client():
     laptops=LaptopController.get_all_laptops()
 
@@ -281,7 +279,6 @@ def tablet():
 
 
 @website_blueprint.route('/tablet-client', methods=['GET', 'POST'])
-@login_required
 def tablet_client():
     tablets=TabletController.get_all_unlocked_tablets()
 
@@ -371,7 +368,6 @@ def monitor():
 
 
 @website_blueprint.route('/monitor-client', methods=['GET', 'POST'])
-@login_required
 def monitor_client():
     monitors=MonitorController.get_all_monitors()
 
@@ -468,21 +464,22 @@ def dashboard():
 
 
 @website_blueprint.route('/home', methods=['GET', 'POST'])
-@login_required
 def home():
     return render_template('home.html', user=g.user)
 
+@website_blueprint.route('/users', methods=['GET', 'POST'])
+@login_required
+def users():
+    if g.user.admin:
+        return render_template('users.html', user=g.user, users=Controller.get_all_users())
 
 @website_blueprint.route('/account-settings', methods=['GET', 'POST'])
 @login_required
 def account_settings():
     return render_template('account-settings.html', user=g.user)
 
-
 @website_blueprint.route('/account-delete', methods=['GET', 'POST'])
 @login_required
 def account_delete():
     AuthenticationController.delete_user(g.user.id)
     return redirect('/')
-
-
