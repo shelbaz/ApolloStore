@@ -22,7 +22,7 @@ class TestWebsite(BaseTestCase):
     def test_index_page_successful(self):
         with self.client:
             # Pings the '/' endpoint.
-            response = self.client.get('/')
+            response = self.client.get('/home')
 
             # Asserts that the HTTP status code of the response is 200.
             self.assertEqual(response.status_code, 200)

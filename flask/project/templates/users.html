@@ -1,0 +1,97 @@
+{% extends "header.html" %}
+
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+
+
+<script type="text/javascript">
+    var myTable;
+    $(document).ready(function() {
+       myTable = $('#projTable').DataTable( {
+        columnDefs: [ {
+            orderable: false,
+            className: 'select-checkbox',
+            targets:   0
+        } ],
+        select: {
+            style:    'os',
+            selector: 'td:first-child'
+        },
+        order: [[ 1, 'asc' ]]
+    } );
+    });
+</script>
+
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="section">
+
+        <div class="col-md-12 text-left">
+            <h1>List of Users</h1>
+            <table id="projTable" class="table table-responsive table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Admin</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% if users: %}
+                    {% for user in users: %}
+                    <tr>
+                        <td></td>
+                        <td id ="{{user[0].id}}">{{user[0].id}}</td>
+                        <td id ="{{user[0].id}}-fname">{{user[0].first_name}}</td>
+                        <td id ="{{user[0].id}}-lname">{{user[0].last_name}}</td>
+                        <td id ="{{user[0].id}}-address">{{user[0].address}}</td>
+                        <td id ="{{user[0].id}}-email">{{user[0].email}}</td>
+                        <td id ="{{user[0].id}}-phone">{{user[0].phone}}</td>
+                        <td id ="{{user[0].id}}-admin">{{user[0].admin}}</td>
+                    </tr>
+                    {% endfor %}
+                {% else: %}
+	                	<tr>
+	                        <td></td>
+                            <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                        <td></td>
+	                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <div class="col-md-8" >
+            <p> </p>
+
+
+</div>
+</div>
+<!-- /.row -->
+
+
+</div>
+<!-- /.container -->
+{% endblock %}
+
+
