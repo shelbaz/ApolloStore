@@ -17,15 +17,39 @@
                         {% endfor %}
                     </select>
         <button id="filter-submit">Search</button>
-        <div id="item-count" class="text-right" style="float: right"></div> 
+        <!-- <div id="item-count" class="text-right" style="float: right"></div>  -->
+        <div>Sort By Price: 
+            <select id="sort-by-filter">
+                <option selected value="0">None</option>
+                <option value="1">High to Low</option>
+                <option value="-1">Low to High</option>
+            </select>
+        </div>
     </div>
 </div>
     <!-- all the items get appended in this container -->
 <div id="itemContainer" class="container"></div>
 <script>
+    var items = [];
 
     $(document).ready(function() {
         getDesktopData(null);
+
+        $("#sort-by-filter").change(function(){
+            var sortValue =  $("#sort-by-filter").val();
+
+            if (sortValue == 1) {
+                items = quick_sort_up(items);
+            } else if (sortValue == -1) {
+                items = quick_sort_down(items);
+            }
+            //reload the table
+            $('#itemContainer').empty();
+            for (var i = 0; i < items.length; i++) {
+                $('#itemContainer').append(desktopElement(items[i]));
+            }
+            
+        });
     });
 
     $('#filter-submit').click(function() {
@@ -41,7 +65,6 @@
             filters['processor'] = processorFilter;
         }
 
-        console.log("filters: %o", filters);
         getDesktopData(filters);
     });
 
@@ -55,16 +78,18 @@
                 //loading gif logic goes here.
             },
             success: function(response) {
-                console.log("responsee %o", response);
                 $('#itemContainer').empty();
-                console.log("response data: %o", response.data);
                 if (response.data != null) {
+                    items = [];
                     for (var i = 0; i < response.data.length; i++) {
+                        items.push(response.data[i]);
                         $('#itemContainer').append(desktopElement(response.data[i]));
                     }
                 }
 
                 $('#item-count').text("Number of items : " + response.data.length);
+
+                console.log("items %o", items);
             }
         }); 
     }
@@ -83,6 +108,8 @@
                 $("#ajax-alert").alert();
                 $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
                 });
+
+                getDesktopData(null);
             }
         });
     }
