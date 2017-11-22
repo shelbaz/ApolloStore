@@ -71,16 +71,59 @@
             margin: 10px 0;
         }
     </style>
+    <script>
+        function quick_sort_up(origArray) {
+            if (origArray.length <= 1) { 
+                return origArray;
+            } else {
+                var left = [];
+                var right = [];
+                var newArray = [];
+                var length = origArray.length;
+                var pivot = [origArray.pop()];
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+                for (var i = 0; i < length-1; i++) {
+                    var price = parseInt(origArray[i][0].price);
+                    var pivotPrice = parseInt(pivot[0][0].price);
+                    
+                    if (price >= pivotPrice) {
+                        console.log("pushing left");
+                        left.push(origArray[i]);
+                    } else {
+                        right.push(origArray[i]);
+                    }
+                }
+                
+                return newArray.concat(quick_sort_up(left), pivot, quick_sort_up(right));
+            }
+        }
 
+        function quick_sort_down(origArray) {
+            if (origArray.length <= 1) { 
+                return origArray;
+            } else {
+                var left = [];
+                var right = [];
+                var newArray = [];
+                var length = origArray.length;
+                var pivot = [origArray.pop()];
+
+                for (var i = 0; i < length-1; i++) {
+                    var price = parseInt(origArray[i][0].price);
+                    var pivotPrice = parseInt(pivot[0][0].price);
+
+                    if (price <= pivotPrice) {
+                        left.push(origArray[i]);
+                    } else {
+                        right.push(origArray[i]);
+                    }
+                }
+
+                return newArray.concat(quick_sort_down(left), pivot, quick_sort_down(right));
+            }
+        }
+    </script>
     </head>
-
     <body>
         <header>
             <!-- Navigation -->
