@@ -11,11 +11,13 @@ from project import identity_map
 from datetime import datetime, timedelta
 from project import celery
 import time
+from project.contract import Contract
 
 class CartController():
 
     # Adds an item of a specific model number to the cart
     @staticmethod
+    @Contract.add_to_cart
     def add_item_to_cart(model):
         try:
             rows = Mapper.query('inventories', model=model)
@@ -61,6 +63,7 @@ class CartController():
 
     # Removes an item of a specific model number from the cart
     @staticmethod
+    @Contract.remove_from_cart
     def remove_item_from_cart(model):
         logger.critical('something')
         try:
@@ -120,12 +123,13 @@ class CartController():
 
     #Takes items from cart and adds them to purchases db log, removes items from inventory and flushes cart
     @staticmethod
+    @Contract.checkout
     def checkout_from_cart():
         rows = Mapper.query('carts', user_id=g.user.id)
         carts = CartController.get_cart_items_from_rows(rows)
         if carts:
             for cart in carts:
-                PurchaseController.insert_into_table(model_id=cart.model)
+                PurchaseController.insert_into_table(cart.model)
                 my_model = cart.model
                 inv_id = cart.inventory_id
                 identity_map.delete(cart.id)

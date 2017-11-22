@@ -1,17 +1,18 @@
 from project import logger
 from project.models.purchase import Purchase
 from project.controllers.inventory import InventoryController
-from project.identityMap import IdentityMap
 from flask import g
 import datetime
 import traceback
 from project.orm import Mapper
 from uuid import uuid4
 from project import identity_map
+from project.contract import Contract
 
 class PurchaseController():
 
     @staticmethod
+    @Contract.purchase_item
     def insert_into_table(model_id):
         try:
             rows = Mapper.query('inventories', model=model_id)
@@ -36,9 +37,9 @@ class PurchaseController():
             if purchases:
                 return purchases
             else:
-                return None
+                return []
         else:
-            return None
+            return []
 
     # deletes item from purchase table
     @staticmethod
@@ -70,6 +71,7 @@ class PurchaseController():
 
 
     @staticmethod
+    @Contract.return_item_to_store
     def return_item(model):
         rows = Mapper.query('purchases', model_id=model)
         if rows:

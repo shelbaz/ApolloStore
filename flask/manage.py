@@ -136,8 +136,8 @@ def test_aspect():
         from project.controllers.monitor import MonitorController
         monitor = MonitorController.create_monitor('Asus', 300, 5, '25x30')
         from project import identity_map
-        identity_map.delete(monitor.model)
-        identity_map.getObject(monitor.model)
+        identity_map.set(monitor.model, monitor)
+        identity_map.set(monitor.model, monitor)
     except Exception:
         logger.error(traceback.format_exc())
 
