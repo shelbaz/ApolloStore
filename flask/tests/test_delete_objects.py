@@ -23,6 +23,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.add_item_to_inventory(desktop.model, desktop.__class__.__name__)
             InventoryController.add_item_to_inventory(desktop.model, desktop.__class__.__name__)
             InventoryController.delete_item_from_inventory(desktop.model)
+            InventoryController.delete_item_from_inventory(desktop.model)
             rows = Mapper.query('inventories', model=desktop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
@@ -39,6 +40,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.add_item_to_inventory(laptop.model, laptop.__class__.__name__)
 
             InventoryController.delete_item_from_inventory(laptop.model)
+            InventoryController.delete_item_from_inventory(laptop.model)
             rows = Mapper.query('inventories', model=laptop.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
             self.assertEqual(items, None)
@@ -53,6 +55,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.add_item_to_inventory(monitor.model, monitor.__class__.__name__)
             InventoryController.add_item_to_inventory(monitor.model, monitor.__class__.__name__)
 
+            InventoryController.delete_item_from_inventory(monitor.model)
             InventoryController.delete_item_from_inventory(monitor.model)
             rows = Mapper.query('inventories', model=monitor.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
@@ -72,7 +75,7 @@ class TestDeletionObjects(BaseTestCase):
             InventoryController.delete_item_from_inventory(tablet.model)
             rows = Mapper.query('inventories', model=tablet.model)
             items = InventoryController.get_inventory_items_from_rows(rows)
-            self.assertEqual(items, None)
+            self.assertEqual(len(items), 1)
 
     # Test to see if the desktop specification is set to hidden when it is deleted
     def test_should_delete_desktop_spec(self):

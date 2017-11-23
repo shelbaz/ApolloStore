@@ -82,19 +82,19 @@ def desktop_client():
         'ram_size': [],
         'cpu_cores': []
     }
+    if desktops:
+        for desktop in desktops:
+            if desktop[0]['brand'] not in filters['brand']:
+                filters['brand'].append(desktop[0]['brand'])
 
-    for desktop in desktops:
-        if desktop[0]['brand'] not in filters['brand']: 
-            filters['brand'].append(desktop[0]['brand'])
+            if desktop[0]['processor'] not in filters['processor']:
+                filters['processor'].append(desktop[0]['processor'])
 
-        if desktop[0]['processor'] not in filters['processor']: 
-            filters['processor'].append(desktop[0]['processor'])
+            if desktop[0]['ram_size'] not in filters['ram_size']:
+                filters['ram_size'].append(desktop[0]['ram_size'])
 
-        if desktop[0]['ram_size'] not in filters['ram_size']: 
-            filters['ram_size'].append(desktop[0]['ram_size'])
-
-        if desktop[0]['cpu_cores'] not in filters['cpu_cores']: 
-            filters['cpu_cores'].append(desktop[0]['cpu_cores'])
+            if desktop[0]['cpu_cores'] not in filters['cpu_cores']:
+                filters['cpu_cores'].append(desktop[0]['cpu_cores'])
         
     return render_template('desktop-client.html', user=g.user, filters=filters)
 
@@ -183,19 +183,19 @@ def laptop_client():
         'os': [],
         'cpu_cores': []
     }
+    if laptops:
+        for laptop in laptops:
+            if laptop[0]['brand'] not in filters['brand']:
+                filters['brand'].append(laptop[0]['brand'])
 
-    for laptop in laptops:
-        if laptop[0]['brand'] not in filters['brand']: 
-            filters['brand'].append(laptop[0]['brand'])
+            if laptop[0]['processor'] not in filters['processor']:
+                filters['processor'].append(laptop[0]['processor'])
 
-        if laptop[0]['processor'] not in filters['processor']: 
-            filters['processor'].append(laptop[0]['processor'])
+            if laptop[0]['os'] not in filters['os']:
+                filters['os'].append(laptop[0]['os'])
 
-        if laptop[0]['os'] not in filters['os']: 
-            filters['os'].append(laptop[0]['os'])
-
-        if laptop[0]['cpu_cores'] not in filters['cpu_cores']: 
-            filters['cpu_cores'].append(laptop[0]['cpu_cores'])
+            if laptop[0]['cpu_cores'] not in filters['cpu_cores']:
+                filters['cpu_cores'].append(laptop[0]['cpu_cores'])
 
     return render_template('laptop-client.html', user=g.user, filters=filters)
 
@@ -289,19 +289,19 @@ def tablet_client():
         'dimensions': [],
         'cpu_cores': []
     }
+    if tablets:
+        for tablet in tablets:
+            if tablet[0]['brand'] not in filters['brand']:
+                filters['brand'].append(tablet[0]['brand'])
 
-    for tablet in tablets:
-        if tablet[0]['brand'] not in filters['brand']: 
-            filters['brand'].append(tablet[0]['brand'])
+            if tablet[0]['os'] not in filters['os']:
+                filters['os'].append(tablet[0]['os'])
 
-        if tablet[0]['os'] not in filters['os']: 
-            filters['os'].append(tablet[0]['os'])
+            if tablet[0]['dimensions'] not in filters['dimensions']:
+                filters['dimensions'].append(tablet[0]['dimensions'])
 
-        if tablet[0]['dimensions'] not in filters['dimensions']: 
-            filters['dimensions'].append(tablet[0]['dimensions'])
-
-        if tablet[0]['cpu_cores'] not in filters['cpu_cores']: 
-            filters['cpu_cores'].append(tablet[0]['cpu_cores'])
+            if tablet[0]['cpu_cores'] not in filters['cpu_cores']:
+                filters['cpu_cores'].append(tablet[0]['cpu_cores'])
 
     return render_template('tablet-client.html', user=g.user, filters=filters)
 
@@ -377,12 +377,12 @@ def monitor_client():
         'brand': [],
         'dimensions': []
     }
-
-    for monitor in monitors:
-        if monitor[0]['brand'] not in filters['brand']: 
-            filters['brand'].append(monitor[0]['brand'])
-        if monitor[0]['dimensions'] not in filters['dimensions']: 
-            filters['dimensions'].append(monitor[0]['dimensions'])
+    if monitors:
+        for monitor in monitors:
+            if monitor[0]['brand'] not in filters['brand']:
+                filters['brand'].append(monitor[0]['brand'])
+            if monitor[0]['dimensions'] not in filters['dimensions']:
+                filters['dimensions'].append(monitor[0]['dimensions'])
 
     return render_template('monitor-client.html', user=g.user, filters=filters)
 
