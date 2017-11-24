@@ -17,11 +17,27 @@
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">  -->
     <link href="{{url_for('static', filename='css/items.css')}}" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
     <!-- Custom CSS -->
+    <script>
+        $(document).ready(function () {
+            $(function () {
+              $('form').parsley().on('field:validated', function() {
+                var ok = $('.parsley-error').length === 0;
+                $('.bs-callout-info').toggleClass('hidden', !ok);
+                $('.bs-callout-warning').toggleClass('hidden', ok);
+              })
+              .on('form:submit', function() {
+                return false; // Don't submit form for this demo
+              });
+            });
+        });
+    </script>
     <style>
         body {
-            padding-top: 80px;
+            padding-top: 70px;
+            background-color: #f5f5f5 !important;
             /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
         }
 
@@ -70,17 +86,96 @@
         .info-container {
             margin: 10px 0;
         }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+        }
+
+        footer a {
+            color: white;
+        }
+
+        footer a:hover {
+            text-transform: none;
+            color:white;
+        }
+
+        .form-control {
+            width: 150px;
+        }
+
+        .modal .form-control {
+            width: 100% !important;
+        }
+
+        .custom-select, #sort-by-filter {
+            display: inline-block;
+        }
+
+        #sort-by-filter {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .filter {
+            float: left;
+            margin-right: 20px;
+        }
     </style>
+    <script>
+        function quick_sort_up(origArray) {
+            if (origArray.length <= 1) { 
+                return origArray;
+            } else {
+                var left = [];
+                var right = [];
+                var newArray = [];
+                var length = origArray.length;
+                var pivot = [origArray.pop()];
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+                for (var i = 0; i < length-1; i++) {
+                    var price = parseInt(origArray[i][0].price);
+                    var pivotPrice = parseInt(pivot[0][0].price);
+                    
+                    if (price >= pivotPrice) {
+                        console.log("pushing left");
+                        left.push(origArray[i]);
+                    } else {
+                        right.push(origArray[i]);
+                    }
+                }
+                
+                return newArray.concat(quick_sort_up(left), pivot, quick_sort_up(right));
+            }
+        }
 
+        function quick_sort_down(origArray) {
+            if (origArray.length <= 1) { 
+                return origArray;
+            } else {
+                var left = [];
+                var right = [];
+                var newArray = [];
+                var length = origArray.length;
+                var pivot = [origArray.pop()];
+
+                for (var i = 0; i < length-1; i++) {
+                    var price = parseInt(origArray[i][0].price);
+                    var pivotPrice = parseInt(pivot[0][0].price);
+
+                    if (price <= pivotPrice) {
+                        left.push(origArray[i]);
+                    } else {
+                        right.push(origArray[i]);
+                    }
+                }
+
+                return newArray.concat(quick_sort_down(left), pivot, quick_sort_down(right));
+            }
+        }
+    </script>
     </head>
-
     <body>
         <header>
             <!-- Navigation -->
@@ -97,7 +192,8 @@
                         {% if user.is_authenticated: %}
                         <a class="navbar-brand" href="/logout">Logout</a>
                         {% else: %}
-                        <a class="navbar-brand" href="/login">Login</a>
+                        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
+                        <a class="navbar-brand" href="#" data-toggle="modal" data-target="#signupModal">Register</a>
                         {% endif %}
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -119,12 +215,16 @@
                             <li>
                                 <a href="/tablet">Tablet</a>
                             </li>
+                            <li>
+                                <a href="/users">Users</a>
+                            </li>
                         </ul>
                     </div>
                 {% else: %}
                 <!-- This is the nav for users to direct to product views -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
+                            {% if user.is_authenticated: %}
                             <li class="dropdown">
                               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hi, {{user.first_name}} {{user.last_name}} <br> <b>Your Account</b> <span class="caret"></span></a>
 
@@ -133,8 +233,10 @@
                                 <span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart
                                 </a></li>
                                 <li><a href="/returns"><span class="glyphicon glyphicon-chevron-left"></span>Return Purchases</a></li>
+                                <li><a href="/account-settings"><span class="glyphicon glyphicon-cog"></span>Account Settings</a></li>
                                 </ul>
                             </li>
+                            {% endif %}
                             <li>
                                 <a href="/home">Home</a>
                             </li>
@@ -159,7 +261,87 @@
                 <!-- /.container -->
             </nav>
 
+		<!-- Login Modal -->
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Login</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+			     <form action="/login" method="post">
+				  <div class="form-group">
+				    <label for="loginEmailInput">Email address</label>
+				    <input required name="email" type="email" class="form-control" id="loginEmailInput" placeholder="Enter email">
+				  </div>
+				  <div class="form-group">
+				    <label for="loginPasswordInput">Password</label>
+				    <input required name="password" type="password" class="form-control" id="loginPasswordInput" placeholder="Password">
+				  </div>
+			      <div class="modal-footer">
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+			        <button name="action" onclick="submit" class="btn btn-primary">Login</button>
+			      </div>
+				</form>
+		      </div>
+		    </div>
+		  </div>
+		</div>
 
+		<!-- Signup Modal -->
+		<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Signup</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <form action="/register" method="post">
+		        	<div class="row">
+		        		<div class="col-md-6">
+				        	<div class="form-group">
+								    <label for="firstNameInput">First Name</label>
+								    <input required name="firstName" type="text" class="form-control" id="firstNameInput" placeholder="First Name">
+								  </div>
+								</div>
+								<div class="col-md-6">
+								  <div class="form-group">
+								    <label for="lastNameInput">Last Name</label>
+								    <input required name="lastName" type="text" class="form-control" id="lastNameInput" placeholder="Last Name">
+								  </div>
+								</div>
+							</div>
+						  <div class="form-group">
+						    <label for="addressInput">Address</label>
+						    <input required name="address" type="text" class="form-control" id="addressInput" placeholder="Address">
+						  </div>
+						  <div class="form-group">
+						    <label for="emailInput">Email address</label>
+						    <input required name="email" type="email" class="form-control" id="emailInput" aria-describedby="emailHelp" placeholder="Enter email">
+						  </div>
+						  <div class="form-group">
+						    <label for="phoneInput">Phone</label>
+						    <input required name="phone" data-parsley-type="number" type="number" class="form-control" id="phoneInput" placeholder="Phone">
+						  </div>
+						  <div class="form-group">
+						    <label for="passwordInput">Password</label>
+						    <input required name="password" type="password" class="form-control" id="passwordInput" placeholder="Password">
+						  </div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				        <button name="action" type="submit" class="btn btn-primary">Create</button>
+				      </div>
+		      	</form>
+		    </div>
+		  </div>
+		</div>
 
             <!-- Bootstrap Core JavaScript -->
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -167,6 +349,9 @@
 
         {% block body %}{% endblock %}
 
+        <footer style="position: fixed; bottom: 0; width: 100vw; background-color: #222;">
+            <a href="/copyright">Copyrights</a>
+        </footer>
     </body>
 
     </html>

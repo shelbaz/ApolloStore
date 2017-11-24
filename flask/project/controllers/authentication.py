@@ -5,7 +5,12 @@ from re import match
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
-
+import datetime
+from project.identityMap import IdentityMap
+from project import identity_map
+from flask import g
+from project.controllers.purchase import PurchaseController
+from project.controllers.cart import CartController
 
 class AuthenticationController():
 
@@ -17,7 +22,8 @@ class AuthenticationController():
                 if AuthenticationController.validate_name(first_name) and AuthenticationController.validate_name(last_name):
                     # if validate_password(password):
                     if not Mapper.query('users', email=email):
-                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin)
+                        added_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                        user = User(id=str(uuid4()), first_name=first_name, last_name=last_name, address=address, email=email, phone=phone, admin=admin, logged_in=False,time_stamp=added_time)
                         user.hash_password(password)
                         user.insert()
 
@@ -57,12 +63,30 @@ class AuthenticationController():
         if rows:
             users = []
             for row in rows:
-                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
+                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
                 user.password_hash = row[5]
                 users.append(user)
 
             if users:
                 return users[0]
+            else:
+                return None
+        else:
+            return None
+
+    @staticmethod
+    def get_all_users():
+        rows = Mapper.query('users', admin=False)
+        logger.error(rows);
+        if rows:
+            users = []
+            for row in rows:
+                user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
+                user.password_hash = row[5]
+                users.append(user)
+
+            if users:
+                return users
             else:
                 return None
         else:
@@ -76,7 +100,7 @@ class AuthenticationController():
         users = []
 
         for row in rows:
-            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7])
+            user = User(row[0], row[1], row[2], row[3], row[4], row[6], row[7], row[8], row[9])
             user.password_hash = row[5]
             users.append(user)
 
@@ -84,3 +108,25 @@ class AuthenticationController():
             return users[0]
         else:
             return None
+
+    @staticmethod
+    def delete_user(user_id):
+        purchases = PurchaseController.get_past_purchases()
+        if purchases and purchases[0]:
+            for purchase in purchases:
+                PurchaseController.delete_purchases(purchase.model_id)
+        else:
+            logger.info("No purchases were made by user")
+
+        CartController.flush_cart()
+
+        rows = Mapper.query('users', id=g.user.id)
+        if rows:
+            user = AuthenticationController.get_user_from_rows(rows)
+            identity_map.delete(user.id)
+            if user:
+                user.delete()
+            else:
+                logger.error("Account cannot be deleted")
+
+        logger.info('Account deleted successfully!')

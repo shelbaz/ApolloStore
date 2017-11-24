@@ -2,6 +2,7 @@
 from project import logger
 from project.models.tablet import Tablet
 from project.controllers.electronic import ElectronicController
+from project.controllers.inventory import InventoryController
 from uuid import uuid4
 import traceback
 from project.orm import Mapper
@@ -27,10 +28,14 @@ class TabletController():
 
     @staticmethod
     def update_tablet(model, **conditions):
-        rows = Mapper.query('tablets', model=model)
-        tablet = TabletController.get_tablets_from_rows(rows)[0]
-        tablet.update(**conditions)
-        return tablet
+        inventory_rows = Mapper.query('inventories', model=model, locked=True)
+        inventories = InventoryController.get_inventory_items_from_rows(inventory_rows)
+
+        if not inventories:
+            rows = Mapper.query('tablets', model=model)
+            tablet = TabletController.get_tablets_from_rows(rows)[0]
+            tablet.update(**conditions)
+            return tablet
 
     # Queries the list of all tablets and their count
     @staticmethod

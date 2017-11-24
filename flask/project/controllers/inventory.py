@@ -85,11 +85,9 @@ class InventoryController():
         else:
             rows = Mapper.query('inventories', model=model)
         if rows:
-            inventory_items = InventoryController.get_inventory_items_from_rows(rows)
-
-            for inventory in inventory_items:
-                identity_map.delete(inventory.id)
-                inventory.delete()
+            inventory_item = InventoryController.get_inventory_items_from_rows(rows)[0]
+            identity_map.delete(inventory_item.id)
+            inventory_item.delete()
         else:
             logger.error("No items.")
 

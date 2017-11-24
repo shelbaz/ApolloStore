@@ -176,7 +176,7 @@
                     <form role="form" method="post">
                         <div class="form-group">
                         <label for="delete">Item ID: </label>
-                            <input type="text" class="form-control"
+                            <input required type="text" class="form-control"
                             id="delete" name="delete" placeholder="Item/ ID"/>
                         </div>
                         <br>
@@ -221,19 +221,19 @@
         <form id="myform_id" role="form" action="/edit-monitor" method="post">
             <div class="form-group">
                 <label for="model">Model: </label>
-                <input type="text" class="form-control"
-                id="model" name="model" placeholder="Model"/>
+                <input required type="text" class="form-control"
+                id="model" name="model" placeholder="Model" readonly/>
                 <label for="edit-price">Price: </label>
-                <input type="text" class="form-control"
+                <input required type="text" class="form-control"
                 id="edit-price" name="price" placeholder="Price"/>
                 <label for="edit-weight">Weight: </label>
-                <input type="text" class="form-control"
+                <input required type="text" class="form-control"
                 id="edit-weight" name="weight" placeholder="Weight"/>
                 <label for="edit-brand">Brand: </label>
-                <input type="text" class="form-control"
+                <input required type="text" class="form-control"
                 id="edit-brand" name="brand" placeholder="Brand"/>
                 <label for="edit-dimensions">Dimensions: </label>
-                <input type="text" class="form-control"
+                <input required type="text" class="form-control"
                 id="edit-dimensions" name="monitor_dimensions" placeholder="Brand"/>
             </div>
             <br>
@@ -279,22 +279,22 @@
 <form name="Monitor" id="Monitor" action="/monitor" method="post">
 <!-- THIS IS FORM 3-->
     <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
+            <input required type="text" name = "price" class="form-control"
             id="price" placeholder="Enter Price"/>
         </div>
         <div class="form-group">
             <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
+            <input required type="text" name = "weight" class="form-control"
             id="weight" placeholder="Enter Weight"/>
         </div>
         <div class="form-group">
             <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
+            <input required type="text" name = "brand" class="form-control"
             id="brand" placeholder="Enter Brand"/>
         </div>
         <div class="form-group">
             <label for="display_size">Enter Dimensions</label>
-            <input type="text" name = "monitor_dimensions" class="form-control"
+            <input required type="text" name = "monitor_dimensions" class="form-control"
             id="monitor_dimensions" placeholder="Enter Dimensions"/>
         </div>
 

@@ -3,35 +3,65 @@
 {% block body %}
 <div class="container">
     <div id="ajax-alert" role="alert"></div>
-    <div class="row">
-        Brand:  <select class="custom-select" id="brand-filter">
+    <div class="row" style="margin-top: 20px;">
+        <div class="filter">
+        Brand:  <select class="form-control custom-select" id="brand-filter">
                     <option selected value="">None</option>
                     {% for brand in filters.brand %}
                         <option value="{{brand}}">{{brand}}</option>
                     {% endfor %}
                 </select>
-        Processor:  <select  class="custom-select" id="processor-filter">
+        </div>
+        <div class="filter">
+        Processor:  <select  class="form-control custom-select" id="processor-filter">
                         <option selected value="">None</option>
                         {% for processor in filters.processor %}
                             <option value="{{processor}}">{{processor}}</option>
                         {% endfor %}
                     </select>
-        Operating System:  <select  class="custom-select" id="os-filter">
+        </div>
+        <div class="filter">
+        Operating System:  <select  class="form-control custom-select" id="os-filter">
                         <option selected value="">None</option>
                         {% for os in filters.os %}
                             <option value="{{os}}">{{os}}</option>
                         {% endfor %}
                     </select>
-        <button id="filter-submit">Search</button>
-        <div id="item-count" class="text-right" style="float: right"></div> 
+        </div>
+        <button id="filter-submit" class="btn btn-primary">Search</button>
+        <!-- <div id="item-count" class="text-right" style="float: right"></div>  -->
+        <div>Sort By Price: 
+            <select id="sort-by-filter" class="form-control">
+                <option selected value="0">None</option>
+                <option value="1">High to Low</option>
+                <option value="-1">Low to High</option>
+            </select>
+        </div>
     </div>
 </div>
     <!-- all the items get appended in this container -->
 <div id="itemContainer" class="container"></div>
 <script>
+    var items = [];
 
     $(document).ready(function() {
         getLaptopData(null);
+
+        $("#sort-by-filter").change(function(){
+            var sortValue =  $("#sort-by-filter").val();
+
+            if (sortValue == 1) {
+                items = quick_sort_up(items);
+            } else if (sortValue == -1) {
+                items = quick_sort_down(items);
+            }
+            //reload the table
+            $('#itemContainer').empty();
+            for (var i = 0; i < items.length; i++) {
+                $('#itemContainer').append(laptopElement(items[i]));
+            }
+            
+        });
     });
 
     $('#filter-submit').click(function() {
@@ -65,11 +95,11 @@
                 //loading gif logic goes here.
             },
             success: function(response) {
-                console.log("responsee %o", response);
                 $('#itemContainer').empty();
-                console.log("response data: %o", response.data);
                 if (response.data != null) {
+                    items = [];
                     for (var i = 0; i < response.data.length; i++) {
+                        items.push(response.data[i]);
                         $('#itemContainer').append(laptopElement(response.data[i]));
                     }
                 }
@@ -93,6 +123,8 @@
                 $("#ajax-alert").alert();
                 $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
                 });
+
+                getLaptopData(null);
             }
         });
     }
@@ -101,8 +133,8 @@
         var data = response[0];
         var count = response[1];
         return [
-            '<div class="product-container">',
-                '<div class="product-subcontainer text-left">',
+            '<div class="product-container panel panel-default">',
+                '<div class="product-subcontainer text-left panel-body">',
                     '<img class="product-image" src="http://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c05504697.png">',
                     '<div class="price">$' + data.price + '</div>',
                     '<div class="brand">'+ data.brand + '</div>',
@@ -118,7 +150,11 @@
                         '<div>Touchscreen: ' + data.touchscreen + '</div>',
                         '<div>Camera: ' + data.camera + '</div>',
                     '</div>',
+                    '{% if user.is_authenticated: %}',
                     '<button class="btn btn-primary" onclick="addToCart(this)">Add To Cart<span style="display:none">'+data.model+'</span></div>',
+                    '{% else: %}',
+                    '<button class="btn btn-primary disabled" onclick="alert(\'You must be logged in to add item to cart.\');">Add To Cart<span style="display:none">'+data.model+'</span></div>',
+                    '{% endif %}',
                 '</div>',
             '</div>',
         ].join("\n");
