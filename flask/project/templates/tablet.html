@@ -207,11 +207,11 @@
                        class="form-control" readonly/></div>
             <div class="form-group">
                 <label for="edit-price">Price: </label>
-                <input required id="edit-price" type="text" class="form-control"
+                <input required id="edit-price" type="number" min="0" class="form-control"
                        name="price" /></div>
             <div class="form-group">
                 <label for="edit-weight">Weight: </label>
-                <input required id="edit-weight" type="text" class="form-control"
+                <input required id="edit-weight" type="number" min="0" class="form-control"
                        name="weight" /> </div>
             <div class="form-group">
                 <label for="edit-brand">Brand: </label>
@@ -227,7 +227,7 @@
                        name="processor" /> </div>
             <div class="form-group">
                 <label for="edit-ramsize">Ram Size: </label>
-                <input required id="edit-ramsize" type="text" class="form-control"
+                <input required id="edit-ramsize" type="number" min="0" class="form-control"
                        name="ram_size" /> </div>
             <div class="form-group">
                 <label for="edit-cpucores">CPU Cores: </label>
@@ -235,7 +235,7 @@
                        name="cpu_cores" /> </div>
             <div class="form-group">
                 <label for="edit-hdsize">HD Size: </label>
-                <input required id="edit-hdsize" type="text" class="form-control"
+                <input required id="edit-hdsize" type="number" min="0" class="form-control"
                        name="hd_size"/> </div>
             <div class="form-group">
                 <label for="edit-batteryinfo">Battery Info: </label>
@@ -283,12 +283,12 @@
 <form name="Tablet" id="Tablet" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
-            <input required type="text" name = "price" class="form-control"
+            <input required type="number" min="0" name = "price" class="form-control"
             id="price" placeholder="Enter Price"/>
         </div>
         <div class="form-group">
             <label for="weight">Enter Weight</label>
-            <input required type="text" name = "weight" class="form-control"
+            <input required type="number" min="0" name = "weight" class="form-control"
             id="weight" placeholder="Enter Weight"/>
         </div>
         <div class="form-group">
@@ -308,7 +308,7 @@
         </div>
                 <div class="form-group">
             <label for="ram_size">Enter Ram Size (GB)</label>
-            <input required type="text" name = "ram_size" class="form-control"
+            <input required type="number" min="0" name = "ram_size" class="form-control"
             id="ram_size" placeholder="Enter Ram Size"/>
         </div>
                 <div class ="form-group">
@@ -318,7 +318,7 @@
         </div>
                 <div class="form-group">
             <label for="hd_size">Enter HD Size (GB)</label>
-            <input required type="text" name = "hd_size" class="form-control"
+            <input required type="number" min="0" name = "hd_size" class="form-control"
             id="hd_size" placeholder="Enter HD Size"/>
         </div>
             <div class="form-group">
