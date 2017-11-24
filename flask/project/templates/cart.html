@@ -34,7 +34,8 @@ hr {
                 {% for item in items: %}
                 <div class="col-xs-12 col-sm-7">
                     <div class="media">
-                        <a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/WyBwviPGnlXgJLFReMcE.jpg"></a>
+                        <!--<a class="pull-left" href="#"><img class="img-responsive" src="https://cdn.awardchoice.com/assets/ac/RC/SM/WyBwviPGnlXgJLFReMcE.jpg"></a>-->
+                        <a class="pull-left" href="#"><i class="fa fa-fw fa-asterisk"></i></a>
                         <div class="media-body">
                             <h4 class="brand" id="brand">{{item['brand']}}</h4>
                             <h6 class="model" id="model">{{item['model']}}</h6>
@@ -58,7 +59,7 @@ hr {
 
 <hr/>
 
-  <p align="right"> The Sum Total of your Cart is :<span id="total"></span>  $ </p>
+  <p align="right"> The Sum Total of your Cart is : <span id="total"></span>  $ </p>
         <p></p>
     <div align="right">
    <button type="button" class="btn btn-default btn-success" onclick="checkout_from_cart()"><span class="fa fa-shopping-cart"></span>&nbsp;Checkout</button> </div>
@@ -173,7 +174,12 @@ hr {
   </div>
 
 
+</div>
+<!-- /.row -->
 
+</div>
+</div>
+<!-- /.container -->
 
 {% endblock %}
 

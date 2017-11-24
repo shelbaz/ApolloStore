@@ -2,12 +2,25 @@
 
 {% block body %}
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery/jquery.min.js"></script>
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Page level plugin JavaScript-->
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/datatables/jquery.dataTables.js"></script>
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/sb-admin.min.js"></script>
+<!-- Custom scripts for this page-->
+<script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/sb-admin-datatables.min.js"></script>
+
+<!-- DataTables CSS -->
+<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+<!-- DataTables Responsive CSS -->
+<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+<!-- Custom CSS -->
+<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
 
 
 <script type="text/javascript">
@@ -23,37 +36,32 @@
             style:    'os',
             selector: 'td:first-child'
         },
-        order: [[ 1, 'asc' ]]
+        order: [[ 4, 'asc' ]]
     } );
     });
 </script>
 
-
-
-<script>
-    function getSelected() {
-        console.log(myTable.rows('.selected').data()[0]);
-        var modelNumber = myTable.rows('.selected').data()[0][4];
-        console.log(modelNumber);
-        delete_from_inventory(modelNumber);
-    }
-</script>
-
-
 <!-- Page Content -->
 <div class="container">
 
-    <div class="section">
-        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalNorm">
-            Add Item
-        </button>
+    <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/dashboard">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Laptops</li>
+      </ol>
 
-        <div class="col-md-12 text-left">
-            <h1>List of Items</h1>
-            <table id="projTable" class="table table-responsive table-bordered table-striped">
-                <thead>
+    <!-- Table-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-user"></i> List of Laptops<a href="#" class="btn btn-primary btn-sm" style="float: right;" data-toggle="modal" data-target="#myModalNorm" role="button">Add Item</a></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-sm" id="projTable" width="100%"
+                       cellspacing="0">
+                    <thead>
                     <tr>
-                        <th></th>
                         <th>Edit</th>
                         <th>Delete</th>
                         <th>Add</th>
@@ -77,11 +85,10 @@
                 {% if laptops: %}
                     {% for laptop in laptops: %}
                     <tr>
-                        <td></td>
-                        <td><button type="button" class="btn btn-default" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{laptop[0].model}}');">EDIT</button></td>
-                        <td><button type="button" class="btn btn-default" onclick="delete_model('{{laptop[0].model}}');">DELETE</button></td>
-                        <td><button type="button" class="btn btn-default" onclick="add_to_inventory('{{laptop[0].model}}');">+</button>
-                        <button type="button" class="btn btn-default" onclick="delete_from_inventory('{{laptop[0].model}}');">-</button></td>
+                        <td><button type="button" class="btn btn-secondary btn-xs" data-toggle="modal" data-target="#edit" onclick="fill_edit_form('{{laptop[0].model}}');"><i class="fa fa-fw fa-pencil"></i></button></td>
+                        <td><button type="button" class="btn btn-danger btn-xs" onclick="delete_model('{{laptop[0].model}}');"><i class="fa fa-fw fa-trash"></i></button></td>
+                        <td><button type="button" class="btn btn-link" onclick="add_to_inventory('{{laptop[0].model}}');"><i class="fa fa-fw fa-plus-circle"></i></button>
+                            <button type="button" class="btn btn-link" onclick="delete_from_inventory('{{laptop[0].model}}');"><i class="fa fa-fw fa-minus-circle"></i></button></td>
                         <td>{{laptop[1]}}</td>
                         <td id="{{laptop[0].model}}">{{laptop[0].model}}</td>
                         <td id="{{laptop[0].model}}-price">{{laptop[0].price}}</td>
@@ -101,7 +108,6 @@
                 {% else: %}
 	                	<tr>
 	                        <td></td>
-                            <td><button type="button" class="btn btn-default btn-sm" onclick="">+</button></td>
 	                        <td></td>
 	                        <td></td>
 	                        <td></td>
@@ -118,10 +124,12 @@
 	                        <td></td>
 	                    </tr>
                 {% endif %}
-                </tbody>
-            </table>
-
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <div class="card-footer small text-muted"></div>
+    </div>
 
         <script>
             function add_to_inventory(model) {
@@ -133,18 +141,13 @@
                 form.submit();
                 console.log('submitted');
             }
-        </script>
 
-        <script>
             function edit_button(){
                 var modelNumber = myTable.rows('.selected').data()[0][4];
                 fill_edit_form(modelNumber);
             }
 
 
-        </script>
-
-        <script>
             function fill_edit_form(model) {
                 oFormObject = document.forms['myform_id'];
                 oFormObject.elements["model"].value = model;
@@ -171,8 +174,7 @@
                     oFormObject.elements["edit-camera"].checked = false;
                 }
             }
-        </script>
-         <script>
+
             function delete_from_inventory(model) {
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
@@ -181,6 +183,7 @@
                 document.body.appendChild(form);
                 form.submit();
             }
+
             function delete_model(model){
                 var form = document.createElement('form');
                 form.setAttribute('method', 'post');
@@ -192,8 +195,6 @@
             }
         </script>
 
-        <div class="col-md-8" >
-            <p> </p>
 
 <!-- Delete Modal -->
             <div class="modal fade" id="delete" tabindex="-1" role="dialog"
@@ -440,11 +441,6 @@
 
 <!-- End of Edit Modal -->
 
-
-
-</div>
-</div>
-<!-- /.row -->
 
 
 </div>

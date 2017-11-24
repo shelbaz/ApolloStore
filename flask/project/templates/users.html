@@ -2,12 +2,38 @@
 
 {% block body %}
 
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">-->
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.2.3/css/select.dataTables.min.css">-->
+<!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">-->
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js"></script>-->
+<!--<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>-->
+<!--<script type="text/javascript" src="https://cdn.datatables.net/select/1.2.3/js/dataTables.select.min.js"></script>-->
+
+<!--<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+<!--<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">-->
+<!--<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">-->
+<!--<link href="https://blackrockdigital.github.io/startbootstrap-sb-admin/css/sb-admin.css" rel="stylesheet">-->
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery/jquery.min.js"></script>
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="https://blackrockdigital.github.io/startbootstrap-sb-admin/js/sb-admin-datatables.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/datatables-plugins/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- DataTables Responsive CSS -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/vendor/datatables-responsive/dataTables.responsive.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="https://blackrockdigital.github.io/startbootstrap-sb-admin-2/dist/css/sb-admin-2.css" rel="stylesheet">
+
 
 <script type="text/javascript">
     var myTable;
@@ -25,12 +51,23 @@
 <!-- Page Content -->
 <div class="container">
 
-    <div class="section">
+    <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/dashboard">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">Users</li>
+      </ol>
 
-        <div class="col-md-12 text-left">
-            <h1>List of Users</h1>
-            <table id="projTable" class="table table-responsive table-bordered table-striped">
-                <thead>
+    <!-- Table-->
+    <div class="card mb-3">
+        <div class="card-header">
+            <i class="fa fa-user"></i> List of Users</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped table-hover" id="projTable" width="100%"
+                       cellspacing="0">
+                    <thead>
                     <tr>
                         <th>Client ID</th>
                         <th>First Name</th>
@@ -40,46 +77,38 @@
                         <th>Phone</th>
                         <th>Admin</th>
                     </tr>
-                </thead>
-                <tbody>
-                {% if users: %}
+                    </thead>
+                    <tbody>
+                    {% if users: %}
                     {% for user in users: %}
                     <tr>
-                        <td id ="{{user.id}}">{{user.id}}</td>
-                        <td id ="{{user.id}}-fname">{{user.first_name}}</td>
-                        <td id ="{{user.id}}-lname">{{user.last_name}}</td>
-                        <td id ="{{user.id}}-address">{{user.address}}</td>
-                        <td id ="{{user.id}}-email">{{user.email}}</td>
-                        <td id ="{{user.id}}-phone">{{user.phone}}</td>
-                        <td id ="{{user.id}}-admin">{{user.admin}}</td>
+                        <td id="{{user.id}}">{{user.id}}</td>
+                        <td id="{{user.id}}-fname">{{user.first_name}}</td>
+                        <td id="{{user.id}}-lname">{{user.last_name}}</td>
+                        <td id="{{user.id}}-address">{{user.address}}</td>
+                        <td id="{{user.id}}-email">{{user.email}}</td>
+                        <td id="{{user.id}}-phone">{{user.phone}}</td>
+                        <td id="{{user.id}}-admin">{{user.admin}}</td>
                     </tr>
                     {% endfor %}
-                {% else: %}
-	                	<tr>
-	                        <td></td>
-                            <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                        <td></td>
-	                    </tr>
-                {% endif %}
-                </tbody>
-            </table>
-
+                    {% else: %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-
-        <div class="col-md-8" >
-            <p> </p>
-
-
-</div>
-</div>
-<!-- /.row -->
-
+        <div class="card-footer small text-muted"></div>
+    </div>
 
 </div>
 <!-- /.container -->
