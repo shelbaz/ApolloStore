@@ -178,14 +178,14 @@
         </script>
 
 
-<!-- Delete Modal --> 
-            <div class="modal fade" id="delete" tabindex="-1" role="dialog" 
+<!-- Delete Modal
+            <div class="modal fade" id="delete" tabindex="-1" role="dialog"
             aria-labelledby="delete" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <!-- Modal Header -->
+                     Modal Header
                     <div class="modal-header">
-                        <button type="button" class="close" 
+                        <button type="button" class="close"
                         data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                         <span class="sr-only">Close</span>
@@ -195,7 +195,7 @@
                     </h4>
                 </div>
 
-                <!-- Modal Body -->
+                 Modal Body
                 <div class="modal-body">
 
                     <form role="form" action="/desktop" method="post">
@@ -212,7 +212,7 @@
 
                 </div>
 
-                <!-- Modal Footer -->
+                 Modal Footer
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                     data-dismiss="modal">
@@ -222,25 +222,20 @@
         </div>
     </div>
 </div>
-<!-- End of Delete Modal --> 
+ End of Delete Modal  -->
 
-<!-- Edit Modal --> 
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <button type="button" class="close" 
-            data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-        </button>
-        <h4 class="modal-title" id="done">
-            Please enter the new values for your chosen field:
-        </h4>
-    </div>
+<!-- Edit Modal -->
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="done" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Item</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
-    <!-- Modal Body -->
+                <!-- Modal Body -->
     <div class="modal-body">
 
         <form id="myform_id" role="form" action="/edit-desktop" method="post">
@@ -280,7 +275,6 @@
                 <label for="edit_desktopdimensions">Dimensions: </label>
                 <input required id="edit_desktopdimensions" type="text" class="form-control"
                        name="desktopdimensions" /> </div>
-            <br>
 
             <button type="submit" class="btn btn-default" >Submit</button>
         </form>
@@ -288,13 +282,6 @@
 
     </div>
 
-    <!-- Modal Footer -->
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default"
-        data-dismiss="modal">
-        Close
-    </button>
-</div>
 </div>
 </div>
 </div>
@@ -303,19 +290,14 @@
 
 <!-- Add Modal -->
 <div class="modal fade" id="myModalNorm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-<div class="modal-dialog">
-    <div class="modal-content">
-        <!-- Modal Header -->
-        <div class="modal-header">
-            <button type="button" class="close" 
-            data-dismiss="modal">
-            <span aria-hidden="true">&times;</span>
-            <span class="sr-only">Close</span>
-        </button>
-        <h4 class="modal-title" id="myModalLabel">
-            Add a Item
-        </h4>
-    </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Item</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
 
     <!-- Modal Body -->
     <div class="modal-body">
