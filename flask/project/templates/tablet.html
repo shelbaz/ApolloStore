@@ -211,7 +211,7 @@
                     <form role="form" method="post">
                         <div class="form-group">
                         <label for="delete">Item ID: </label>
-                            <input type="text" class="form-control"
+                            <input required type="text" class="form-control"
                             id="delete" name="delete" placeholder="Item/ ID"/>
                         </div>
                         <br>
@@ -256,55 +256,55 @@
         <form id="myform_id" role="form" action="/edit-tablet" method="post">
             <div class="form-group">
                 <label for="model">Model: </label>
-                <input id = "model" type="text" name="model"
+                <input required id = "model" type="text" name="model"
                        class="form-control"/></div>
             <div class="form-group">
                 <label for="edit-price">Price: </label>
-                <input id="edit-price" type="text" class="form-control"
+                <input required id="edit-price" type="text" class="form-control"
                        name="price" /></div>
             <div class="form-group">
                 <label for="edit-weight">Weight: </label>
-                <input id="edit-weight" type="text" class="form-control"
+                <input required id="edit-weight" type="text" class="form-control"
                        name="weight" /> </div>
             <div class="form-group">
                 <label for="edit-brand">Brand: </label>
-                <input id="edit-brand" type="text" class="form-control"
+                <input required id="edit-brand" type="text" class="form-control"
                        name="brand" /> </div>
             <div class="form-group">
                 <label for="edit-displaysize">Display Size: </label>
-                <input id="edit-displaysize" type="text" class="form-control"
+                <input required id="edit-displaysize" type="text" class="form-control"
                        name="tablet_display_size" /> </div>
             <div class="form-group">
                 <label for="edit-processor">Processor: </label>
-                <input id="edit-processor" type="text" class="form-control"
+                <input required id="edit-processor" type="text" class="form-control"
                        name="processor" /> </div>
             <div class="form-group">
                 <label for="edit-ramsize">Ram Size: </label>
-                <input id="edit-ramsize" type="text" class="form-control"
+                <input required id="edit-ramsize" type="text" class="form-control"
                        name="ram_size" /> </div>
             <div class="form-group">
                 <label for="edit-cpucores">CPU Cores: </label>
-                <input id="edit-cpucores" type="text" class="form-control"
+                <input required id="edit-cpucores" type="text" class="form-control"
                        name="cpu_cores" /> </div>
             <div class="form-group">
                 <label for="edit-hdsize">HD Size: </label>
-                <input id="edit-hdsize" type="text" class="form-control"
+                <input required id="edit-hdsize" type="text" class="form-control"
                        name="hd_size"/> </div>
             <div class="form-group">
                 <label for="edit-batteryinfo">Battery Info: </label>
-                <input id="edit-batteryinfo" type="text" class="form-control"
+                <input required id="edit-batteryinfo" type="text" class="form-control"
                        name="battery" /> </div>
             <div class="form-group">
                 <label for="edit-os">Operating System: </label>
-                <input id="edit-os" type="text" class="form-control"
+                <input required id="edit-os" type="text" class="form-control"
                        name="operating_system" /> </div>
             <div class="form-group">
                 <label for="edit-dimensions">Dimensions:</label>
-                <input type="text" name = "dimensions" class="form-control"
+                <input required type="text" name = "dimensions" class="form-control"
                 id="edit-dimensions" /></div>
             <div class="form-group">
                 <label for="edit-camerainfo">Camera Info:</label>
-                <input type="text" name = "camera" class="form-control"
+                <input required type="text" name = "camera" class="form-control"
                 id="edit-camerainfo" /></div>
             <br>
 
@@ -354,62 +354,62 @@
 <form name="Tablet" id="Tablet" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
-            <input type="text" name = "price" class="form-control"
+            <input required type="text" name = "price" class="form-control"
             id="price" placeholder="Enter Price"/>
         </div>
         <div class="form-group">
             <label for="weight">Enter Weight</label>
-            <input type="text" name = "weight" class="form-control"
+            <input required type="text" name = "weight" class="form-control"
             id="weight" placeholder="Enter Weight"/>
         </div>
         <div class="form-group">
             <label for="brand">Enter Brand</label>
-            <input type="text" name = "brand" class="form-control"
+            <input required type="text" name = "brand" class="form-control"
             id="brand" placeholder="Enter Brand"/>
         </div>
         <div class="form-group">
             <label for="tablet_display_size">Enter Display Size</label>
-            <input type="text" name = "tablet_display_size" class="form-control"
+            <input required type="text" name = "tablet_display_size" class="form-control"
             id="tablet_display_size" placeholder="Enter Display Size"/>
         </div>
         <div class="form-group">
             <label for="processor">Enter Processor</label>
-            <input type="text" name = "processor" class="form-control"
+            <input required type="text" name = "processor" class="form-control"
             id="processor" placeholder="Enter Processor"/>
         </div>
                 <div class="form-group">
             <label for="ram_size">Enter Ram Size (GB)</label>
-            <input type="text" name = "ram_size" class="form-control"
+            <input required type="text" name = "ram_size" class="form-control"
             id="ram_size" placeholder="Enter Ram Size"/>
         </div>
                 <div class ="form-group">
             <label for="cpu_cores">Enter # of Cores</label>
-            <input type="text" name = "cpu_cores" class="form-control"
+            <input required type="text" name = "cpu_cores" class="form-control"
             id="cpu_cores" placeholder="Enter # Cores"/>
         </div>
                 <div class="form-group">
             <label for="hd_size">Enter HD Size (GB)</label>
-            <input type="text" name = "hd_size" class="form-control"
+            <input required type="text" name = "hd_size" class="form-control"
             id="hd_size" placeholder="Enter HD Size"/>
         </div>
             <div class="form-group">
             <label for="dimensions">Enter Battery Info</label>
-            <input type="text" name = "battery" class="form-control"
+            <input required type="text" name = "battery" class="form-control"
             id="battery" placeholder="Enter Battery info"/>
         </div>
             <div class="form-group">
             <label for="dimensions">Enter OS</label>
-            <input type="text" name = "operating_system" class="form-control"
+            <input required type="text" name = "operating_system" class="form-control"
             id="operating_system" placeholder="Enter OS"/>
         </div>
         <div class="form-group">
             <label for="dimensions">Enter Dimensions</label>
-            <input type="text" name = "dimensions" class="form-control"
+            <input required type="text" name = "dimensions" class="form-control"
             id="dimensions" placeholder="Enter Dimensions"/>
         </div>
         <div class="form-group">
             <label for="camera">Camera</label>
-            <input type="text" name = "camera" class="form-control"
+            <input required type="text" name = "camera" class="form-control"
             id="camera" placeholder="Enter Camera Info"  />
         </div>
 <button type="submit" class="btn btn-default">Submit</button>
