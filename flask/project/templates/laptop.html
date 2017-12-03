@@ -217,11 +217,11 @@
                        class="form-control" readonly/></div>
             <div class="form-group">
                 <label for="edit-price">Price: </label>
-                <input required id="edit-price" type="number" min="0" class="form-control"
+                <input required id="edit-price" type="number" min="1" class="form-control"
                        name="price" /></div>
             <div class="form-group">
                 <label for="edit-weight">Weight: </label>
-                <input required id="edit-weight" type="number" min="0" class="form-control"
+                <input required id="edit-weight" type="number" min="1" class="form-control"
                        name="weight" /> </div>
             <div class="form-group">
                 <label for="edit-brand">Brand: </label>
@@ -237,15 +237,15 @@
                        name="processor" /> </div>
             <div class="form-group">
                 <label for="edit-ramsize">Ram Size: </label>
-                <input required id="edit-ramsize" type="number" min="0" class="form-control"
+                <input required id="edit-ramsize" type="number" min="1" class="form-control"
                        name="ram_size" /> </div>
             <div class="form-group">
                 <label for="edit-cpucores">CPU Cores: </label>
-                <input required id="edit-cpucores" type="text" class="form-control"
+                <input required id="edit-cpucores" type="number" min="1" class="form-control"
                        name="cpu_cores" /> </div>
             <div class="form-group">
                 <label for="edit-hdsize">HD Size: </label>
-                <input required id="edit-hdsize" type="number" min="0" class="form-control"
+                <input required id="edit-hdsize" type="number" min="1" class="form-control"
                        name="hd_size"/> </div>
             <div class="form-group">
                 <label for="edit-batteryinfo">Battery Info: </label>
@@ -257,11 +257,11 @@
                        name="operating_system" /> </div>
             <div class="form-group">
                 <label for="edit-touchscreen">Touchscreen</label>
-                <input required type="checkbox" name = "touchscreen" class="form-control"
+                <input type="checkbox" name = "touchscreen" class="form-control"
                 id="edit-touchscreen" /></div>
             <div class="form-group">
                 <label for="edit-camera">Camera</label>
-                <input required type="checkbox" name = "camera" class="form-control"
+                <input type="checkbox" name = "camera" class="form-control"
                 id="edit-camera" /></div>
 
             <button type="submit" class="btn btn-default">Submit</button>
@@ -294,12 +294,12 @@
 <form name="Laptop" id="Laptop" method="post">
 <!-- THIS IS FORM 2-->
     <div class="form-group"><label for="price">Enter Price</label>
-            <input required type="number" min="0" name = "price" class="form-control"
+            <input required type="number" min="1" name = "price" class="form-control"
             id="price" placeholder="Enter Price"/>
         </div>
         <div class="form-group">
             <label for="weight">Enter Weight</label>
-            <input required type="number" min="0" name = "weight" class="form-control"
+            <input required type="number" min="1" name = "weight" class="form-control"
             id="weight" placeholder="Enter Weight"/>
         </div>
         <div class="form-group">
@@ -319,17 +319,17 @@
         </div>
                 <div class="form-group">
             <label for="ram_size">Enter Ram Size (GB)</label>
-            <input required type="number" min="0" name = "ram_size" class="form-control"
+            <input required type="number" min="1" name = "ram_size" class="form-control"
             id="ram_size" placeholder="Enter Ram Size"/>
         </div>
                 <div class ="form-group">
             <label for="cpu_cores">Enter # of Cores</label>
-            <input required type="number" min="0" name = "cpu_cores" class="form-control"
+            <input required type="number" min="1" name = "cpu_cores" class="form-control"
             id="cpu_cores" placeholder="Enter # Cores"/>
         </div>
                 <div class="form-group">
             <label for="hd_size">Enter HD Size (GB)</label>
-            <input required type="number" min="0" name = "hd_size" class="form-control"
+            <input required type="number" min="1" name = "hd_size" class="form-control"
             id="hd_size" placeholder="Enter HD Size"/>
         </div>
             <div class="form-group">
@@ -344,12 +344,12 @@
         </div>
             <div class="form-group">
             <label for="touchscreen">Touchscreen</label>
-            <input required type="checkbox" name = "touchscreen" class="form-control"
+            <input type="checkbox" name = "touchscreen" class="form-control"
             id="touchscreen" value="touchscreen" />
         </div>
         <div class="form-group">
             <label for="touchscreen">Camera</label>
-            <input required type="checkbox" name = "camera" class="form-control"
+            <input type="checkbox" name = "camera" class="form-control"
             id="camera" value="camera" />
         </div>
 <button type="submit" class="btn btn-default">Submit</button>
