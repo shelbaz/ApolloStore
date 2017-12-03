@@ -100,7 +100,6 @@ def desktop_client():
 
 @website_blueprint.route('/desktop-client/table', methods=['GET'])
 def desktop_client_table():    
-    logger.error(request.args.to_dict())
     return json.dumps({
         'data': DesktopController.get_all_unlocked_desktops(request.args.to_dict())
     })
@@ -388,7 +387,6 @@ def monitor_client():
 
 @website_blueprint.route('/monitor-client/table', methods=['GET'])
 def monitor_client_table():    
-    logger.error(request.args.to_dict())
     return json.dumps({
         'data': MonitorController.get_all_unlocked_monitors(request.args.to_dict())
     })

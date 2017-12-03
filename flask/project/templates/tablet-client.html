@@ -134,10 +134,11 @@
             success: function(response) {
                $("#ajax-alert").addClass("alert alert-success").text("Item Successfully Added to Cart.");
                 $("#ajax-alert").alert();
+                getTabletData(null);
                 $("#ajax-alert").fadeTo(3000, 3000).slideUp(1000, function(){
                 });
 
-                getTabletData(null);
+                
             }
         });
     }
